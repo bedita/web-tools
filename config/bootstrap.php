@@ -10,7 +10,7 @@
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-use Cake\Plugin;
+use Cake\Core\Plugin;
 
 /*
  * Load TwigView Plugin
