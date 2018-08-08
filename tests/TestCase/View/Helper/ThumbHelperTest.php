@@ -12,9 +12,9 @@
  */
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
+use BEdita\SDK\BEditaClient;
 use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\View\Helper\ThumbHelper;
-use BEdita\SDK\BEditaClient;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
