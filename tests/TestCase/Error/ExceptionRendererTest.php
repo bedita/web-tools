@@ -65,7 +65,7 @@ class ExceptionRendererTest extends TestCase
      */
     public function testTemplate(\Exception $exception, $expected)
     {
-        $renderer = new AppExceptionRenderer($exception);
+        $renderer = new ExceptionRenderer($exception);
         $renderer->controller = new TestController();
         $renderer->controller->viewClass = '\App\View\AppView';
         $response = $renderer->render();

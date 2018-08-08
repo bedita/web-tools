@@ -6,6 +6,15 @@
  * has been installed as a dependency of the plugin, or the plugin is itself
  * installed as a dependency of an application.
  */
+
+if (!getenv('BEDITA_API') && file_exists(dirname(__DIR__) . '/tests/.env')) {
+    $dotenv = new \josegonzalez\Dotenv\Loader([dirname(__DIR__) . '/tests/.env']);
+    $dotenv->parse()
+        ->putenv()
+        ->toEnv()
+        ->toServer();
+}
+
 $findRoot = function ($root) {
     do {
         $lastRoot = $root;
@@ -22,9 +31,12 @@ unset($findRoot);
 
 chdir($root);
 
-if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
+// if (file_exists($root . '/config/bootstrap.php')) {
+//     require $root . '/config/bootstrap.php';
 
-    return;
-}
+//     return;
+// }
+
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+require $root . '/config/bootstrap.php';
+

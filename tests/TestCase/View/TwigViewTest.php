@@ -37,27 +37,4 @@ class TwigViewTest extends TestCase
         static::assertNotEmpty($extensions);
         static::assertArrayHasKey('bedita', $extensions);
     }
-
-    /**
-     * Test `_getElementFileName` method
-     *
-     * @return void
-     * @covers ::_getElementFileName()
-     */
-    public function testCustomElement() : void
-    {
-        $View = new TwigView();
-        $View->viewVars['currentModule'] = ['name' => 'cats'];
-        $result = $View->elementExists('Form/meta');
-        static::assertTrue($result);
-
-        $custom = [
-            'cats' => [
-                'Form/meta' => 'MyPlugin',
-            ],
-        ];
-        Configure::write('Elements', $custom);
-        $result = $View->elementExists('Form/meta');
-        static::assertFalse($result);
-    }
 }

@@ -3,6 +3,7 @@
 /composer.lock
 /phpunit.xml
 /vendor
+.env
 
 # IDE and editor specific files #
 #################################
