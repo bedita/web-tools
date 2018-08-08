@@ -29,7 +29,8 @@
     "require-dev": {
         "cakephp/cakephp-codesniffer": "3.0.3",
         "phpunit/phpunit": "^6.0",
-        "squizlabs/php_codesniffer": "3.2.3"
+        "squizlabs/php_codesniffer": "3.2.3",
+        "cakephp/plugin-installer": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -41,5 +42,25 @@
             "BEdita\\WebTools\\Test\\": "tests",
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
         }
-    }
+    },
+    "scripts": {
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "check": [
+            "@test",
+            "@cs-check"
+        ],
+        "cs-setup": [
+            "vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer",
+            "vendor/bin/phpcs --config-set default_standard CakePHP",
+            "vendor/bin/phpcs --config-set colors 1"
+        ],
+        "cs-check": "vendor/bin/phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "vendor/bin/phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "test": "vendor/bin/phpunit --colors=always",
+        "update-dev": [
+            "@composer update",
+            "@cs-setup"
+        ]
+    },
+    "prefer-stable": true
 }
