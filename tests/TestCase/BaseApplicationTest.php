@@ -33,7 +33,7 @@ class BaseApplicationTest extends IntegrationTestCase
      * Test `console` method
      *
      * @return void
-     * 
+     *
      * @covers ::console
      */
     public function testConsole() : void
@@ -55,7 +55,7 @@ class BaseApplicationTest extends IntegrationTestCase
      * Test `middleware` method
      *
      * @return void
-     * 
+     *
      * @covers ::middleware
      */
     public function testMiddleware() : void
