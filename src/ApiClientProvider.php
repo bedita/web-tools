@@ -14,6 +14,7 @@ namespace BEdita\WebTools;
 
 use BEdita\SDK\BEditaClient;
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 
 /**
  * BEdita4 API client provider singleton class.
@@ -32,26 +33,46 @@ class ApiClientProvider
 
     /**
      * Read singleton API client data.
+     * In `$options` you may provide a log configuration via `Log` key setting a log file.
+     * Example:
+     * ```
+     *   [
+     *     'Log' => [
+     *       'log_file' => LOGS . 'api.log',
+     *     ],
+     *   ]
+     * ```
      *
+     * @param array $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    public static function getApiClient() : BEditaClient
+    public static function getApiClient(array $options = []) : BEditaClient
     {
         if (static::getInstance()->apiClient) {
+            $logOptions = (array)Hash::get($options, 'Log', []);
+            if (!empty($logOptions)) {
+                static::getInstance()->apiClient->initLogger($logOptions);
+            }
+
             return static::getInstance()->apiClient;
         }
 
-        return static::getInstance()->createClient();
+        return static::getInstance()->createClient($options);
     }
 
     /**
      * Create new default API client.
      *
+     * @param mixed $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    private function createClient() : BEditaClient
+    private function createClient(array $options = []) : BEditaClient
     {
         $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'));
+        $logOptions = (array)Hash::get($options, 'Log', []);
+        if (!empty($logOptions)) {
+            $this->apiClient->initLogger($logOptions);
+        }
 
         return $this->apiClient;
     }
