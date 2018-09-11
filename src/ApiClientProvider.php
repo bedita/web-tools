@@ -32,26 +32,44 @@ class ApiClientProvider
 
     /**
      * Read singleton API client data.
+     * In `$options` you may provide a log configuration via `Log` key setting a log file.
+     * Example:
+     * ```
+     *   [
+     *     'Log' => [
+     *       'log_file' => LOGS . 'api.log',
+     *     ],
+     *   ]
+     * ```
      *
+     * @param array $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    public static function getApiClient() : BEditaClient
+    public static function getApiClient(array $options = []) : BEditaClient
     {
         if (static::getInstance()->apiClient) {
+            if (!empty($options['Log'])) {
+                static::getInstance()->apiClient->initLogger($options['Log']);
+            }
+
             return static::getInstance()->apiClient;
         }
 
-        return static::getInstance()->createClient();
+        return static::getInstance()->createClient($options);
     }
 
     /**
      * Create new default API client.
      *
+     * @param mixed $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    private function createClient() : BEditaClient
+    private function createClient(array $options = []) : BEditaClient
     {
         $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'));
+        if (!empty($options['Log'])) {
+            $this->apiClient->initLogger($options['Log']);
+        }
 
         return $this->apiClient;
     }
