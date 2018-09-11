@@ -14,7 +14,6 @@ namespace BEdita\WebTools;
 
 use BEdita\SDK\BEditaClient;
 use Cake\Core\Configure;
-use Cake\Utility\Hash;
 
 /**
  * BEdita4 API client provider singleton class.
@@ -49,9 +48,8 @@ class ApiClientProvider
     public static function getApiClient(array $options = []) : BEditaClient
     {
         if (static::getInstance()->apiClient) {
-            $logOptions = (array)Hash::get($options, 'Log', []);
-            if (!empty($logOptions)) {
-                static::getInstance()->apiClient->initLogger($logOptions);
+            if (!empty($options['Log'])) {
+                static::getInstance()->apiClient->initLogger($options['Log']);
             }
 
             return static::getInstance()->apiClient;
@@ -69,9 +67,8 @@ class ApiClientProvider
     private function createClient(array $options = []) : BEditaClient
     {
         $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'));
-        $logOptions = (array)Hash::get($options, 'Log', []);
-        if (!empty($logOptions)) {
-            $this->apiClient->initLogger($logOptions);
+        if (!empty($options['Log'])) {
+            $this->apiClient->initLogger($options['Log']);
         }
 
         return $this->apiClient;
