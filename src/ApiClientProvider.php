@@ -48,10 +48,9 @@ class ApiClientProvider
     public static function getApiClient(array $options = []) : BEditaClient
     {
         if (static::getInstance()->apiClient) {
-            if (!empty($options['Log'])) {
-                static::getInstance()->apiClient->initLogger($options['Log']);
-            } elseif (!empty(Configure::read('API.log'))) {
-                static::getInstance()->apiClient->initLogger(Configure::read('API.log'));
+            $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
+            if (!empty($logOptions)) {
+                static::getInstance()->apiClient->initLogger($logOptions);
             }
 
             return static::getInstance()->apiClient;
@@ -69,10 +68,9 @@ class ApiClientProvider
     private function createClient(array $options = []) : BEditaClient
     {
         $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'));
-        if (!empty($options['Log'])) {
-            $this->apiClient->initLogger($options['Log']);
-        } elseif (!empty(Configure::read('API.log'))) {
-            $this->apiClient->initLogger(Configure::read('API.log'));
+        $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
+        if (!empty($logOptions)) {
+            $this->apiClient->initLogger($logOptions);
         }
 
         return $this->apiClient;
