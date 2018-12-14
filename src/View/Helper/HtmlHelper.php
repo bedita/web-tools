@@ -13,6 +13,7 @@
 
 namespace BEdita\WebTools\View\Helper;
 
+use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
 
 /**
@@ -33,12 +34,12 @@ class HtmlHelper extends CakeHtmlHelper
         if (isset($this->getView()->viewVars['_title'])) {
             return $this->getView()->viewVars['_title'];
         }
-        $title = '';
-        if (isset($this->getView()->request->params['controller'])) {
-            $title = $this->getView()->request->params['controller'];
-        }
-        if (isset($this->getView()->request->params['action'])) {
-            $title .= sprintf(' - %s', $this->getView()->request->params['action']);
+        $title = Inflector::humanize($this->getView()->request->getParam('controller', ''));
+        $suffix = Inflector::humanize($this->getView()->request->getParam('action', ''));
+        if (empty($title)) {
+            $title = $suffix;
+        } elseif (!empty($suffix)) {
+            $title .= sprintf(' - %s', $suffix);
         }
 
         return $title;

@@ -72,20 +72,20 @@ class HtmlHelperTest extends TestCase
                 'My title',
             ],
             'title from controller' => [
-                'My Controller',
+                'my_controller',
                 null,
                 null,
                 'My Controller',
             ],
             'title from controller, action' => [
-                'My Controller',
-                'My Action',
+                'my_controller',
+                'my_action',
                 null,
                 'My Controller - My Action',
             ],
             'title from controller, action' => [
-                'My Controller',
-                'My Action',
+                'my_controller',
+                'my_action',
                 'My title',
                 'My title',
             ],
@@ -105,8 +105,8 @@ class HtmlHelperTest extends TestCase
      */
     public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected) : void
     {
-        $this->Html->getView()->request->params['controller'] = $controllerName;
-        $this->Html->getView()->request->params['action'] = $actionName;
+        $this->Html->getView()->request = $this->Html->getView()->request->withParam('controller', $controllerName);
+        $this->Html->getView()->request = $this->Html->getView()->request->withParam('action', $actionName);
         $this->Html->getView()->viewVars['_title'] = $viewVarTitle;
         $actual = $this->Html->title();
         static::assertEquals($expected, $actual);
