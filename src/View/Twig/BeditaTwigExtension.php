@@ -60,6 +60,22 @@ class BeditaTwigExtension extends \Twig_Extension
                     return $array;
                 }
             ),
+            new \Twig_SimpleFilter(
+                'ksort',
+                function (array $array) {
+                    ksort($array);
+
+                    return $array;
+                }
+            ),
+            new \Twig_SimpleFilter(
+                'krsort',
+                function (array $array) {
+                    krsort($array);
+
+                    return $array;
+                }
+            ),
         ];
     }
 }
