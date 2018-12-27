@@ -47,9 +47,18 @@ class HtmlHelper extends CakeHtmlHelper
     }
 
     /**
-     * Html meta: description, content, author, css, generator
+     * Html meta
+     * Possible meta data:
      *
-     * @param array $data Data for meta: 'description', 'author', 'docType', 'project', 'theme-color'
+     *  - description
+     *  - author
+     *  - viewport
+     *  - msapplication-TileColor
+     *  - theme-color
+     *  - css
+     *  - generator
+     *
+     * @param array $data Data for meta: 'description', 'author', 'viewport', 'msapplication-TileColor', 'theme-color', 'docType', 'project' (['name' => '...', 'version' => '...'])
      * @return string
      * @see HtmlHelper
      */
