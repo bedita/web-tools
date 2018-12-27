@@ -237,7 +237,7 @@ class HtmlHelper extends CakeHtmlHelper
                 'property' => sprintf('og:%s', $attribute),
                 'content' => $val,
             ]);
-            if ($tmp != null) {
+            if ($tmp !== null) {
                 $html .= $tmp;
             }
         }
@@ -285,7 +285,7 @@ class HtmlHelper extends CakeHtmlHelper
                 'property' => sprintf('twitter:%s', $attribute),
                 'content' => $val,
             ]);
-            if ($tmp != null) {
+            if ($tmp !== null) {
                 $html .= $tmp;
             }
         }
