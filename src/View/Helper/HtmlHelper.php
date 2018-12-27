@@ -13,6 +13,7 @@
 
 namespace BEdita\WebTools\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
 
@@ -43,5 +44,230 @@ class HtmlHelper extends CakeHtmlHelper
         }
 
         return $title;
+    }
+
+    /**
+     * Html meta: description, content, author, css, generator
+     *
+     * @param array $data Data for meta: 'description', 'author', 'docType', 'project', 'theme-color'
+     * @return string
+     * @see HtmlHelper
+     */
+    public function metaAll(array $data) : string
+    {
+        $html = '';
+
+        // description
+        if (!empty($data['description'])) {
+            $html .= $this->metaDescription($data['description']);
+        }
+
+        // author
+        if (!empty($data['author'])) {
+            $html .= $this->metaAuthor($data['author']);
+        }
+
+        // viewport, msapplication-TileColor, theme-color
+        foreach (['viewport', 'msapplication-TileColor', 'theme-color'] as $attribute) {
+            if (!empty($data[$attribute])) {
+                $html .= $this->meta([
+                    'name' => $attribute,
+                    'content' => $data[$attribute],
+                ]);
+            }
+        }
+
+        // css
+        $docType = '';
+        if (!empty($data['docType'])) {
+            $docType = $data['docType'];
+        } else {
+            $docType = Configure::read('docType');
+        }
+        if (empty($docType)) {
+            $docType = 'xhtml-strict';
+        }
+        $html .= $this->metaCss($docType);
+
+        // generator
+        $project = [];
+        if (!empty($data['project'])) {
+            $project = $data['project'];
+        }
+        $html .= $this->metaGenerator($project);
+
+        return $html;
+    }
+
+    /**
+     * Return html meta description tag for passed description argument
+     *
+     * @param string|null $description The description
+     * @return string
+     */
+    public function metaDescription($description) : string
+    {
+        if (empty($description)) {
+            return '';
+        }
+
+        return $this->meta('description', h(strip_tags($description)));
+    }
+
+    /**
+     * Return html meta author tag for passed creator argument
+     *
+     * @param string|null $creator The content creator
+     * @return string
+     */
+    public function metaAuthor(?string $creator) : string
+    {
+        if (empty($creator)) {
+            return '';
+        }
+
+        return $this->meta([
+            'name' => 'author',
+            'content' => h($creator),
+        ]);
+    }
+
+    /**
+     * Return html meta css tag for passed doc type
+     *
+     * @param string $docType The doc type
+     * @return string
+     */
+    public function metaCss(string $docType) : string
+    {
+        if ($docType === 'html5') {
+            return '';
+        }
+
+        return $this->meta([
+            'http-equiv' => 'Content-Style-Type',
+            'content' => 'text/css',
+        ]);
+    }
+
+    /**
+     * Return html meta for generator by project name and version passed
+     *
+     * @param array $project The project data ('name', 'version')
+     * @return string
+     */
+    public function metaGenerator(array $project) : string
+    {
+        if (empty($project) || empty($project['name'])) {
+            return '';
+        }
+        $version = '';
+        if (!empty($project['version'])) {
+            $version = $project['version'];
+        }
+
+        return $this->meta([
+            'name' => 'generator',
+            'content' => trim(sprintf('%s %s', $project['name'], $version)),
+        ]);
+    }
+
+    /**
+     * Return html meta for opengraph / facebook
+     * OG fields:
+     *
+     *  - og:title
+     *  - og:type
+     *  - og:url
+     *  - og:image
+     *
+     * OG optional fields:
+     *
+     *  - og:audio
+     *  - og:description
+     *  - og:determiner
+     *  - og:locale
+     *  - og:locale:alternate
+     *  - og:site_name
+     *  - og:video
+     *
+     * OG structured fields:
+     *
+     *  - og:image:url // identical to og:image
+     *  - og:image:secure_url
+     *  - og:image:type
+     *  - og:image:width
+     *  - og:image:height
+     *  - og:image:alt
+     *  - og:video:url // identical to og:video
+     *  - og:video:secure_url
+     *  - og:video:type
+     *  - og:video:width
+     *  - og:video:height
+     *  - og:audio
+     *  - og:secure_url
+     *  - og:type
+     *
+     * For details @see http://ogp.me
+     *
+     * @param array $data The data ('title', 'type', 'image', 'url')
+     * @return string
+     */
+    public function metaOpenGraph(array $data) : string
+    {
+        $html = '';
+        foreach ($data as $attribute => $val) {
+            $html .= $this->meta([
+                'property' => sprintf('og:%s', $attribute),
+                'content' => $val,
+            ]);
+        }
+
+        return $html;
+    }
+
+    /**
+     * Return html meta for twitter
+     * twitter fields:
+     *
+     *  - twitter:card
+     *  - twitter:site
+     *  - twitter:site:id
+     *  - twitter:creator
+     *  - twitter:creator:id
+     *  - twitter:description
+     *  - twitter:title
+     *  - twitter:image
+     *  - twitter:image:alt
+     *  - twitter:player
+     *  - twitter:player:width
+     *  - twitter:player:height
+     *  - twitter:player:stream
+     *  - twitter:app:name:iphone
+     *  - twitter:app:id:iphone
+     *  - twitter:app:url:iphone
+     *  - twitter:app:name:ipad
+     *  - twitter:app:id:ipad
+     *  - twitter:app:url:ipad
+     *  - twitter:app:name:googleplay
+     *  - twitter:app:id:googleplay
+     *  - twitter:app:url:googleplay
+     *
+     * For details @see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup.html
+     *
+     * @param array $data The data ('card', 'site', 'creator', 'title', 'description', 'image')
+     * @return string
+     */
+    public function metaTwitter(array $data) : string
+    {
+        $html = '';
+        foreach ($data as $attribute => $val) {
+            $html .= $this->meta([
+                'property' => sprintf('twitter:%s', $attribute),
+                'content' => $val,
+            ]);
+        }
+
+        return $html;
     }
 }
