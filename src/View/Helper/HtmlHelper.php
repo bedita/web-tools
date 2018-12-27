@@ -83,9 +83,9 @@ class HtmlHelper extends CakeHtmlHelper
             $docType = $data['docType'];
         } else {
             $docType = Configure::read('docType');
-        }
-        if (empty($docType)) {
-            $docType = 'xhtml-strict';
+            if (empty($docType)) {
+                $docType = 'xhtml-strict';
+            }
         }
         $html .= $this->metaCss($docType);
 
