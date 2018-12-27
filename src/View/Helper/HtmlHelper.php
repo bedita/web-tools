@@ -111,7 +111,7 @@ class HtmlHelper extends CakeHtmlHelper
             return '';
         }
         $html = $this->meta('description', h(strip_tags($description)));
-        if ($html == null) {
+        if ($html === null) {
             $html = '';
         }
 
@@ -133,7 +133,7 @@ class HtmlHelper extends CakeHtmlHelper
             'name' => 'author',
             'content' => h($creator),
         ]);
-        if ($html == null) {
+        if ($html === null) {
             $html = '';
         }
 
@@ -155,7 +155,7 @@ class HtmlHelper extends CakeHtmlHelper
             'http-equiv' => 'Content-Style-Type',
             'content' => 'text/css',
         ]);
-        if ($html == null) {
+        if ($html === null) {
             $html = '';
         }
 
@@ -181,7 +181,7 @@ class HtmlHelper extends CakeHtmlHelper
             'name' => 'generator',
             'content' => trim(sprintf('%s %s', $project['name'], $version)),
         ]);
-        if ($html == null) {
+        if ($html === null) {
             $html = '';
         }
 
