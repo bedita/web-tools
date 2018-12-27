@@ -110,8 +110,12 @@ class HtmlHelper extends CakeHtmlHelper
         if (empty($description)) {
             return '';
         }
+        $html = $this->meta('description', h(strip_tags($description)));
+        if ($html == null) {
+            $html = '';
+        }
 
-        return $this->meta('description', h(strip_tags($description)));
+        return $html;
     }
 
     /**
@@ -125,11 +129,15 @@ class HtmlHelper extends CakeHtmlHelper
         if (empty($creator)) {
             return '';
         }
-
-        return $this->meta([
+        $html = $this->meta([
             'name' => 'author',
             'content' => h($creator),
         ]);
+        if ($html == null) {
+            $html = '';
+        }
+
+        return $html;
     }
 
     /**
@@ -143,11 +151,15 @@ class HtmlHelper extends CakeHtmlHelper
         if ($docType === 'html5') {
             return '';
         }
-
-        return $this->meta([
+        $html = $this->meta([
             'http-equiv' => 'Content-Style-Type',
             'content' => 'text/css',
         ]);
+        if ($html == null) {
+            $html = '';
+        }
+
+        return $html;
     }
 
     /**
@@ -165,11 +177,15 @@ class HtmlHelper extends CakeHtmlHelper
         if (!empty($project['version'])) {
             $version = $project['version'];
         }
-
-        return $this->meta([
+        $html = $this->meta([
             'name' => 'generator',
             'content' => trim(sprintf('%s %s', $project['name'], $version)),
         ]);
+        if ($html == null) {
+            $html = '';
+        }
+
+        return $html;
     }
 
     /**
@@ -217,10 +233,13 @@ class HtmlHelper extends CakeHtmlHelper
     {
         $html = '';
         foreach ($data as $attribute => $val) {
-            $html .= $this->meta([
+            $tmp = $this->meta([
                 'property' => sprintf('og:%s', $attribute),
                 'content' => $val,
             ]);
+            if ($tmp != null) {
+                $html .= $tmp;
+            }
         }
 
         return $html;
@@ -262,10 +281,13 @@ class HtmlHelper extends CakeHtmlHelper
     {
         $html = '';
         foreach ($data as $attribute => $val) {
-            $html .= $this->meta([
+            $tmp = $this->meta([
                 'property' => sprintf('twitter:%s', $attribute),
                 'content' => $val,
             ]);
+            if ($tmp != null) {
+                $html .= $tmp;
+            }
         }
 
         return $html;
