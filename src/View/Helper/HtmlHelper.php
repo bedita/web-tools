@@ -354,7 +354,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $data The data
      * @param string $field The field
      * @param array|null $defaultVal The default val
-     * @return string
+     * @return array
      */
     public function getMetaArray(array $data, string $field, ?array $defaultVal) : array
     {
