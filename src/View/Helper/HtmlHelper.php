@@ -16,6 +16,7 @@ namespace BEdita\WebTools\View\Helper;
 use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
+use Cake\View\View;
 
 /**
  * Html helper.
@@ -23,6 +24,43 @@ use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
  */
 class HtmlHelper extends CakeHtmlHelper
 {
+
+    /**
+     * Meta data for helper
+     */
+    protected $meta = [
+        'description' => '',
+        'author' => '',
+        'viewport' => '',
+        'msapplication-TileColor' => '',
+        'theme-color' => '',
+        'docType' => '',
+        'project' => [
+            'name' => '',
+            'version' => '',
+        ],
+    ];
+
+    /**
+     * Construct the meta data
+     * Merge data to $this->meta from configure 'Meta', if set
+     * Merge data to $this->meta from $config['meta'], if set
+     *
+     * @param \Cake\View\View $View The View this helper is being attached to.
+     * @param array $config Configuration settings for the helper.
+     */
+    public function __construct(View $View, array $config = [])
+    {
+        if ($meta = Configure::read('Meta')) {
+            $this->meta += $meta;
+        }
+        if (isset($config['meta'])) {
+            $this->meta = $config['meta'] + $this->meta;
+            unset($config['meta']);
+        }
+        parent::__construct($View, $config);
+    }
+
     /**
      * Title for template pages
      * If `_title` view var is set, return it
@@ -55,8 +93,9 @@ class HtmlHelper extends CakeHtmlHelper
      *  - viewport
      *  - msapplication-TileColor
      *  - theme-color
-     *  - css
-     *  - generator
+     *  - docType
+     *  - project.name
+     *  - project.version
      *
      * @param array $data Data for meta: 'description', 'author', 'viewport', 'msapplication-TileColor', 'theme-color', 'docType', 'project' (['name' => '...', 'version' => '...'])
      * @return string
@@ -67,14 +106,12 @@ class HtmlHelper extends CakeHtmlHelper
         $html = '';
 
         // description
-        if (!empty($data['description'])) {
-            $html .= $this->metaDescription($data['description']);
-        }
+        $description = $this->getMetaString($data, 'description', '');
+        $html .= $this->metaDescription($description);
 
         // author
-        if (!empty($data['author'])) {
-            $html .= $this->metaAuthor($data['author']);
-        }
+        $author = $this->getMetaString($data, 'author', '');
+        $html .= $this->metaAuthor($author);
 
         // viewport, msapplication-TileColor, theme-color
         foreach (['viewport', 'msapplication-TileColor', 'theme-color'] as $attribute) {
@@ -87,22 +124,11 @@ class HtmlHelper extends CakeHtmlHelper
         }
 
         // css
-        $docType = '';
-        if (!empty($data['docType'])) {
-            $docType = $data['docType'];
-        } else {
-            $docType = Configure::read('docType');
-            if (empty($docType)) {
-                $docType = 'xhtml-strict';
-            }
-        }
+        $docType = $this->getMetaString($data, 'docType', 'xhtml-strict');
         $html .= $this->metaCss($docType);
 
         // generator
-        $project = [];
-        if (!empty($data['project'])) {
-            $project = $data['project'];
-        }
+        $project = $this->getMetaArray($data, 'project', []);
         $html .= $this->metaGenerator($project);
 
         return $html;
@@ -300,5 +326,45 @@ class HtmlHelper extends CakeHtmlHelper
         }
 
         return $html;
+    }
+
+    /**
+     * Return meta by data and field
+     *
+     * @param array $data The data
+     * @param string $field The field
+     * @param string $defaultVal The default val
+     * @return string
+     */
+    public function getMetaString(array $data, string $field, ?string $defaultVal) : string
+    {
+        if (isset($data[$field])) {
+            return $data[$field];
+        }
+        if (isset($this->meta[$field])) {
+            return $this->meta[$field];
+        }
+
+        return (string)$defaultVal;
+    }
+
+    /**
+     * Return meta by data and field
+     *
+     * @param array $data The data
+     * @param string $field The field
+     * @param array|null $defaultVal The default val
+     * @return string
+     */
+    public function getMetaArray(array $data, string $field, ?array $defaultVal) : array
+    {
+        if (isset($data[$field])) {
+            return $data[$field];
+        }
+        if (isset($this->meta[$field])) {
+            return $this->meta[$field];
+        }
+
+        return (array)$defaultVal;
     }
 }

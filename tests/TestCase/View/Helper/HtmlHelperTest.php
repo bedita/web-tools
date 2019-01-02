@@ -403,4 +403,107 @@ class HtmlHelperTest extends TestCase
         $actual = $this->Html->metaTwitter($data);
         static::assertEquals($expected, $actual);
     }
+
+    /**
+     * Data provider for `testGetMetaString` test case.
+     *
+     * @return array
+     */
+    public function getMetaStringProvider() : array
+    {
+        return [
+            'empty data default null' => [
+                [], // config
+                [], // data
+                'something', // field
+                null, // default val
+                '', // expected
+            ],
+            'description from config' => [
+                ['meta' => ['description' => 'whatever']], // config
+                [], // data
+                'description', // field
+                null, // default val
+                'whatever', // expected
+            ],
+            'description from data' => [
+                ['meta' => ['description' => 'whatever']], // config
+                ['description' => 'whatever from data'], // data
+                'description', // field
+                null, // default val
+                'whatever from data', // expected
+            ],
+        ];
+    }
+
+    /**
+     * Test `getMeta` method
+     *
+     * @dataProvider getMetaStringProvider()
+     * @covers ::getMetaString()
+     * @covers ::__construct()
+     * @param array $data The data
+     * @param array $string The field for data
+     * @param string|null $defaultVal The default value
+     * @param string $expected The expected meta string
+     * @return void
+     */
+    public function testGetMetaString(array $config, array $data, string $field, ?string $defaultVal, string $expected) : void
+    {
+        $this->Html = new HtmlHelper(new View(), $config);
+        $actual = $this->Html->getMetaString($data, $field, $defaultVal);
+        static::assertEquals($expected, $actual);
+    }
+
+    /**
+     * Data provider for `testGetMetaArray` test case.
+     *
+     * @return array
+     */
+    public function getMetaArrayProvider() : array
+    {
+        return [
+            'empty data default null' => [
+                [], // config
+                [], // data
+                'something', // field
+                null, // default val
+                [], // expected
+            ],
+            'project from config' => [
+                ['meta' => ['project' => ['name' => 'gustavo', 'version' => '3.0']]], // config
+                [], // data
+                'project', // field
+                null, // default val
+                ['name' => 'gustavo', 'version' => '3.0'], // expected
+            ],
+            'project from data' => [
+                ['meta' => ['project' => ['name' => 'gustavo', 'version' => '3.0']]], // config
+                ['project' => ['name' => 'gustavo', 'version' => '4.0']], // data
+                'project', // field
+                null, // default val
+                ['name' => 'gustavo', 'version' => '4.0'], // expected
+            ],
+        ];
+    }
+
+    /**
+     * Test `getMetaArray` method
+     *
+     * @dataProvider getMetaArrayProvider()
+     * @covers ::getMetaArray()
+     * @covers ::__construct()
+     * @param array $config The meta config
+     * @param array $data The data
+     * @param array $string The field for data
+     * @param array|null $defaultVal The default value
+     * @param array $expected The expected meta array
+     * @return void
+     */
+    public function testGetMetaArray(array $config, array $data, string $field, ?array $defaultVal, array $expected) : void
+    {
+        $this->Html = new HtmlHelper(new View(), $config);
+        $actual = $this->Html->getMetaArray($data, $field, $defaultVal);
+        static::assertEquals($expected, $actual);
+    }
 }
