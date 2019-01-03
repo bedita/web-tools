@@ -52,7 +52,7 @@ class HtmlHelper extends CakeHtmlHelper
     public function __construct(View $View, array $config = [])
     {
         if ($meta = Configure::read('Meta')) {
-            $this->metadata += $meta;
+            $this->metadata = $meta + $this->metadata;
         }
         if (isset($config['meta'])) {
             $this->metadata = $config['meta'] + $this->metadata;
