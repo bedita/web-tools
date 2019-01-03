@@ -304,7 +304,7 @@ class HtmlHelperTest extends TestCase
                         'version' => '2.0',
                     ],
                 ],
-                '<meta name="description" content="dummy description"/><meta name="author" content="gustavo"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="msapplication-TileColor" content="#009cc7"/><meta name="theme-color" content="#ABC000"/><meta http-equiv="Content-Style-Type" content="text/css"/><meta name="generator" content="my dummy project 2.0"/>',
+                '<meta name="description" content="dummy description"/><meta name="author" content="gustavo"/><meta http-equiv="Content-Style-Type" content="text/css"/><meta name="generator" content="my dummy project 2.0"/>',
             ],
         ];
     }

@@ -31,9 +31,6 @@ class HtmlHelper extends CakeHtmlHelper
     protected $metadata = [
         'description' => '',
         'author' => '',
-        'viewport' => '',
-        'msapplication-TileColor' => '',
-        'theme-color' => '',
         'docType' => '',
         'project' => [
             'name' => '',
@@ -90,14 +87,11 @@ class HtmlHelper extends CakeHtmlHelper
      *
      *  - description
      *  - author
-     *  - viewport
-     *  - msapplication-TileColor
-     *  - theme-color
      *  - docType
      *  - project.name
      *  - project.version
      *
-     * @param array $data Data for meta: 'description', 'author', 'viewport', 'msapplication-TileColor', 'theme-color', 'docType', 'project' (['name' => '...', 'version' => '...'])
+     * @param array $data Data for meta: 'description', 'author', 'docType', 'project' (['name' => '...', 'version' => '...'], ...)
      * @return string
      * @see HtmlHelper
      */
@@ -113,16 +107,6 @@ class HtmlHelper extends CakeHtmlHelper
         $author = $this->getMetaString($data, 'author', '');
         $html .= $this->metaAuthor($author);
 
-        // viewport, msapplication-TileColor, theme-color
-        foreach (['viewport', 'msapplication-TileColor', 'theme-color'] as $attribute) {
-            if (!empty($data[$attribute])) {
-                $html .= $this->meta([
-                    'name' => $attribute,
-                    'content' => $data[$attribute],
-                ]);
-            }
-        }
-
         // css
         $docType = $this->getMetaString($data, 'docType', 'xhtml-strict');
         $html .= $this->metaCss($docType);
@@ -130,6 +114,24 @@ class HtmlHelper extends CakeHtmlHelper
         // generator
         $project = $this->getMetaArray($data, 'project', []);
         $html .= $this->metaGenerator($project);
+
+        // other data
+        $otherdata = $data;
+        foreach (['description', 'author', 'docType', 'project'] as $attribute) {
+            if (isset($otherdata[$attribute])) {
+                unset($otherdata[$attribute]);
+            }
+        }
+        if (!empty($otherdata)) {
+            foreach ($otherdata as $attribute) {
+                if (!empty($otherdata[$attribute])) {
+                    $html .= $this->meta([
+                        'name' => $attribute,
+                        'content' => $otherdata[$attribute],
+                    ]);
+                }
+            }
+        }
 
         return $html;
     }
