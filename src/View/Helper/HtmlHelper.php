@@ -211,9 +211,9 @@ class HtmlHelper extends CakeHtmlHelper
      */
     public function metaGenerator(array $project) : string
     {
-        if (empty($project) || empty($project['name'])) {
+        if (empty($project['name'])) {
             $project = $this->getMetaArray([], 'project', []);
-            if (empty($project) || empty($project['name'])) {
+            if (empty($project['name'])) {
                 return '';
             }
         }
