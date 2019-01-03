@@ -28,7 +28,7 @@ class HtmlHelper extends CakeHtmlHelper
     /**
      * Meta data for helper
      */
-    protected $meta = [
+    protected $metadata = [
         'description' => '',
         'author' => '',
         'viewport' => '',
@@ -43,8 +43,8 @@ class HtmlHelper extends CakeHtmlHelper
 
     /**
      * Construct the meta data
-     * Merge data to $this->meta from configure 'Meta', if set
-     * Merge data to $this->meta from $config['meta'], if set
+     * Merge data to $this->metadata from configure 'Meta', if set
+     * Merge data to $this->metadata from $config['meta'], if set
      *
      * @param \Cake\View\View $View The View this helper is being attached to.
      * @param array $config Configuration settings for the helper.
@@ -52,10 +52,10 @@ class HtmlHelper extends CakeHtmlHelper
     public function __construct(View $View, array $config = [])
     {
         if ($meta = Configure::read('Meta')) {
-            $this->meta += $meta;
+            $this->metadata += $meta;
         }
         if (isset($config['meta'])) {
-            $this->meta = $config['meta'] + $this->meta;
+            $this->metadata = $config['meta'] + $this->metadata;
             unset($config['meta']);
         }
         parent::__construct($View, $config);
@@ -162,7 +162,10 @@ class HtmlHelper extends CakeHtmlHelper
     public function metaAuthor(?string $creator) : string
     {
         if (empty($creator)) {
-            return '';
+            $creator = $this->getMetaString([], 'author', '');
+            if (empty($creator)) {
+                return '';
+            }
         }
         $html = $this->meta([
             'name' => 'author',
@@ -184,7 +187,10 @@ class HtmlHelper extends CakeHtmlHelper
     public function metaCss(string $docType) : string
     {
         if ($docType === 'html5') {
-            return '';
+            $docType = $this->getMetaString([], 'docType', '');
+            if (empty($docType)) {
+                return '';
+            }
         }
         $html = $this->meta([
             'http-equiv' => 'Content-Style-Type',
@@ -206,7 +212,10 @@ class HtmlHelper extends CakeHtmlHelper
     public function metaGenerator(array $project) : string
     {
         if (empty($project) || empty($project['name'])) {
-            return '';
+            $project = $this->getMetaArray([], 'project', []);
+            if (empty($project) || empty($project['name'])) {
+                return '';
+            }
         }
         $version = '';
         if (!empty($project['version'])) {
@@ -341,8 +350,8 @@ class HtmlHelper extends CakeHtmlHelper
         if (isset($data[$field])) {
             return $data[$field];
         }
-        if (isset($this->meta[$field])) {
-            return $this->meta[$field];
+        if (isset($this->metadata[$field])) {
+            return $this->metadata[$field];
         }
 
         return (string)$defaultVal;
@@ -361,8 +370,8 @@ class HtmlHelper extends CakeHtmlHelper
         if (isset($data[$field])) {
             return $data[$field];
         }
-        if (isset($this->meta[$field])) {
-            return $this->meta[$field];
+        if (isset($this->metadata[$field])) {
+            return $this->metadata[$field];
         }
 
         return (array)$defaultVal;
