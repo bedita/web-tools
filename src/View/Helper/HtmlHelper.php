@@ -116,12 +116,8 @@ class HtmlHelper extends CakeHtmlHelper
         $html .= $this->metaGenerator($project);
 
         // other data
-        $otherdata = $data;
-        foreach (['description', 'author', 'docType', 'project'] as $attribute) {
-            if (isset($otherdata[$attribute])) {
-                unset($otherdata[$attribute]);
-            }
-        }
+        $keys = ['description', 'author', 'docType', 'project'];
+        $otherdata = array_diff_key($data, array_combine($keys, $keys));
         if (!empty($otherdata)) {
             foreach ($otherdata as $attribute) {
                 if (!empty($otherdata[$attribute])) {
