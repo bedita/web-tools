@@ -14,6 +14,7 @@
 namespace BEdita\WebTools\View\Helper;
 
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
 use Cake\View\View;
@@ -39,23 +40,21 @@ class HtmlHelper extends CakeHtmlHelper
     ];
 
     /**
-     * Construct the meta data
+     * Initialize the meta data
      * Merge data to $this->metadata from configure 'Meta', if set
      * Merge data to $this->metadata from $config['meta'], if set
      *
-     * @param \Cake\View\View $View The View this helper is being attached to.
      * @param array $config Configuration settings for the helper.
      */
-    public function __construct(View $View, array $config = [])
+    public function initialize(array $config)
     {
+        parent::initialize($config);
         if ($meta = Configure::read('Meta')) {
             $this->metadata = $meta + $this->metadata;
         }
         if (isset($config['meta'])) {
             $this->metadata = $config['meta'] + $this->metadata;
-            unset($config['meta']);
         }
-        parent::__construct($View, $config);
     }
 
     /**
@@ -100,32 +99,33 @@ class HtmlHelper extends CakeHtmlHelper
         $html = '';
 
         // description
-        $description = $this->getMetaString($data, 'description', '');
+        $description = (string)$this->getMeta($data, 'description', '');
         $html .= $this->metaDescription($description);
 
         // author
-        $author = $this->getMetaString($data, 'author', '');
+        $author = (string)$this->getMeta($data, 'author', '');
         $html .= $this->metaAuthor($author);
 
         // css
-        $docType = $this->getMetaString($data, 'docType', 'xhtml-strict');
+        $docType = (string)$this->getMeta($data, 'docType', 'xhtml-strict');
         $html .= $this->metaCss($docType);
 
         // generator
-        $project = $this->getMetaArray($data, 'project', []);
+        $project = (array)$this->getMeta($data, 'project', []);
         $html .= $this->metaGenerator($project);
 
         // other data
         $keys = ['description', 'author', 'docType', 'project'];
-        $otherdata = array_diff_key($data, array_combine($keys, $keys));
-        if (!empty($otherdata)) {
-            foreach ($otherdata as $attribute) {
-                if (!empty($otherdata[$attribute])) {
-                    $html .= $this->meta([
-                        'name' => $attribute,
-                        'content' => $otherdata[$attribute],
-                    ]);
-                }
+        $otherdata = array_diff_key($data, array_flip($keys));
+        if (empty($otherdata)) {
+            return $html;
+        }
+        foreach ($otherdata as $attribute) {
+            if (!empty($otherdata[$attribute])) {
+                $html .= $this->meta([
+                    'name' => $attribute,
+                    'content' => $otherdata[$attribute],
+                ]);
             }
         }
 
@@ -138,7 +138,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param string|null $description The description
      * @return string
      */
-    public function metaDescription($description) : string
+    public function metaDescription(?string $description) : string
     {
         if (empty($description)) {
             return '';
@@ -160,7 +160,7 @@ class HtmlHelper extends CakeHtmlHelper
     public function metaAuthor(?string $creator) : string
     {
         if (empty($creator)) {
-            $creator = $this->getMetaString([], 'author', '');
+            $creator = (string)$this->getMeta([], 'author', '');
             if (empty($creator)) {
                 return '';
             }
@@ -185,7 +185,7 @@ class HtmlHelper extends CakeHtmlHelper
     public function metaCss(string $docType) : string
     {
         if ($docType === 'html5') {
-            $docType = $this->getMetaString([], 'docType', '');
+            $docType = (string)$this->getMeta([], 'docType', '');
             if (empty($docType)) {
                 return '';
             }
@@ -210,7 +210,7 @@ class HtmlHelper extends CakeHtmlHelper
     public function metaGenerator(array $project) : string
     {
         if (empty($project['name'])) {
-            $project = $this->getMetaArray([], 'project', []);
+            $project = (array)$this->getMeta([], 'project', []);
             if (empty($project['name'])) {
                 return '';
             }
@@ -340,38 +340,13 @@ class HtmlHelper extends CakeHtmlHelper
      *
      * @param array $data The data
      * @param string $field The field
-     * @param string $defaultVal The default val
-     * @return string
+     * @param array|string|null $defaultVal The default val
+     * @return array|string
      */
-    public function getMetaString(array $data, string $field, ?string $defaultVal) : string
+    public function getMeta(array $data, string $field, $defaultVal = null)
     {
-        if (isset($data[$field])) {
-            return $data[$field];
-        }
-        if (isset($this->metadata[$field])) {
-            return $this->metadata[$field];
-        }
+        $meta = $data + $this->metadata;
 
-        return (string)$defaultVal;
-    }
-
-    /**
-     * Return meta by data and field
-     *
-     * @param array $data The data
-     * @param string $field The field
-     * @param array|null $defaultVal The default val
-     * @return array
-     */
-    public function getMetaArray(array $data, string $field, ?array $defaultVal) : array
-    {
-        if (isset($data[$field])) {
-            return $data[$field];
-        }
-        if (isset($this->metadata[$field])) {
-            return $this->metadata[$field];
-        }
-
-        return (array)$defaultVal;
+        return Hash::get($meta, $field, $defaultVal);
     }
 }
