@@ -93,11 +93,12 @@ class ExceptionRendererTest extends TestCase
 
         $renderer = new ExceptionRenderer(new NotFoundException('hello'));
         $renderer->controller = new TestController();
-        $expected = 'Gustavo, take care of it.';
-        $renderer->controller->set('customErrorMessage', $expected);
+        $customErrorMessage = 'Gustavo, take care of it.';
+        $renderer->controller->set(compact('customErrorMessage'));
         $response = $renderer->render();
 
         $body = (string)$response->getBody();
+        $expected = sprintf('AppView error 500: %s', $customErrorMessage);
         static::assertContains($expected, $body);
     }
 
