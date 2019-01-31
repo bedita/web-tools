@@ -45,6 +45,7 @@ class HtmlHelper extends CakeHtmlHelper
      * Merge data to $this->metadata from $config['meta'], if set
      *
      * @param array $config Configuration settings for the helper.
+     * @return void
      */
     public function initialize(array $config)
     {

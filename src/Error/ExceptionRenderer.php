@@ -65,7 +65,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
         }
 
         $this->controller->response->type('html');
-        
+
         return $this->controller->response;
     }
 }
