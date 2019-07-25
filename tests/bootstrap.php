@@ -13,7 +13,6 @@
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Routing\Router;
 
@@ -70,6 +69,14 @@ Configure::write('App', [
     ]
 ]);
 
+Configure::write('Error', [
+    'errorLevel' => E_ALL,
+    'exceptionRenderer' => 'BEdita\WebTools\Error\ExceptionRenderer',
+    'skipLog' => [],
+    'log' => true,
+    'trace' => true,
+]);
+
 Cache::setConfig([
     '_cake_core_' => [
         'engine' => 'File',
@@ -94,6 +101,8 @@ if (!getenv('db_dsn')) {
 ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
 Router::reload();
 
-Plugin::load('BEdita/WebTools', [
-    'path' => dirname(dirname(__FILE__)) . DS,
-]);
+require ROOT . 'Application.php';
+use TestApp\Application;
+
+$app = new Application(dirname(__DIR__) . '/config');
+$app->bootstrap();

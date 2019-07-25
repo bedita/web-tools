@@ -14,6 +14,7 @@ namespace BEdita\WebTools;
 
 use BEdita\WebTools\Shell\CacheShell;
 use Cake\Core\Configure;
+use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication as CakeBaseApplication;
 use Cake\Http\MiddlewareQueue;
@@ -46,7 +47,7 @@ class BaseApplication extends CakeBaseApplication
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
-        
+
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
         }
@@ -102,9 +103,5 @@ class BaseApplication extends CakeBaseApplication
         } catch (MissingPluginException $e) {
             // Do not halt if the plugin is missing
         }
-
-        $this->addPlugin('Migrations');
-
-        // Load more plugins here
     }
 }
