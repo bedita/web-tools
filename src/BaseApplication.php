@@ -57,9 +57,12 @@ class BaseApplication extends CakeBaseApplication
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            $this->addPlugin(\DebugKit\Plugin::class);
+            try {
+                $this->addPlugin('DebugKit');
+            } catch (MissingPluginException $e) {
+                // Do not halt if the plugin is missing
+            }
         }
-
         // Load more plugins here
         $this->addPlugin('WyriHaximus/TwigView', ['bootstrap' => true]);
     }
