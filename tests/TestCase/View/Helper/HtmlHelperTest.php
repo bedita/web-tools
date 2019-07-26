@@ -113,7 +113,7 @@ class HtmlHelperTest extends TestCase
             ],
         ]);
         $Html = new HtmlHelper(new View($request));
-        $Html->getView()->viewVars['_title'] = $viewVarTitle;
+        $Html->getView()->viewBuilder()->setVar('_title', $viewVarTitle);
         $actual = $Html->title();
         static::assertEquals($expected, $actual);
     }

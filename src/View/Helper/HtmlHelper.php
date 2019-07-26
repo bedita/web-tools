@@ -67,8 +67,9 @@ class HtmlHelper extends CakeHtmlHelper
      */
     public function title() : string
     {
-        if (isset($this->getView()->viewVars['_title'])) {
-            return $this->getView()->viewVars['_title'];
+        $titleVar = $this->getView()->viewBuilder()->getVar('_title');
+        if ($titleVar !== null) {
+            return $titleVar;
         }
         $title = Inflector::humanize($this->getView()->getRequest()->getParam('controller', ''));
         $suffix = Inflector::humanize($this->getView()->getRequest()->getParam('action', ''));
