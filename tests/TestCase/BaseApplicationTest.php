@@ -35,6 +35,8 @@ class BaseApplicationTest extends IntegrationTestCase
      * @return void
      *
      * @covers ::console
+     * @covers ::bootstrap
+     * @covers ::bootstrapCli
      */
     public function testConsole() : void
     {
