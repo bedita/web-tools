@@ -2,6 +2,7 @@
 #################
 /composer.lock
 /phpunit.xml
+/coverage
 /vendor
 .env
 
