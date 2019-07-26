@@ -57,7 +57,6 @@ class ExceptionRenderer extends CakeExceptionRenderer
             $this->log($e->getMessage());
 
             $helpers = ['Form', 'Html'];
-            $this->controller->helpers = $helpers;
             $builder->setHelpers($helpers, false);
 
             $view = $this->controller->createView('View');
