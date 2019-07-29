@@ -13,6 +13,7 @@
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
 use BEdita\WebTools\View\Helper\HtmlHelper;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 
@@ -105,10 +106,15 @@ class HtmlHelperTest extends TestCase
      */
     public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected) : void
     {
-        $this->Html->getView()->request = $this->Html->getView()->request->withParam('controller', $controllerName);
-        $this->Html->getView()->request = $this->Html->getView()->request->withParam('action', $actionName);
-        $this->Html->getView()->viewVars['_title'] = $viewVarTitle;
-        $actual = $this->Html->title();
+        $request = new ServerRequest([
+            'params' => [
+                'controller' => $controllerName,
+                'action' => $actionName,
+            ],
+        ]);
+        $Html = new HtmlHelper(new View($request));
+        $Html->getView()->viewBuilder()->setVar('_title', $viewVarTitle);
+        $actual = $Html->title();
         static::assertEquals($expected, $actual);
     }
 

@@ -11,7 +11,6 @@
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 
 /**
  * Setup API config if missing
@@ -22,10 +21,3 @@ if (!Configure::check('API')) {
         'apiKey' => env('BEDITA_API_KEY'),
     ]);
 }
-
-/*
- * Load TwigView Plugin
- */
-Plugin::load('WyriHaximus/TwigView', [
-    'bootstrap' => true,
-]);

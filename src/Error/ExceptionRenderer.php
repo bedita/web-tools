@@ -51,21 +51,18 @@ class ExceptionRenderer extends CakeExceptionRenderer
         // first try to use AppView class. Fallback to internal template on failure
         try {
             $view = $this->controller->createView();
-            $this->controller->response->body($view->render($template, 'error'));
+            $body = $view->render($template, 'error');
         } catch (\Exception $e) {
             // first log the new exception to trace the new error too.
             $this->log($e->getMessage());
 
             $helpers = ['Form', 'Html'];
-            $this->controller->helpers = $helpers;
             $builder->setHelpers($helpers, false);
 
             $view = $this->controller->createView('View');
-            $this->controller->response->body($view->render('BEdita/WebTools.' . $template, 'BEdita/WebTools.error'));
+            $body = $view->render('BEdita/WebTools.' . $template, 'BEdita/WebTools.error');
         }
 
-        $this->controller->response->type('html');
-
-        return $this->controller->response;
+        return $this->controller->response->withStringBody($body)->withType('html');
     }
 }

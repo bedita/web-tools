@@ -35,15 +35,14 @@ class BaseApplicationTest extends IntegrationTestCase
      * @return void
      *
      * @covers ::console
+     * @covers ::bootstrap
+     * @covers ::bootstrapCli
      */
     public function testConsole() : void
     {
         $app = new BaseApplication(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
-        $commands = new CommandCollection([
-            'version' => VersionShell::class,
-            'help' => HelpShell::class,
-        ]);
+        $commands = new CommandCollection([]);
 
         $commands = $app->console($commands);
         $cache = $commands->get('cache');

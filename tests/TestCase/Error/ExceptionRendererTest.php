@@ -16,12 +16,28 @@ use BEdita\WebTools\Error\ExceptionRenderer;
 use BEdita\WebTools\View\TwigView;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
-use Cake\Network\Exception\InternalErrorException;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
+
+/**
+ * Extension class with utility methods use in tests
+ */
+class MyExceptionRenderer extends ExceptionRenderer
+{
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    public function setController($controller)
+    {
+        return $this->controller = $controller;
+    }
+}
 
 /**
  * @coversDefaultClass \BEdita\WebTools\Error\ExceptionRenderer
@@ -59,10 +75,10 @@ class ExceptionRendererTest extends TestCase
      */
     public function testTemplate(\Exception $exception, $expected)
     {
-        $renderer = new ExceptionRenderer($exception);
-        $renderer->controller = new TestController();
-        $response = $renderer->render();
-        static::assertEquals($expected, $renderer->template);
+        $renderer = new MyExceptionRenderer($exception);
+        $renderer->setController(new TestController());
+        $renderer->render();
+        static::assertEquals($expected, $renderer->getTemplate());
     }
 
     /**
@@ -91,10 +107,12 @@ class ExceptionRendererTest extends TestCase
         };
         EventManager::instance()->on('View.beforeRender', $callback);
 
-        $renderer = new ExceptionRenderer(new NotFoundException('hello'));
-        $renderer->controller = new TestController();
+        $renderer = new MyExceptionRenderer(new NotFoundException('hello'));
+        $controller = new TestController();
         $customErrorMessage = 'Gustavo, take care of it.';
-        $renderer->controller->set(compact('customErrorMessage'));
+        $controller->set(compact('customErrorMessage'));
+        $renderer->setController($controller);
+
         $response = $renderer->render();
 
         $body = (string)$response->getBody();
@@ -137,8 +155,8 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $expected = 'The original error is here';
-        $renderer = new ExceptionRenderer(new \Exception($expected));
-        $renderer->controller = new TestController();
+        $renderer = new MyExceptionRenderer(new \Exception($expected));
+        $renderer->setController(new TestController());
         $response = $renderer->render();
 
         $body = (string)$response->getBody();
