@@ -67,7 +67,7 @@ class HtmlHelper extends CakeHtmlHelper
      */
     public function title() : string
     {
-        $titleVar = $this->getView()->viewBuilder()->getVar('_title');
+        $titleVar = Hash::get($this->_View->viewVars, '_title');
         if ($titleVar !== null) {
             return $titleVar;
         }
