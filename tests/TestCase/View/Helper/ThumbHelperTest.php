@@ -345,4 +345,16 @@ class ThumbHelperTest extends TestCase
         static::assertEquals($result, $url);
         static::assertEquals($status, ThumbHelper::OK);
     }
+
+    /**
+     * Test `status()` method with missing input.
+     *
+     * @covers ::status()
+     * @return void
+     */
+    public function testStatusInput() : void
+    {
+        $status = $this->Thumb->status(null);
+        static::assertEquals($status, ThumbHelper::NOT_ACCEPTABLE);
+    }
 }
