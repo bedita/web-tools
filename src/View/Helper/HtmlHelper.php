@@ -64,7 +64,7 @@ class HtmlHelper extends CakeHtmlHelper
      *
      * @return string
      */
-    public function title() : string
+    public function title(): string
     {
         $titleVar = $this->getView()->get('_title');
         if ($titleVar !== null) {
@@ -95,7 +95,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @return string
      * @see HtmlHelper
      */
-    public function metaAll(array $data) : string
+    public function metaAll(array $data): string
     {
         $html = '';
 
@@ -139,7 +139,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param string|null $description The description
      * @return string
      */
-    public function metaDescription(?string $description) : string
+    public function metaDescription(?string $description): string
     {
         if (empty($description)) {
             return '';
@@ -158,7 +158,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param string|null $creator The content creator
      * @return string
      */
-    public function metaAuthor(?string $creator) : string
+    public function metaAuthor(?string $creator): string
     {
         if (empty($creator)) {
             $creator = (string)$this->getMeta([], 'author', '');
@@ -183,7 +183,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param string $docType The doc type
      * @return string
      */
-    public function metaCss(string $docType) : string
+    public function metaCss(string $docType): string
     {
         if ($docType === 'html5') {
             $docType = (string)$this->getMeta([], 'docType', '');
@@ -208,7 +208,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $project The project data ('name', 'version')
      * @return string
      */
-    public function metaGenerator(array $project) : string
+    public function metaGenerator(array $project): string
     {
         if (empty($project['name'])) {
             $project = (array)$this->getMeta([], 'project', []);
@@ -272,7 +272,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $data The data ('title', 'type', 'image', 'url')
      * @return string
      */
-    public function metaOpenGraph(array $data) : string
+    public function metaOpenGraph(array $data): string
     {
         $html = '';
         foreach ($data as $attribute => $val) {
@@ -320,7 +320,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $data The data ('card', 'site', 'creator', 'title', 'description', 'image')
      * @return string
      */
-    public function metaTwitter(array $data) : string
+    public function metaTwitter(array $data): string
     {
         $html = '';
         foreach ($data as $attribute => $val) {

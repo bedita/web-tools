@@ -65,7 +65,7 @@ class ThumbHelper extends Helper
      * @param string|null $url The thumb url to populate when static::OK
      * @return int|null
      */
-    public function status($imageId, ?array $options = ['preset' => 'default'], &$url = '') : ?int
+    public function status($imageId, ?array $options = ['preset' => 'default'], &$url = ''): ?int
     {
         try {
             $apiClient = ApiClientProvider::getApiClient();
@@ -120,7 +120,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the acceptable flag
      */
-    private function isAcceptable($thumb = []) :bool
+    private function isAcceptable($thumb = []): bool
     {
         if (isset($thumb['acceptable']) && $thumb['acceptable'] === false) {
             return false;
@@ -135,7 +135,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the ready flag
      */
-    private function isReady($thumb = []) :bool
+    private function isReady($thumb = []): bool
     {
         if (!empty($thumb['ready']) && $thumb['ready'] === true) {
             return true;
@@ -150,7 +150,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the url availability
      */
-    private function hasUrl($thumb = []) :bool
+    private function hasUrl($thumb = []): bool
     {
         if (!empty($thumb['url'])) {
             return true;

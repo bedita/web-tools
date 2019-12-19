@@ -20,7 +20,6 @@ use Cake\Core\Configure;
  */
 class ApiClientProvider
 {
-
     use SingletonTrait;
 
     /**
@@ -45,7 +44,7 @@ class ApiClientProvider
      * @param array $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    public static function getApiClient(array $options = []) : BEditaClient
+    public static function getApiClient(array $options = []): BEditaClient
     {
         if (static::getInstance()->apiClient) {
             $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
@@ -65,7 +64,7 @@ class ApiClientProvider
      * @param mixed $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    private function createClient(array $options = []) : BEditaClient
+    private function createClient(array $options = []): BEditaClient
     {
         $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'));
         $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
@@ -82,7 +81,7 @@ class ApiClientProvider
      * @param \BEdita\SDK\BEditaClient|null $client New API client to set
      * @return void
      */
-    public static function setApiClient(?BEditaClient $client) : void
+    public static function setApiClient(?BEditaClient $client): void
     {
         static::getInstance()->apiClient = $client;
     }
