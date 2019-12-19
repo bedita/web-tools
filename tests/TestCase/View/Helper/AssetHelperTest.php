@@ -28,7 +28,7 @@ class AssetHelperTest extends TestCase
      *
      * @return array
      */
-    public function getProvider() : array
+    public function getProvider(): array
     {
         return [
             'simple' => [
@@ -61,7 +61,7 @@ class AssetHelperTest extends TestCase
      * @param string $config The helper config
      * @return void
      */
-    public function testGet(string $expected, string $name, array $config = []) : void
+    public function testGet(string $expected, string $name, array $config = []): void
     {
         $Asset = new AssetHelper(new View(), $config);
         $result = $Asset->get($name);
