@@ -63,7 +63,7 @@ trait SingletonTrait
     final public static function getInstance()
     {
         if (self::$uniqueInstance === null) {
-            self::$uniqueInstance = new static;
+            self::$uniqueInstance = new static();
         }
 
         return self::$uniqueInstance;

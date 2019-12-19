@@ -49,7 +49,7 @@ class ExceptionRendererTest extends TestCase
      *
      * @return array
      */
-    public function templateProvider() : array
+    public function templateProvider(): array
     {
         return [
             '400 exception' => [
