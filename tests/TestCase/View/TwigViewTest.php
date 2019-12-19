@@ -30,7 +30,7 @@ class TwigViewTest extends TestCase
      * @return void
      * @covers ::initialize()
      */
-    public function testInitialize() : void
+    public function testInitialize(): void
     {
         $View = new TwigView();
         $extensions = $View->getTwig()->getExtensions();

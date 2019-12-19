@@ -25,7 +25,7 @@ class BeditaTwigExtension extends \Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getName() : string
+    public function getName(): string
     {
         return 'bedita';
     }
@@ -33,7 +33,7 @@ class BeditaTwigExtension extends \Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getFunctions() : array
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('config', [Configure::class, 'read']),
@@ -49,7 +49,7 @@ class BeditaTwigExtension extends \Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getFilters() : array
+    public function getFilters(): array
     {
         return [
             new \Twig_SimpleFilter(

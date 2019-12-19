@@ -27,7 +27,7 @@ class ApiClientProviderTest extends TestCase
      *
      * @return void
      */
-    public function testApiClient() : void
+    public function testApiClient(): void
     {
         ApiClientProvider::setApiClient(null);
         // test create
@@ -43,7 +43,7 @@ class ApiClientProviderTest extends TestCase
      *
      * @return void
      */
-    public function testLogConfig() : void
+    public function testLogConfig(): void
     {
         $options = [
             'Log' => [
@@ -60,7 +60,7 @@ class ApiClientProviderTest extends TestCase
      *
      * @return void
      */
-    public function testLogEmpty() : void
+    public function testLogEmpty(): void
     {
         ApiClientProvider::setApiClient(null);
         // test create

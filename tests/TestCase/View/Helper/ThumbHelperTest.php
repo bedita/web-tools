@@ -36,7 +36,7 @@ class ThumbHelperTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -50,7 +50,7 @@ class ThumbHelperTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function tearDown() : void
+    public function tearDown(): void
     {
         unset($this->Thumb);
 
@@ -62,7 +62,7 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    private function _initApi() : void
+    private function _initApi(): void
     {
         $apiClient = ApiClientProvider::getApiClient();
         $adminUser = getenv('BEDITA_ADMIN_USR');
@@ -78,7 +78,7 @@ class ThumbHelperTest extends TestCase
      * @param string $filename the File name.
      * @return int The image ID.
      */
-    private function _image($filename = 'test.png') : int
+    private function _image($filename = 'test.png'): int
     {
         $apiClient = ApiClientProvider::getApiClient();
 
@@ -103,7 +103,7 @@ class ThumbHelperTest extends TestCase
      *
      * @return array
      */
-    public function urlProvider() : array
+    public function urlProvider(): array
     {
         return [
             'basic thumb default preset' => [
@@ -133,7 +133,7 @@ class ThumbHelperTest extends TestCase
      * @param boolean $expected The expected boolean.
      * @return void
      */
-    public function testUrl(array $input, $expected) : void
+    public function testUrl(array $input, $expected): void
     {
         $id = empty($input['id']) ? $this->_image() : $input['id'];
         $this->Thumb = new ThumbHelper(new View());
@@ -155,7 +155,7 @@ class ThumbHelperTest extends TestCase
      * @param boolean $expected The expected boolean.
      * @return void
      */
-    public function testStatus(array $input, $expected) : void
+    public function testStatus(array $input, $expected): void
     {
         // case response with api call
         $id = empty($input['id']) ? $this->_image() : $input['id'];
@@ -189,7 +189,7 @@ class ThumbHelperTest extends TestCase
      * @covers ::isAcceptable()
      * @return void
      */
-    public function testIsAcceptable() : void
+    public function testIsAcceptable(): void
     {
         // case thumb image is acceptable
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
@@ -202,9 +202,9 @@ class ThumbHelperTest extends TestCase
                     [
                         'ready' => true,
                         'acceptable' => false,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $apiMockClient->method('thumbs')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
@@ -226,9 +226,9 @@ class ThumbHelperTest extends TestCase
                         'ready' => true,
                         'acceptable' => true,
                         'url' => $url,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $apiMockClient->method('thumbs')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
@@ -245,7 +245,7 @@ class ThumbHelperTest extends TestCase
      * @covers ::isReady()
      * @return void
      */
-    public function testIsReady() : void
+    public function testIsReady(): void
     {
         // case thumb ready
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
@@ -257,9 +257,9 @@ class ThumbHelperTest extends TestCase
                 'thumbnails' => [
                     [
                         'ready' => false,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $apiMockClient->method('thumbs')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
@@ -280,9 +280,9 @@ class ThumbHelperTest extends TestCase
                     [
                         'ready' => true,
                         'url' => $url,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $apiMockClient->method('thumbs')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
@@ -299,7 +299,7 @@ class ThumbHelperTest extends TestCase
      * @covers ::hasUrl()
      * @return void
      */
-    public function testHasUrl() : void
+    public function testHasUrl(): void
     {
         // case url not available
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
@@ -311,9 +311,9 @@ class ThumbHelperTest extends TestCase
                 'thumbnails' => [
                     [
                         'ready' => true,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $apiMockClient->method('thumbs')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
@@ -334,9 +334,9 @@ class ThumbHelperTest extends TestCase
                     [
                         'ready' => true,
                         'url' => $url,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
         $apiMockClient->method('thumbs')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
