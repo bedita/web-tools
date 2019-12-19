@@ -17,7 +17,6 @@ use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
-use Cake\View\View;
 
 /**
  * Html helper.
