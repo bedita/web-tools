@@ -27,7 +27,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
     /**
      * {@inheritDoc}
      */
-    protected function _template(\Exception $exception, $method, $code) : string
+    protected function _template(\Exception $exception, $method, $code): string
     {
         $exception = $this->_unwrap($exception);
 

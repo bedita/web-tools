@@ -38,7 +38,7 @@ class BaseApplicationTest extends IntegrationTestCase
      * @covers ::bootstrap
      * @covers ::bootstrapCli
      */
-    public function testConsole() : void
+    public function testConsole(): void
     {
         $app = new BaseApplication(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
@@ -57,7 +57,7 @@ class BaseApplicationTest extends IntegrationTestCase
      *
      * @covers ::middleware
      */
-    public function testMiddleware() : void
+    public function testMiddleware(): void
     {
         $app = new BaseApplication(dirname(dirname(__DIR__)) . '/config');
         $middleware = new MiddlewareQueue();

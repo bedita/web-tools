@@ -34,7 +34,7 @@ class HtmlHelperTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -45,7 +45,7 @@ class HtmlHelperTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function tearDown() : void
+    public function tearDown(): void
     {
         unset($this->Html);
 
@@ -57,7 +57,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function titleProvider() : array
+    public function titleProvider(): array
     {
         return [
             'empty string' => [
@@ -104,7 +104,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected title
      * @return void
      */
-    public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected) : void
+    public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected): void
     {
         $request = new ServerRequest([
             'params' => [
@@ -123,7 +123,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaDescriptionProvider() : array
+    public function metaDescriptionProvider(): array
     {
         return [
             'null description' => [
@@ -154,7 +154,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta description
      * @return void
      */
-    public function testMetaDescription(?string $description, string $expected) : void
+    public function testMetaDescription(?string $description, string $expected): void
     {
         $actual = $this->Html->metaDescription($description);
         static::assertEquals($expected, $actual);
@@ -165,7 +165,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaAuthorProvider() : array
+    public function metaAuthorProvider(): array
     {
         return [
             'null creator' => [
@@ -196,7 +196,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta content author
      * @return void
      */
-    public function testMetaAuthor(?string $creator, string $expected) : void
+    public function testMetaAuthor(?string $creator, string $expected): void
     {
         $actual = $this->Html->metaAuthor($creator);
         static::assertEquals($expected, $actual);
@@ -207,7 +207,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaCssProvider() : array
+    public function metaCssProvider(): array
     {
         return [
             'empty docType' => [
@@ -230,7 +230,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta content author
      * @return void
      */
-    public function testMetaCss(string $docType, string $expected) : void
+    public function testMetaCss(string $docType, string $expected): void
     {
         $actual = $this->Html->metaCss($docType);
         static::assertEquals($expected, $actual);
@@ -241,7 +241,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaGeneratorProvider() : array
+    public function metaGeneratorProvider(): array
     {
         return [
             'empty project and version' => [
@@ -280,7 +280,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta content author
      * @return void
      */
-    public function testMetaGenerator(array $project, string $expected) : void
+    public function testMetaGenerator(array $project, string $expected): void
     {
         $actual = $this->Html->metaGenerator($project);
         static::assertEquals($expected, $actual);
@@ -291,7 +291,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaAllProvider() : array
+    public function metaAllProvider(): array
     {
         return [
             'empty data' => [
@@ -324,7 +324,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta html
      * @return void
      */
-    public function testMetaAll(array $data, string $expected) : void
+    public function testMetaAll(array $data, string $expected): void
     {
         $actual = $this->Html->metaAll($data);
         static::assertEquals($expected, $actual);
@@ -335,7 +335,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaOpenGraphProvider() : array
+    public function metaOpenGraphProvider(): array
     {
         return [
             'empty data' => [
@@ -363,7 +363,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta html
      * @return void
      */
-    public function testMetaOpenGraph(array $data, string $expected) : void
+    public function testMetaOpenGraph(array $data, string $expected): void
     {
         $actual = $this->Html->metaOpenGraph($data);
         static::assertEquals($expected, $actual);
@@ -374,7 +374,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaTwitterProvider() : array
+    public function metaTwitterProvider(): array
     {
         return [
             'empty data' => [
@@ -404,7 +404,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta html
      * @return void
      */
-    public function testMetaTwitter(array $data, string $expected) : void
+    public function testMetaTwitter(array $data, string $expected): void
     {
         $actual = $this->Html->metaTwitter($data);
         static::assertEquals($expected, $actual);
@@ -415,7 +415,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function getMetaProvider() : array
+    public function getMetaProvider(): array
     {
         return [
             // string
@@ -478,7 +478,7 @@ class HtmlHelperTest extends TestCase
      * @param string|array|null $expected The expected meta
      * @return void
      */
-    public function testGetMeta(array $config, array $data, string $field, $defaultVal = null, $expected = null) : void
+    public function testGetMeta(array $config, array $data, string $field, $defaultVal = null, $expected = null): void
     {
         $this->Html = new HtmlHelper(new View(), $config);
         $actual = $this->Html->getMeta($data, $field, $defaultVal);
