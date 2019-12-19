@@ -352,7 +352,7 @@ class ThumbHelperTest extends TestCase
      * @covers ::status()
      * @return void
      */
-    public function testStatusInput() : void
+    public function testStatusInput(): void
     {
         $status = $this->Thumb->status(null);
         static::assertEquals($status, ThumbHelper::NOT_ACCEPTABLE);
