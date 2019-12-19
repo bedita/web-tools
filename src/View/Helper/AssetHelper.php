@@ -17,15 +17,10 @@ use Cake\Utility\Hash;
 use Cake\View\Helper;
 
 /**
- * Asset helper
+ * Asset Helper to handle asset names with signatures
  */
 class AssetHelper extends Helper
 {
-    /**
-     * {@inheritDoc}
-     */
-    public $helpers = ['Html'];
-
     /**
      * Array having asset names as keys and revved asset names as values
      *
@@ -47,7 +42,7 @@ class AssetHelper extends Helper
     }
 
     /**
-     * Retrieve revved asset name if found in manifest or return canonical asset name otherwise
+     * Retrieve `revved` asset name if found in manifest or return canonical asset name otherwise
      *
      * @param string $name Canonical asset name (un-revved)
      * @return string
