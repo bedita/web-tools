@@ -1,7 +1,7 @@
 <?php
 /**
  * BEdita, API-first content management framework
- * Copyright 2018 ChannelWeb Srl, Chialab Srl
+ * Copyright 2019 ChannelWeb Srl, Chialab Srl
  *
  * This file is part of BEdita: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -13,7 +13,6 @@
 namespace BEdita\WebTools\View\Helper;
 
 use BEdita\WebTools\ApiClientProvider;
-use Cake\Core\Configure;
 use Cake\Log\LogTrait;
 use Cake\View\Helper;
 
@@ -60,13 +59,16 @@ class ThumbHelper extends Helper
      *   NO_URL: url not present in api response
      *   OK: thumb available, ready and with a proper url
      *
-     * @param int $imageId The image ID
+     * @param int|string $imageId The image ID
      * @param array|null $options The thumbs options
      * @param string|null $url The thumb url to populate when static::OK
      * @return int|null
      */
     public function status($imageId, ?array $options = ['preset' => 'default'], &$url = ''): ?int
     {
+        if (empty($imageId) && empty($options['ids'])) {
+            return static::NOT_ACCEPTABLE;
+        }
         try {
             $apiClient = ApiClientProvider::getApiClient();
             $response = $apiClient->thumbs($imageId, $options);
