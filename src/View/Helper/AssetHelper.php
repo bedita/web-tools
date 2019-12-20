@@ -17,7 +17,10 @@ use Cake\Utility\Hash;
 use Cake\View\Helper;
 
 /**
- * Asset Helper to handle asset names with signatures
+ * Asset Helper to handle asset names with signatures.
+ *
+ * Rev manifest file default path is `config/rev-manifest.json`
+ * Other file paths may be used via `$config['manufestPath']`
  */
 class AssetHelper extends Helper
 {
