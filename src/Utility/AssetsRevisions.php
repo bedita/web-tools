@@ -17,7 +17,7 @@ namespace BEdita\WebTools\Utility;
  * Utility class to handle asset names with revisions/signatures.
  *
  * Rev manifest file default path is `config/rev-manifest.json`
- * Other file paths may be used via `$config['manifestPath']`
+ * Other file paths may be used via `loadManifest()`
  */
 class AssetsRevisions
 {
@@ -26,12 +26,12 @@ class AssetsRevisions
      *
      * @var array
      */
-    static protected $assets = null;
+    protected static $assets = null;
 
     /**
-     * Load manifest
+     * Load revision manifest JSON.
      *
-     * @param array $config
+     * @param array $path Manifest file path
      * @return void
      */
     public static function loadManifest(string $path = null): void
@@ -63,7 +63,7 @@ class AssetsRevisions
         }
         if (!empty($extension) && !empty(static::$assets[$name . $extension])) {
             return (string)static::$assets[$name . $extension];
-         }
+        }
 
         return $name;
     }

@@ -502,7 +502,7 @@ class HtmlHelperTest extends TestCase
                 'functions.js',
             ],
             'multi' => [
-                '<script src="/script-622a2cc4f5.js"></script>'.
+                '<script src="/script-622a2cc4f5.js"></script>' .
                 "\n\t" .
                 '<script src="/page-1x4f92530c.js"></script>',
                 ['script', 'page'],
@@ -543,13 +543,14 @@ class HtmlHelperTest extends TestCase
                 'home.css',
             ],
             'multi' => [
-                '<link rel="stylesheet" href="/style-b7c54b4c5a.css"/>'.
+                '<link rel="stylesheet" href="/style-b7c54b4c5a.css"/>' .
                 "\n\t" .
                 '<link rel="stylesheet" href="/page.css"/>',
                 ['style', 'page'],
             ],
         ];
     }
+
     /**
      * Test `script` method
      *

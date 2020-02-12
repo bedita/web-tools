@@ -46,7 +46,7 @@ class AssetsRevisionsTest extends TestCase
             'extension missing' => [
                 'script',
                 'script',
-                '.css'
+                '.css',
             ],
         ];
     }
