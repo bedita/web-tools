@@ -484,4 +484,86 @@ class HtmlHelperTest extends TestCase
         $actual = $this->Html->getMeta($data, $field, $defaultVal);
         static::assertEquals($expected, $actual);
     }
+
+    /**
+     * Data provider for `testScript` test case.
+     *
+     * @return array
+     */
+    public function scriptProvider(): array
+    {
+        return [
+            'simple' => [
+                '<script src="/script-622a2cc4f5.js"></script>',
+                'script',
+            ],
+            'not found' => [
+                '<script src="/functions.js"></script>',
+                'functions.js',
+            ],
+            'multi' => [
+                '<script src="/script-622a2cc4f5.js"></script>' .
+                "\n\t" .
+                '<script src="/page-1x4f92530c.js"></script>',
+                ['script', 'page'],
+            ],
+        ];
+    }
+
+    /**
+     * Test `script` method
+     *
+     * @dataProvider scriptProvider()
+     * @covers ::script()
+     *
+     * @param string|string[] $expected The expected result
+     * @param string|string[] $name The asset name
+     * @return void
+     */
+    public function testScript($expected, $name): void
+    {
+        $result = $this->Html->script($name);
+        static::assertEquals($expected, trim($result));
+    }
+
+    /**
+     * Data provider for `testCss` test case.
+     *
+     * @return array
+     */
+    public function cssProvider(): array
+    {
+        return [
+            'simple' => [
+                '<link rel="stylesheet" href="/style-b7c54b4c5a.css"/>',
+                'style',
+            ],
+            'not found' => [
+                '<link rel="stylesheet" href="/home.css"/>',
+                'home.css',
+            ],
+            'multi' => [
+                '<link rel="stylesheet" href="/style-b7c54b4c5a.css"/>' .
+                "\n\t" .
+                '<link rel="stylesheet" href="/page.css"/>',
+                ['style', 'page'],
+            ],
+        ];
+    }
+
+    /**
+     * Test `css` method
+     *
+     * @dataProvider cssProvider()
+     * @covers ::css()
+     *
+     * @param string|string[] $expected The expected result
+     * @param string|string[] $name The asset name
+     * @return void
+     */
+    public function testCss($expected, $name): void
+    {
+        $result = $this->Html->css($name);
+        static::assertEquals($expected, trim($result));
+    }
 }

@@ -12,6 +12,7 @@
  */
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
+use BEdita\WebTools\Utility\AssetsRevisions;
 use BEdita\WebTools\View\Helper\AssetHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -24,47 +25,16 @@ use Cake\View\View;
 class AssetHelperTest extends TestCase
 {
     /**
-     * Data provider for `testGet` test case.
-     *
-     * @return array
-     */
-    public function getProvider(): array
-    {
-        return [
-            'simple' => [
-                'script-h74fba9b9e.js',
-                'script.js',
-            ],
-            'not found' => [
-                'functions.js',
-                'functions.js',
-            ],
-            'custom path' => [
-                'script.js',
-                'script.js',
-                [
-                    'manifestPath' => ROOT . 'mymanifestpath',
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Test `get` method
      *
-     * @dataProvider getProvider()
      * @covers ::get()
-     * @covers ::initialize()
      *
-     * @param string $expected The expected result
-     * @param string $name The asset name
-     * @param string $config The helper config
      * @return void
      */
-    public function testGet(string $expected, string $name, array $config = []): void
+    public function testGet(): void
     {
-        $Asset = new AssetHelper(new View(), $config);
-        $result = $Asset->get($name);
-        static::assertEquals($expected, $result);
+        $Asset = new AssetHelper(new View());
+        $result = $Asset->get('script.js');
+        static::assertEquals('script-622a2cc4f5.js', $result);
     }
 }

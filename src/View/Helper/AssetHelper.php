@@ -13,49 +13,25 @@
 
 namespace BEdita\WebTools\View\Helper;
 
-use Cake\Utility\Hash;
+use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\View\Helper;
 
 /**
  * Asset Helper to handle asset names with signatures.
  *
- * Rev manifest file default path is `config/rev-manifest.json`
- * Other file paths may be used via `$config['manufestPath']`
+ * @see AssetsRevisions for details
  */
 class AssetHelper extends Helper
 {
-    /**
-     * Array having asset names as keys and revved asset names as values
-     *
-     * @var array
-     */
-    protected $assets = [];
-
-    /**
-     * {@inheritDoc}
-     */
-    public function initialize(array $config): void
-    {
-        $manifestPath = Hash::get($config, 'manifestPath', CONFIG . 'rev-manifest.json');
-        if (!file_exists($manifestPath)) {
-            return;
-        }
-
-        $this->assets = json_decode(file_get_contents($manifestPath), true);
-    }
-
     /**
      * Retrieve `revved` asset name if found in manifest or return canonical asset name otherwise
      *
      * @param string $name Canonical asset name (un-revved)
      * @return string
+     * @deprecated Deprecated since 1.3.0 Use `AssetsRevisions::get` or `Html` helper methods `script` or `css` directly.
      */
     public function get(string $name): string
     {
-        if (!empty($this->assets[$name])) {
-            $name = (string)$this->assets[$name];
-        }
-
-        return $name;
+        return AssetsRevisions::get($name);
     }
 }
