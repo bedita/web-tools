@@ -34,7 +34,6 @@ class TwigViewTest extends TestCase
     {
         $View = new TwigView();
         $extensions = $View->getTwig()->getExtensions();
-pr($extensions);
         static::assertNotEmpty($extensions);
         static::assertArrayHasKey('BEdita\WebTools\View\Twig\BeditaTwigExtension', $extensions);
     }
