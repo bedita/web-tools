@@ -30,8 +30,6 @@ class ExceptionRenderer extends CakeExceptionRenderer
      */
     protected function _template(\Throwable $exception, string $method, int $code): string
     {
-        $exception = $this->_unwrap($exception);
-
         $template = 'error500';
         if ($code < 500) {
             $template = 'error400';

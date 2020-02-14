@@ -58,6 +58,9 @@ define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
 define('CONFIG', ROOT . DS . 'config' . DS);
 
+define('CAKE_CORE_INCLUDE_PATH', ROOT);
+define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
+
 Configure::write('debug', true);
 
 Configure::write('App', [
