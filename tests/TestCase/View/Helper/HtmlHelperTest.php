@@ -552,7 +552,7 @@ class HtmlHelperTest extends TestCase
     }
 
     /**
-     * Test `script` method
+     * Test `css` method
      *
      * @dataProvider cssProvider()
      * @covers ::css()
