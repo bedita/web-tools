@@ -46,7 +46,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $config Configuration settings for the helper.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         if ($meta = Configure::read('Meta')) {

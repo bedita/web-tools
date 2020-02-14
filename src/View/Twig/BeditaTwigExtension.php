@@ -13,13 +13,16 @@
 namespace BEdita\WebTools\View\Twig;
 
 use Cake\Core\Configure;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * BEdita Twig extension class.
  *
  * Provide BEdita utils to Twig view.
  */
-class BeditaTwigExtension extends \Twig_Extension
+class BeditaTwigExtension extends AbstractExtension
 {
 
     /**
@@ -36,8 +39,8 @@ class BeditaTwigExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('config', [Configure::class, 'read']),
-            new \Twig_SimpleFunction('write_config', function ($key, $val) {
+            new TwigFunction('config', [Configure::class, 'read']),
+            new TwigFunction('write_config', function ($key, $val) {
                 // avoid unwanted return value display in templates
                 Configure::write($key, $val);
 
@@ -52,7 +55,7 @@ class BeditaTwigExtension extends \Twig_Extension
     public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'shuffle',
                 function (array $array) {
                     shuffle($array);
@@ -60,7 +63,7 @@ class BeditaTwigExtension extends \Twig_Extension
                     return $array;
                 }
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'ksort',
                 function (array $array) {
                     ksort($array);
@@ -68,7 +71,7 @@ class BeditaTwigExtension extends \Twig_Extension
                     return $array;
                 }
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'krsort',
                 function (array $array) {
                     krsort($array);

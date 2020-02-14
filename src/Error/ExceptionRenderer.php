@@ -14,6 +14,7 @@
 namespace BEdita\WebTools\Error;
 
 use Cake\Error\ExceptionRenderer as CakeExceptionRenderer;
+use Cake\Http\Response;
 use Cake\Log\LogTrait;
 
 /**
@@ -27,7 +28,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
     /**
      * {@inheritDoc}
      */
-    protected function _template(\Exception $exception, $method, $code): string
+    protected function _template(\Throwable $exception, string $method, int $code): string
     {
         $exception = $this->_unwrap($exception);
 
@@ -42,7 +43,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
     /**
      * {@inheritDoc}
      */
-    protected function _outputMessageSafe($template)
+    protected function _outputMessageSafe(string $template): Response
     {
         $builder = $this->controller->viewBuilder();
         $builder->setLayoutPath('')

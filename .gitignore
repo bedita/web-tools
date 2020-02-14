@@ -5,6 +5,7 @@
 /coverage
 /vendor
 .env
+.phpunit.result.cache
 
 # IDE and editor specific files #
 #################################

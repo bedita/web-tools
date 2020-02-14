@@ -19,7 +19,6 @@ use WyriHaximus\TwigView\View\TwigView as BaseTwigView;
 
 /**
  * View class that uses TwigView and adds Twig extensions
- *
  */
 class TwigView extends BaseTwigView
 {

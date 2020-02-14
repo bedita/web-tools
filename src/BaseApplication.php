@@ -13,6 +13,7 @@
 namespace BEdita\WebTools;
 
 use BEdita\WebTools\Shell\CacheShell;
+use Cake\Console\CommandCollection;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
@@ -34,7 +35,7 @@ class BaseApplication extends CakeBaseApplication
      *
      * Replace CakePHP `cache` command with \BEdita\WebTools\Shell\CacheShell
      */
-    public function console($commands)
+    public function console(CommandCollection $commands): CommandCollection
     {
         return $commands->addMany($commands->autoDiscover())
             ->add('cache', CacheShell::class);
@@ -43,7 +44,7 @@ class BaseApplication extends CakeBaseApplication
     /**
      * {@inheritDoc}
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
@@ -99,7 +100,7 @@ class BaseApplication extends CakeBaseApplication
     /**
      * @return void
      */
-    protected function bootstrapCli()
+    protected function bootstrapCli(): void
     {
         try {
             $this->addPlugin('Bake');

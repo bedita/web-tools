@@ -15,7 +15,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
