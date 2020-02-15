@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\View\Helper;
 
+use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -347,5 +348,37 @@ class HtmlHelper extends CakeHtmlHelper
         $meta = $data + $this->metadata;
 
         return Hash::get($meta, $field, $defaultVal);
+    }
+
+    /**
+     * Use `AssetsRevisions` class to load revisioned assets.
+     *
+     * {@inheritDoc}
+     */
+    public function script($url, array $options = []): ?string
+    {
+        if (is_array($url)) {
+            $url = AssetsRevisions::getMulti($url, '.js');
+        } else {
+            $url = AssetsRevisions::get($url, '.js');
+        }
+
+        return parent::script($url, $options);
+    }
+
+    /**
+     * Use `AssetsRevisions` class to load revisioned assets.
+     *
+     * {@inheritDoc}
+     */
+    public function css($url, array $options = []): ?string
+    {
+        if (is_array($url)) {
+            $url = AssetsRevisions::getMulti($url, '.css');
+        } else {
+            $url = AssetsRevisions::get($url, '.css');
+        }
+
+        return parent::css($url, $options);
     }
 }
