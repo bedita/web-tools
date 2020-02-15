@@ -97,7 +97,7 @@ class ThumbHelperTest extends TestCase
         $body = compact('data');
         $response = $apiClient->createMediaFromStream($streamId, $type, $body);
 
-        return $response['data']['id'];
+        return (int)$response['data']['id'];
     }
 
     /**

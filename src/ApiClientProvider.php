@@ -66,7 +66,7 @@ class ApiClientProvider
      * @param mixed $options Client options
      * @return \BEdita\SDK\BEditaClient
      */
-    private function createClient(array $options = []): BEditaClient
+    protected function createClient(array $options = []): BEditaClient
     {
         $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'));
         $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');

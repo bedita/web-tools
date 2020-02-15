@@ -92,7 +92,7 @@ class ThumbHelper extends Helper
             }
             $url = $thumb['url'];
         } catch (\Exception $e) {
-            $this->log($e, 'error');
+            $this->log($e->getMessage(), 'error');
 
             return static::NOT_AVAILABLE;
         }

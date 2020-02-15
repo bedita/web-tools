@@ -50,12 +50,9 @@ class HtmlHelper extends CakeHtmlHelper
     public function initialize(array $config): void
     {
         parent::initialize($config);
-        if ($meta = Configure::read('Meta')) {
-            $this->metadata = $meta + $this->metadata;
-        }
-        if (isset($config['meta'])) {
-            $this->metadata = $config['meta'] + $this->metadata;
-        }
+
+        $this->metadata = (array)Configure::read('Meta', []) + $this->metadata;
+        $this->metadata = (array)Hash::get($config, 'meta', []) + $this->metadata;
     }
 
     /**

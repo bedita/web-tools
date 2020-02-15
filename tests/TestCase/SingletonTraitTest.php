@@ -14,16 +14,7 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase;
 
-use BEdita\WebTools\SingletonTrait;
 use Cake\TestSuite\TestCase;
-
-/**
- * Fake singleton class for the sake of testing.
- */
-class MySingletonClass
-{
-    use SingletonTrait;
-}
 
 /**
  * {@see BEdita\WebTools\SingletonTrait} Test Case
@@ -39,7 +30,7 @@ class SingletonTraitTest extends TestCase
      */
     public function testNotInstantiable()
     {
-        $class = new \ReflectionClass(MySingletonClass::class);
+        $class = new \ReflectionClass(SingletonTestClass::class);
 
         static::assertFalse($class->isInstantiable());
     }
@@ -51,7 +42,7 @@ class SingletonTraitTest extends TestCase
      */
     public function testNotCloneable()
     {
-        $class = new \ReflectionClass(MySingletonClass::class);
+        $class = new \ReflectionClass(SingletonTestClass::class);
 
         static::assertFalse($class->isCloneable());
     }
@@ -63,9 +54,9 @@ class SingletonTraitTest extends TestCase
      */
     public function testGetInstance()
     {
-        $instance = MySingletonClass::getInstance();
+        $instance = SingletonTestClass::getInstance();
 
-        $anotherInstance = MySingletonClass::getInstance();
+        $anotherInstance = SingletonTestClass::getInstance();
 
         static::assertSame($instance, $anotherInstance);
     }

@@ -23,28 +23,39 @@ use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
-
-/**
- * Extension class with utility methods use in tests
- */
-class MyExceptionRenderer extends ExceptionRenderer
-{
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    public function setController($controller)
-    {
-        return $this->controller = $controller;
-    }
-}
+use Throwable;
 
 /**
  * @coversDefaultClass \BEdita\WebTools\Error\ExceptionRenderer
  */
 class ExceptionRendererTest extends TestCase
 {
+    /**
+     * Get Extension class with utility methods use in tests
+     *
+     * @return ExceptionRenderer
+     */
+    protected function extensionClass(Throwable $error)
+    {
+        return new class ($error) extends ExceptionRenderer
+        {
+            public function getTemplate()
+            {
+                return $this->template;
+            }
+
+            public function setController($controller)
+            {
+                return $this->controller = $controller;
+            }
+
+            public function setError(Throwable $throwable)
+            {
+                return $this->error = $throwable;
+            }
+        };
+    }
+
     /**
      * Data provider for `testTemplate` test case.
      *
@@ -76,7 +87,7 @@ class ExceptionRendererTest extends TestCase
      */
     public function testTemplate(\Exception $exception, $expected)
     {
-        $renderer = new MyExceptionRenderer($exception);
+        $renderer = $this->extensionClass($exception);
         $renderer->setController(new TestController());
         $renderer->render();
         static::assertEquals($expected, $renderer->getTemplate());
@@ -108,7 +119,7 @@ class ExceptionRendererTest extends TestCase
         };
         EventManager::instance()->on('View.beforeRender', $callback);
 
-        $renderer = new MyExceptionRenderer(new NotFoundException('hello'));
+        $renderer = $this->extensionClass(new NotFoundException('hello'));
         $controller = new TestController();
         $customErrorMessage = 'Gustavo, take care of it.';
         $controller->set(compact('customErrorMessage'));
@@ -156,7 +167,7 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $expected = 'The original error is here';
-        $renderer = new MyExceptionRenderer(new \Exception($expected));
+        $renderer = $this->extensionClass(new \Exception($expected));
         $renderer->setController(new TestController());
         $response = $renderer->render();
 
