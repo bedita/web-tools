@@ -10,6 +10,7 @@
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
+
 use Cake\Core\Configure;
 
 /**
