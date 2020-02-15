@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2020 ChannelWeb Srl, Chialab Srl
@@ -31,10 +33,10 @@ class AssetsRevisions
     /**
      * Load revision manifest JSON.
      *
-     * @param array $path Manifest file path
+     * @param string $path Manifest file path
      * @return void
      */
-    public static function loadManifest(string $path = null): void
+    public static function loadManifest(?string $path = null): void
     {
         static::$assets = [];
         if (empty($path)) {
@@ -52,7 +54,7 @@ class AssetsRevisions
      * @param string $extension Optional extension to use to search asset, like '.js' or '.css'
      * @return string
      */
-    public static function get(string $name, string $extension = null): string
+    public static function get(string $name, ?string $extension = null): string
     {
         if (static::$assets === null) {
             static::loadManifest();
@@ -75,7 +77,7 @@ class AssetsRevisions
      * @param string $extension Optional extension to use to search asset, like '.js' or '.css'
      * @return array
      */
-    public static function getMulti(array $names, string $extension = null): array
+    public static function getMulti(array $names, ?string $extension = null): array
     {
         foreach ($names as $k => $val) {
             $names[$k] = static::get($val, $extension);
