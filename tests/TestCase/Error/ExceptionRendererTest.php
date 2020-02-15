@@ -13,7 +13,6 @@
 namespace BEdita\WebTools\Test\TestCase\Error;
 
 use BEdita\WebTools\Error\ExceptionRenderer;
-use BEdita\WebTools\View\TwigView;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\InternalErrorException;
@@ -117,7 +116,7 @@ class ExceptionRendererTest extends TestCase
 
         $body = (string)$response->getBody();
         $expected = sprintf('AppView error 500: %s', $customErrorMessage);
-        static::assertContains($expected, $body);
+        static::assertStringContainsString($expected, $body);
     }
 
     /**
@@ -160,6 +159,6 @@ class ExceptionRendererTest extends TestCase
         $response = $renderer->render();
 
         $body = (string)$response->getBody();
-        static::assertContains($expected, $body);
+        static::assertStringContainsString($expected, $body);
     }
 }
