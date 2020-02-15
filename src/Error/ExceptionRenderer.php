@@ -62,6 +62,6 @@ class ExceptionRenderer extends CakeExceptionRenderer
             $body = $view->render('BEdita/WebTools.' . $template, 'BEdita/WebTools.error');
         }
 
-        return $this->controller->response->withStringBody($body)->withType('html');
+        return $this->controller->getResponse()->withStringBody($body)->withType('html');
     }
 }
