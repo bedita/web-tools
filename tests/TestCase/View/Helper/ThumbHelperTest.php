@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -130,7 +132,7 @@ class ThumbHelperTest extends TestCase
      * @covers ::url()
      * @covers ::status()
      * @param array $input The input array.
-     * @param boolean $expected The expected boolean.
+     * @param bool $expected The expected boolean.
      * @return void
      */
     public function testUrl(array $input, $expected): void
@@ -152,7 +154,7 @@ class ThumbHelperTest extends TestCase
      * @dataProvider urlProvider()
      * @covers ::status()
      * @param array $input The input array.
-     * @param boolean $expected The expected boolean.
+     * @param bool $expected The expected boolean.
      * @return void
      */
     public function testStatus(array $input, $expected): void

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -13,8 +15,6 @@
 namespace BEdita\WebTools\View;
 
 use BEdita\WebTools\View\Twig\BeditaTwigExtension;
-use Cake\Core\Configure;
-use Cake\Utility\Hash;
 use WyriHaximus\TwigView\View\TwigView as BaseTwigView;
 
 /**
@@ -22,7 +22,6 @@ use WyriHaximus\TwigView\View\TwigView as BaseTwigView;
  */
 class TwigView extends BaseTwigView
 {
-
     /**
      * {@inheritDoc}
      */
