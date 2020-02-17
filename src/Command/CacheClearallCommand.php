@@ -12,7 +12,7 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-namespace BEdita\WebTools\Shell;
+namespace BEdita\WebTools\Command;
 
 use Cake\Command\CacheClearallCommand as BaseCommand;
 use Cake\Console\Arguments;
