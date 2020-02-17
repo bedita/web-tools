@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Test\TestCase\Error;
 
 use BEdita\WebTools\Error\ExceptionRenderer;
+use Cake\Controller\ErrorController;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\InternalErrorException;
@@ -88,7 +89,7 @@ class ExceptionRendererTest extends TestCase
     public function testTemplate(\Exception $exception, $expected)
     {
         $renderer = $this->extensionClass($exception);
-        $renderer->setController(new TestController());
+        $renderer->setController(new ErrorController());
         $renderer->render();
         static::assertEquals($expected, $renderer->getTemplate());
     }
@@ -120,7 +121,7 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $renderer = $this->extensionClass(new NotFoundException('hello'));
-        $controller = new TestController();
+        $controller = new ErrorController();
         $customErrorMessage = 'Gustavo, take care of it.';
         $controller->set(compact('customErrorMessage'));
         $renderer->setController($controller);
