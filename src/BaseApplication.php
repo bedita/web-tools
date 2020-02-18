@@ -35,8 +35,8 @@ class BaseApplication extends CakeBaseApplication
     /**
      * Use `cache clear_all` from BEdita\WebTools\Command\CacheClearallCommand
      *
-     * @param CommandCollection $commands Console commands.
-     * @return CommandCollection
+     * @param \Cake\Console\CommandCollection $commands Console commands.
+     * @return \Cake\Console\CommandCollection
      */
     public function console(CommandCollection $commands): CommandCollection
     {
