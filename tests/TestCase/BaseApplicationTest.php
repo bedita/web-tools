@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -18,17 +20,17 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
-use Cake\Shell\HelpShell;
-use Cake\Shell\VersionShell;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
 
 /**
  * {@see BEdita\WebTools\BaseApplication} Test Case
  *
  * @coversDefaultClass \BEdita\WebTools\BaseApplication
  */
-class BaseApplicationTest extends IntegrationTestCase
+class BaseApplicationTest
 {
+    use IntegrationTestTrait;
+
     /**
      * Test `console` method
      *
@@ -47,7 +49,7 @@ class BaseApplicationTest extends IntegrationTestCase
         $commands = $app->console($commands);
         $cache = $commands->get('cache');
         static::assertNotEmpty($cache);
-        static::assertEquals('BEdita\WebTools\Shell\CacheShell', $cache);
+        static::assertEquals('BEdita\WebTools\Command\CacheClearall', $cache);
     }
 
     /**

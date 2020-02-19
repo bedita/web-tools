@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -14,6 +16,7 @@
 namespace BEdita\WebTools\Error;
 
 use Cake\Error\ExceptionRenderer as CakeExceptionRenderer;
+use Cake\Http\Response;
 use Cake\Log\LogTrait;
 
 /**
@@ -27,10 +30,8 @@ class ExceptionRenderer extends CakeExceptionRenderer
     /**
      * {@inheritDoc}
      */
-    protected function _template(\Exception $exception, $method, $code): string
+    protected function _template(\Throwable $exception, string $method, int $code): string
     {
-        $exception = $this->_unwrap($exception);
-
         $template = 'error500';
         if ($code < 500) {
             $template = 'error400';
@@ -42,7 +43,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
     /**
      * {@inheritDoc}
      */
-    protected function _outputMessageSafe($template)
+    protected function _outputMessageSafe(string $template): Response
     {
         $builder = $this->controller->viewBuilder();
         $builder->setLayoutPath('')
@@ -63,6 +64,6 @@ class ExceptionRenderer extends CakeExceptionRenderer
             $body = $view->render('BEdita/WebTools.' . $template, 'BEdita/WebTools.error');
         }
 
-        return $this->controller->response->withStringBody($body)->withType('html');
+        return $this->controller->getResponse()->withStringBody($body)->withType('html');
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -19,7 +21,6 @@ namespace BEdita\WebTools;
  */
 trait SingletonTrait
 {
-
     /**
      * Singleton instance.
      *

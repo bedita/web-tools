@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2016 ChannelWeb Srl, Chialab Srl
@@ -10,7 +12,6 @@
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
@@ -58,6 +59,9 @@ define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
 define('CONFIG', ROOT . DS . 'config' . DS);
 
+define('CAKE_CORE_INCLUDE_PATH', ROOT);
+define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
+
 Configure::write('debug', true);
 
 Configure::write('App', [
@@ -65,7 +69,7 @@ Configure::write('App', [
     'encoding' => 'utf-8',
     'paths' => [
         'plugins' => [ROOT . 'Plugin' . DS],
-        'templates' => [APP . 'Template' . DS],
+        'templates' => [ROOT . 'templates' . DS],
     ],
 ]);
 
@@ -102,7 +106,6 @@ ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
 Router::reload();
 
 require ROOT . 'Application.php';
-use TestApp\Application;
 
-$app = new Application(dirname(__DIR__) . '/config');
+$app = new TestApp\Application(dirname(__DIR__) . '/config');
 $app->bootstrap();

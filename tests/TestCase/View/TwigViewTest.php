@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -13,7 +15,6 @@
 namespace BEdita\WebTools\Test\TestCase\View;
 
 use BEdita\WebTools\View\TwigView;
-use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -23,7 +24,6 @@ use Cake\TestSuite\TestCase;
  */
 class TwigViewTest extends TestCase
 {
-
     /**
      * Test `initialize` method
      *
@@ -35,6 +35,6 @@ class TwigViewTest extends TestCase
         $View = new TwigView();
         $extensions = $View->getTwig()->getExtensions();
         static::assertNotEmpty($extensions);
-        static::assertArrayHasKey('bedita', $extensions);
+        static::assertArrayHasKey('BEdita\WebTools\View\Twig\BeditaTwigExtension', $extensions);
     }
 }

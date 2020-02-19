@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2019 ChannelWeb Srl, Chialab Srl
@@ -62,7 +64,7 @@ class AssetsRevisionsTest extends TestCase
      * @param string $extension The asset extension
      * @return void
      */
-    public function testGet(string $expected, string $name, string $extension = null): void
+    public function testGet(string $expected, string $name, ?string $extension = null): void
     {
         $result = AssetsRevisions::get($name, $extension);
         static::assertEquals($expected, $result);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -12,7 +14,8 @@
  */
 namespace BEdita\WebTools;
 
-use BEdita\WebTools\Shell\CacheShell;
+use BEdita\WebTools\Command\CacheClearallCommand;
+use Cake\Console\CommandCollection;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
@@ -30,20 +33,24 @@ use Cake\Routing\Middleware\RoutingMiddleware;
 class BaseApplication extends CakeBaseApplication
 {
     /**
-     * {@inheritDoc}
+     * Use `cache clear_all` from BEdita\WebTools\Command\CacheClearallCommand
      *
-     * Replace CakePHP `cache` command with \BEdita\WebTools\Shell\CacheShell
+     * @param \Cake\Console\CommandCollection $commands Console commands.
+     * @return \Cake\Console\CommandCollection
      */
-    public function console($commands)
+    public function console(CommandCollection $commands): CommandCollection
     {
-        return $commands->addMany($commands->autoDiscover())
-            ->add('cache', CacheShell::class);
+        parent::console($commands);
+        $commands->remove('cache clear_all');
+        $commands->add('cache clear_all', CacheClearallCommand::class);
+
+        return $commands;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         // Call parent to load bootstrap from files.
         parent::bootstrap();
@@ -73,24 +80,17 @@ class BaseApplication extends CakeBaseApplication
      * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to setup.
      * @return \Cake\Http\MiddlewareQueue The updated middleware queue.
      */
-    public function middleware($middlewareQueue): MiddlewareQueue
+    public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response
-            ->add(new ErrorHandlerMiddleware(null, Configure::read('Error')))
+            ->add(ErrorHandlerMiddleware::class)
 
             // Handle plugin/theme assets like CakePHP normally does.
-            ->add(new AssetMiddleware([
-                'cacheTime' => Configure::read('Asset.cacheTime'),
-            ]))
+            ->add(AssetMiddleware::class)
 
             // Add routing middleware.
-            // If you have a large number of routes connected, turning on routes
-            // caching in production could improve performance. For that when
-            // creating the middleware instance specify the cache config name by
-            // using it's second constructor argument:
-            // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this));
 
         return $middlewareQueue;
@@ -99,7 +99,7 @@ class BaseApplication extends CakeBaseApplication
     /**
      * @return void
      */
-    protected function bootstrapCli()
+    protected function bootstrapCli(): void
     {
         try {
             $this->addPlugin('Bake');

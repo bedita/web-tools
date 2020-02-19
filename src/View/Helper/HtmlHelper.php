@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2018 ChannelWeb Srl, Chialab Srl
@@ -25,7 +27,6 @@ use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
  */
 class HtmlHelper extends CakeHtmlHelper
 {
-
     /**
      * Meta data for helper
      */
@@ -47,15 +48,12 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $config Configuration settings for the helper.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
-        if ($meta = Configure::read('Meta')) {
-            $this->metadata = $meta + $this->metadata;
-        }
-        if (isset($config['meta'])) {
-            $this->metadata = $config['meta'] + $this->metadata;
-        }
+
+        $this->metadata = (array)Configure::read('Meta', []) + $this->metadata;
+        $this->metadata = (array)Hash::get($config, 'meta', []) + $this->metadata;
     }
 
     /**

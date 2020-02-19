@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2019 ChannelWeb Srl, Chialab Srl
@@ -12,7 +14,6 @@
  */
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
-use BEdita\WebTools\Utility\AssetsRevisions;
 use BEdita\WebTools\View\Helper\AssetHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;

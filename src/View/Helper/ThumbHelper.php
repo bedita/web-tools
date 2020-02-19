@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
  * Copyright 2019 ChannelWeb Srl, Chialab Srl
@@ -90,7 +92,7 @@ class ThumbHelper extends Helper
             }
             $url = $thumb['url'];
         } catch (\Exception $e) {
-            $this->log($e, 'error');
+            $this->log($e->getMessage(), 'error');
 
             return static::NOT_AVAILABLE;
         }

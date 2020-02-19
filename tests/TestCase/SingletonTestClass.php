@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
+
 /**
  * BEdita, API-first content management framework
- * Copyright 2018 ChannelWeb Srl, Chialab Srl
+ * Copyright 2020 ChannelWeb Srl, Chialab Srl
  *
  * This file is part of BEdita: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -10,15 +12,14 @@
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
+namespace BEdita\WebTools\Test\TestCase;
 
-use Cake\Core\Configure;
+use BEdita\WebTools\SingletonTrait;
 
 /**
- * Setup API config if missing
+ * Fake singleton class for the sake of testing.
  */
-if (!Configure::check('API')) {
-    Configure::write('API', [
-        'apiBaseUrl' => env('BEDITA_API'),
-        'apiKey' => env('BEDITA_API_KEY'),
-    ]);
+class SingletonTestClass
+{
+    use SingletonTrait;
 }
