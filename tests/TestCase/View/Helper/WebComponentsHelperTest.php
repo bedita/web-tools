@@ -68,15 +68,15 @@ class WebComponentsHelperTest extends TestCase
             ],
             'string' => [
                 'is="bedita-table" data-wc="0" id="test"',
-                ['bedita-table', [ 'id' => 'test' ]]
+                ['bedita-table', [ 'id' => 'test' ]],
             ],
             'numeric' => [
                 'is="bedita-input" data-wc="0" value="2"',
-                ['bedita-input', [ 'value' => '2' ]]
+                ['bedita-input', [ 'value' => '2' ]],
             ],
             'array' => [
                 'is="bedita-input" data-wc="0"',
-                ['bedita-input', [ 'data' => [1, 2, 3] ]]
+                ['bedita-input', [ 'data' => [1, 2, 3] ]],
             ],
         ];
     }
@@ -111,15 +111,15 @@ class WebComponentsHelperTest extends TestCase
             ],
             'string' => [
                 '<bedita-table data-wc="0" id="test"></bedita-table>',
-                ['bedita-table', [ 'id' => 'test' ]]
+                ['bedita-table', [ 'id' => 'test' ]],
             ],
             'numeric' => [
                 '<bedita-input data-wc="0" value="2"></bedita-input>',
-                ['bedita-input', [ 'value' => '2' ]]
+                ['bedita-input', [ 'value' => '2' ]],
             ],
             'array' => [
                 '<bedita-input data-wc="0"></bedita-input>',
-                ['bedita-input', [ 'data' => [1, 2, 3] ]]
+                ['bedita-input', [ 'data' => [1, 2, 3] ]],
             ],
         ];
     }
