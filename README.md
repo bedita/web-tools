@@ -14,7 +14,7 @@ composer require bedita/web-tools
 
 ### WebComponents
 
-This helper provides some methods to setup Custom Elements with some app variables in order to initialize client side JavaScript components. It aims to avoid the generation of inline JS dictionaries or variables using declarative assignments to HTML nodes.
+This helper provides some methods to setup Custom Elements with some app variables in order to initialize client side JavaScript components. It aims to avoid the generation of inline JS dictionaries or variables using declarative assignments to HTML nodes. String and numeric values are added as node attributes, while objects and arrays using inline scripts.
 
 #### Example
 
