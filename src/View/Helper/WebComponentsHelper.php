@@ -18,7 +18,7 @@ namespace BEdita\WebTools\View\Helper;
 use Cake\View\Helper\HtmlHelper;
 
 /**
- * Helper to handle Web Components initialization with properties.
+ * Helper to handle Web Components initialisation with properties.
  */
 class WebComponentsHelper extends HtmlHelper
 {
