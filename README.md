@@ -37,7 +37,7 @@ Now you can initialize the element in a twig template:
 
 **templates/Pages/document.twig**
 ```twig
-{{ WebComponent.element('awesome-video', { src: attach.uri }, 'components/awesome-video') }}
+{{ WebComponents.element('awesome-video', { src: attach.uri }, 'components/awesome-video') }}
 ```
 
 You can also extends native tags in order to setup simple interactions with the `is` method:
