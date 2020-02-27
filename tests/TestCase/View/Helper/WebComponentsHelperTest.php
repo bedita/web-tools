@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
 use BEdita\WebTools\View\Helper\WebComponentsHelper;
-use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 
