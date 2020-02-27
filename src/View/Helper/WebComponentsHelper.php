@@ -65,11 +65,12 @@ class WebComponentsHelper extends HtmlHelper
      * @param string $scriptPath The path of the definition script to import.
      * @return string An attributes string list like `is="my-element" data-wc="0"`.
      */
-    public function is(string $tagName, array $properties = array(), string $scriptPath = ''): string
+    public function is(string $tagName, array $properties = [], string $scriptPath = ''): string
     {
         if (!empty($scriptPath)) {
             $this->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
         }
+
         return trim(sprintf('is="%s" %s', $tagName, $this->props($properties)));
     }
 
@@ -81,11 +82,12 @@ class WebComponentsHelper extends HtmlHelper
      * @param string $scriptPath The path of the definition script to import.
      * @return string An HTML node string like `<my-element data-wc="0"></my-element>`.
      */
-    public function element(string $tagName, array $properties = array(), $scriptPath = ''): string
+    public function element(string $tagName, array $properties = [], $scriptPath = ''): string
     {
         if (!empty($scriptPath)) {
             $this->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
         }
+
         return trim(sprintf('<%s %s></%s>', $tagName, $this->props($properties), $tagName));
     }
 }
