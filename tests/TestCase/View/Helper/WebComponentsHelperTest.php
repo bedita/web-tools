@@ -54,6 +54,49 @@ class WebComponentsHelperTest extends TestCase
     }
 
     /**
+     * Data provider for `testProps` test case.
+     *
+     * @return array
+     */
+    public function propsProvider(): array
+    {
+        return [
+            'string' => [
+                'data-wc="0" id="test"',
+                ['id' => 'test'],
+            ],
+            'numeric' => [
+                'data-wc="0" value="2"',
+                ['value' => '2'],
+            ],
+            'array' => [
+                'data-wc="0"',
+                ['data' => [1, 2, 3]],
+            ],
+            'mixed' => [
+                'data-wc="0" id="test" value="2"',
+                ['id' => 'test', 'value' => '2', 'data' => [1, 2, 3]],
+            ],
+        ];
+    }
+
+    /**
+     * Test `props` method
+     *
+     * @dataProvider propsProvider()
+     * @covers ::props()
+     *
+     * @param string|string[] $expected The expected result
+     * @param array $properties The element properties
+     * @return void
+     */
+    public function testProps($expected, $properties): void
+    {
+        $result = $this->WebComponents->props($properties);
+        static::assertEquals($expected, $result);
+    }
+
+    /**
      * Data provider for `testIs` test case.
      *
      * @return array
