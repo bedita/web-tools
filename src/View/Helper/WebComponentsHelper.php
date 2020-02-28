@@ -28,22 +28,24 @@ class WebComponentsHelper extends CakeHtmlHelper
      * Pass properties to an HTMLElement using attributes for plain values and inline scripts for array.
      *
      * @param array $properties A list of properties to set.
-     * @return string An attributes string list like `data-wc="0" attr1="value"`.
+     * @return array An array of attributes.
      */
-    public function props(array $properties): string
+    public function props(array $properties): array
     {
         if (empty($properties)) {
-            return '';
+            return [];
         }
 
         $id = count($this->ids);
         $this->ids[] = $id;
 
-        $attributes = [];
+        $attributes = [
+            'data-wc' => $id,
+        ];
         $statements = [];
         foreach ($properties as $key => $value) {
             if (is_string($value) || is_numeric($value)) {
-                $attributes[] = sprintf('%s="%s"', $key, $value);
+                $attributes[$key] = $value;
             } else {
                 $statements[] = sprintf('elem[\'%s\'] = %s;', $key, json_encode($value));
             }
@@ -54,7 +56,7 @@ class WebComponentsHelper extends CakeHtmlHelper
             $this->scriptBlock($content, [ 'block' => 'scriptsComponents' ]);
         }
 
-        return trim(sprintf('data-wc="%s" %s', $id, join(' ', $attributes)));
+        return $attributes;
     }
 
     /**
@@ -71,7 +73,9 @@ class WebComponentsHelper extends CakeHtmlHelper
             $this->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
         }
 
-        return trim(sprintf('is="%s" %s', $tagName, $this->props($properties)));
+        $options = ['is' => $tagName] + $this->props($properties);
+
+        return trim($this->templater()->formatAttributes($options));
     }
 
     /**
@@ -88,6 +92,6 @@ class WebComponentsHelper extends CakeHtmlHelper
             $this->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
         }
 
-        return trim(sprintf('<%s %s></%s>', $tagName, $this->props($properties), $tagName));
+        return $this->tag($tagName, '', $this->props($properties));
     }
 }

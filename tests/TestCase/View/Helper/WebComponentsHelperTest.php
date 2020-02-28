@@ -61,20 +61,36 @@ class WebComponentsHelperTest extends TestCase
     public function propsProvider(): array
     {
         return [
+            'empty' => [
+                [],
+                [],
+            ],
             'string' => [
-                'data-wc="0" id="test"',
+                [
+                    'data-wc' => '0',
+                    'id' => 'test',
+                ],
                 ['id' => 'test'],
             ],
             'numeric' => [
-                'data-wc="0" value="2"',
+                [
+                    'data-wc' => '0',
+                    'value' => '2',
+                ],
                 ['value' => '2'],
             ],
             'array' => [
-                'data-wc="0"',
+                [
+                    'data-wc' => '0',
+                ],
                 ['data' => [1, 2, 3]],
             ],
             'mixed' => [
-                'data-wc="0" id="test" value="2"',
+                [
+                    'data-wc' => '0',
+                    'id' => 'test',
+                    'value' => '2',
+                ],
                 ['id' => 'test', 'value' => '2', 'data' => [1, 2, 3]],
             ],
         ];
@@ -86,7 +102,7 @@ class WebComponentsHelperTest extends TestCase
      * @dataProvider propsProvider()
      * @covers ::props()
      *
-     * @param string|string[] $expected The expected result
+     * @param array $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
@@ -129,7 +145,7 @@ class WebComponentsHelperTest extends TestCase
      * @dataProvider isProvider()
      * @covers ::is()
      *
-     * @param string|string[] $expected The expected result
+     * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
@@ -148,7 +164,7 @@ class WebComponentsHelperTest extends TestCase
     {
         return [
             'simple' => [
-                '<bedita-table ></bedita-table>',
+                '<bedita-table></bedita-table>',
                 ['bedita-table', []],
             ],
             'string' => [
@@ -172,7 +188,7 @@ class WebComponentsHelperTest extends TestCase
      * @dataProvider elementProvider()
      * @covers ::element()
      *
-     * @param string|string[] $expected The expected result
+     * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
