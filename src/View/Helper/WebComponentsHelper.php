@@ -15,12 +15,12 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\View\Helper;
 
-use Cake\View\Helper\HtmlHelper;
+use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
 
 /**
  * Helper to handle Web Components initialization with properties.
  */
-class WebComponentsHelper extends HtmlHelper
+class WebComponentsHelper extends CakeHtmlHelper
 {
     private $ids = [];
 
