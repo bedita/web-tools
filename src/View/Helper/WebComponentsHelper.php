@@ -15,13 +15,18 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\View\Helper;
 
-use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
+use Cake\View\Helper;
 
 /**
  * Helper to handle Web Components initialization with properties.
  */
-class WebComponentsHelper extends CakeHtmlHelper
+class WebComponentsHelper extends Helper
 {
+    public $helpers = ['Html'];
+
+    /**
+     * @var array A list of used identifiers.
+     **/
     private $ids = [];
 
     /**
@@ -53,7 +58,7 @@ class WebComponentsHelper extends CakeHtmlHelper
 
         if (!empty($statements)) {
             $content = sprintf('(function(){var elem = document.querySelector(\'[data-wc="%s"]\');%s}());if(document.currentScript)document.currentScript.parentNode.removeChild(document.currentScript);', $id, join('', $statements));
-            $this->scriptBlock($content, [ 'block' => 'scriptsComponents' ]);
+            $this->Html->scriptBlock($content, [ 'block' => 'scriptsComponents' ]);
         }
 
         return $attributes;
@@ -70,12 +75,12 @@ class WebComponentsHelper extends CakeHtmlHelper
     public function is(string $tagName, array $properties = [], string $scriptPath = ''): string
     {
         if (!empty($scriptPath)) {
-            $this->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
+            $this->Html->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
         }
 
         $options = ['is' => $tagName] + $this->props($properties);
 
-        return trim($this->templater()->formatAttributes($options));
+        return trim($this->Html->templater()->formatAttributes($options));
     }
 
     /**
@@ -89,9 +94,9 @@ class WebComponentsHelper extends CakeHtmlHelper
     public function element(string $tagName, array $properties = [], $scriptPath = ''): string
     {
         if (!empty($scriptPath)) {
-            $this->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
+            $this->Html->script($scriptPath, [ 'block' => 'scriptsComponents' ]);
         }
 
-        return $this->tag($tagName, '', $this->props($properties));
+        return $this->Html->tag($tagName, '', $this->props($properties));
     }
 }
