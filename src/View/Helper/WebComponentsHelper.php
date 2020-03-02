@@ -22,10 +22,15 @@ use Cake\View\Helper;
  */
 class WebComponentsHelper extends Helper
 {
+    /**
+     * {@inheritDoc}
+     **/
     public $helpers = ['Html'];
 
     /**
-     * @var array A list of used identifiers.
+     * A list of used identifiers.
+     *
+     * @var array
      **/
     private $ids = [];
 
