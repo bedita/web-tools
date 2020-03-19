@@ -12,77 +12,109 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-
 namespace BEdita\WebTools\Utility;
+
+use BEdita\WebTools\Utility\Asset\AssetStrategyInterface;
 
 /**
  * Utility class to handle asset names with revisions/signatures.
  *
- * Rev manifest file default path is `config/rev-manifest.json`
- * Other file paths may be used via `loadManifest()`
+ * It can use different strategies to search assets.
  */
 class AssetsRevisions
 {
     /**
-     * Array having asset names as keys and revved asset names as values
+     * The asset strategy adopted.
      *
-     * @var array
+     * @var \BEdita\WebTools\Utility\Asset\AssetStrategyInterface
      */
-    protected static $assets = null;
+    protected static $strategy = null;
 
     /**
-     * Load revision manifest JSON.
+     * Set an asset strategy to be used.
      *
-     * @param string $path Manifest file path
+     * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to use
      * @return void
      */
-    public static function loadManifest(?string $path = null): void
+    public static function setStrategy(AssetStrategyInterface $strategy): void
     {
-        static::$assets = [];
-        if (empty($path)) {
-            $path = CONFIG . 'rev-manifest.json';
-        }
-        if (file_exists($path)) {
-            static::$assets = (array)json_decode(file_get_contents($path), true);
-        }
+        static::$strategy = $strategy;
     }
 
     /**
-     * Retrieve `revved` asset name if found in manifest or return canonical asset name otherwise
+     * Get the current asset strategy adopted.
      *
-     * @param string $name Canonical asset name (un-revved)
-     * @param string $extension Optional extension to use to search asset, like '.js' or '.css'
-     * @return string
+     * @return \BEdita\WebTools\Utility\Asset\AssetStrategyInterface|null
      */
-    public static function get(string $name, ?string $extension = null): string
+    public static function getStrategy(): ?AssetStrategyInterface
     {
-        if (static::$assets === null) {
-            static::loadManifest();
+        return static::$strategy;
+    }
+
+    /**
+     * Clear asset strategy.
+     *
+     * @return void
+     */
+    public function clearStrategy(): void
+    {
+        static::$strategy = null;
+    }
+
+    /**
+     * Retrieve asset name or an array of assets .
+     * Return canonical asset name if no assets was found.
+     *
+     * @param string $name Canonical asset name
+     * @param string $extension Optional extension to use to search asset, like 'js' or 'css'
+     * @return string|array
+     */
+    public static function get(string $name, ?string $extension = null)
+    {
+        $strategy = static::getStrategy();
+        if ($strategy === null) {
+            return $name;
         }
 
-        if (!empty(static::$assets[$name])) {
-            return (string)static::$assets[$name];
-        }
-        if (!empty($extension) && !empty(static::$assets[$name . $extension])) {
-            return (string)static::$assets[$name . $extension];
+        $asset = $strategy->get($name, $extension);
+        if (!empty($asset)) {
+            return $asset;
         }
 
         return $name;
     }
 
     /**
-     * Retrieve `revved` asset names array via ::get() call
+     * Retrieve asset names array via ::get() call
      *
-     * @param array $names Canonical asset names (un-revved)
-     * @param string $extension Optional extension to use to search asset, like '.js' or '.css'
+     * @param array $names Canonical asset names
+     * @param string $extension Optional extension to use to search asset, like 'js' or 'css'
      * @return array
      */
     public static function getMulti(array $names, ?string $extension = null): array
     {
-        foreach ($names as $k => $val) {
-            $names[$k] = static::get($val, $extension);
+        $assets = [];
+        foreach ($names as $val) {
+            $assets = array_merge($assets, (array)static::get($val, $extension));
         }
 
-        return $names;
+        return $assets;
+    }
+
+    /**
+     * Load assets for adopted asset strategy.
+     *
+     * @param string $path Manifest file path
+     * @return void
+     * @throws \LogicException If startegy is not defined
+     */
+    public static function loadManifest(?string $path = null): void
+    {
+        $strategy = static::getStrategy();
+        if ($strategy === null) {
+            throw new \LogicException('Missing asset strategy');
+        }
+
+        $strategy->loadAssets($path);
     }
 }

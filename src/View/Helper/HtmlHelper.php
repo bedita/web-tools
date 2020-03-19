@@ -358,9 +358,9 @@ class HtmlHelper extends CakeHtmlHelper
     public function script($url, array $options = []): ?string
     {
         if (is_array($url)) {
-            $url = AssetsRevisions::getMulti($url, '.js');
+            $url = AssetsRevisions::getMulti($url, 'js');
         } else {
-            $url = AssetsRevisions::get($url, '.js');
+            $url = AssetsRevisions::get($url, 'js');
         }
 
         return parent::script($url, $options);
@@ -374,11 +374,29 @@ class HtmlHelper extends CakeHtmlHelper
     public function css($url, array $options = []): ?string
     {
         if (is_array($url)) {
-            $url = AssetsRevisions::getMulti($url, '.css');
+            $url = AssetsRevisions::getMulti($url, 'css');
         } else {
-            $url = AssetsRevisions::get($url, '.css');
+            $url = AssetsRevisions::get($url, 'css');
         }
 
         return parent::css($url, $options);
+    }
+
+    /**
+     * Creates link elements for CSS stylesheets and JS by asset name.
+     *
+     * @param string $name The asset name
+     * @param array $options The options to apply
+     * @return string|null
+     */
+    public function assets($name, array $options = []): ?string
+    {
+        $cssOutput = $this->css($name, $options);
+        $jsOutput = $this->script($name, $options);
+        if (empty($cssOutput)) {
+            return $jsOutput;
+        }
+
+        return $cssOutput . (string)$jsOutput;
     }
 }

@@ -58,6 +58,7 @@ define('TMP', sys_get_temp_dir() . DS);
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
 define('CONFIG', ROOT . DS . 'config' . DS);
+define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
 
 define('CAKE_CORE_INCLUDE_PATH', ROOT);
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);

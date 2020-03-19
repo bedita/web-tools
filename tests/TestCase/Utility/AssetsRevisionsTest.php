@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 /**
  * BEdita, API-first content management framework
- * Copyright 2019 ChannelWeb Srl, Chialab Srl
+ * Copyright 2020 ChannelWeb Srl, Chialab Srl
  *
  * This file is part of BEdita: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published
@@ -12,9 +12,11 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-namespace BEdita\WebTools\Test\TestCase\View\Helper;
+namespace BEdita\WebTools\Test\TestCase\Utility;
 
 use BEdita\WebTools\Utility\AssetsRevisions;
+use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
+use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -24,6 +26,40 @@ use Cake\TestSuite\TestCase;
  */
 class AssetsRevisionsTest extends TestCase
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function setUp(): void
+    {
+        AssetsRevisions::setStrategy(new RevManifestStrategy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function tearDown(): void
+    {
+        AssetsRevisions::clearStrategy();
+    }
+
+    /**
+     * Test set, get and reset strategy
+     *
+     * @return void
+     *
+     * @covers ::setStrategy()
+     * @covers ::getStrategy()
+     * @covers ::clearStrategy()
+     */
+    public function testStrategy(): void
+    {
+        AssetsRevisions::setStrategy(new EntrypointsStrategy());
+        static::assertInstanceOf(EntrypointsStrategy::class, AssetsRevisions::getStrategy());
+
+        AssetsRevisions::clearStrategy();
+        static::assertNull(AssetsRevisions::getStrategy());
+    }
+
     /**
      * Data provider for `testGet` test case.
      *
@@ -43,26 +79,26 @@ class AssetsRevisionsTest extends TestCase
             'extension' => [
                 'style-b7c54b4c5a.css',
                 'style',
-                '.css',
+                'css',
             ],
             'extension missing' => [
                 'script',
                 'script',
-                '.css',
+                'css',
             ],
         ];
     }
 
     /**
-     * Test `get` method
-     *
-     * @dataProvider getProvider()
-     * @covers ::get()
+     * Test `get` method.
      *
      * @param string $expected The expected result
      * @param string $name The asset name
      * @param string $extension The asset extension
      * @return void
+     *
+     * @dataProvider getProvider()
+     * @covers ::get()
      */
     public function testGet(string $expected, string $name, ?string $extension = null): void
     {
@@ -71,10 +107,25 @@ class AssetsRevisionsTest extends TestCase
     }
 
     /**
+     * Test that `get()` method returns the passed asset name when no strategy was set.
+     *
+     * @return void
+     *
+     * @covers ::get()
+     */
+    public function testGetWithoutStrategy(): void
+    {
+        AssetsRevisions::clearStrategy();
+        $name = 'app';
+        static::assertEquals($name, AssetsRevisions::get($name));
+    }
+
+    /**
      * Test `getMulti` method
      *
-     * @covers ::getMulti()
      * @return void
+     *
+     * @covers ::getMulti()
      */
     public function testGetMulti(): void
     {
@@ -83,7 +134,7 @@ class AssetsRevisionsTest extends TestCase
             'about',
         ];
 
-        $result = AssetsRevisions::getMulti(['script', 'about'], '.js');
+        $result = AssetsRevisions::getMulti(['script', 'about'], 'js');
         static::assertEquals($expected, $result);
     }
 
@@ -92,6 +143,8 @@ class AssetsRevisionsTest extends TestCase
      *
      * @covers ::loadManifest()
      * @return void
+     *
+     * @covers ::loadManifest()
      */
     public function testLoadManifest()
     {
@@ -106,5 +159,22 @@ class AssetsRevisionsTest extends TestCase
         AssetsRevisions::loadManifest();
         $result = AssetsRevisions::get('script.js');
         static::assertEquals('script-622a2cc4f5.js', $result);
+    }
+
+    /**
+     * Test that an exception is rised trying to load manifest
+     * without an asset strategy set.
+     *
+     * @return void
+     * @expectException \LogicException
+     *
+     * @covers ::loadManifest()
+     */
+    public function testLoadManifestWithoutStrategy(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        AssetsRevisions::clearStrategy();
+        AssetsRevisions::loadManifest();
     }
 }
