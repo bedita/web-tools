@@ -56,7 +56,7 @@ class AssetsRevisions
      *
      * @return void
      */
-    public function clearStrategy(): void
+    public static function clearStrategy(): void
     {
         static::$strategy = null;
     }
