@@ -655,7 +655,7 @@ class HtmlHelperTest extends TestCase
                 [
                     'link' => [
                         'rel' => 'stylesheet',
-                        'href' => '/build/style.12c5249c.css'
+                        'href' => '/build/style.12c5249c.css',
                     ],
                     'script' => [
                         'src' => '/build/runtime.f011bcb1.js',

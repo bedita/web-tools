@@ -16,7 +16,6 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Hash;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\AssetStrategy} Test Case
@@ -33,13 +32,11 @@ class AssetStrategyTest extends TestCase
      */
     protected function getInstance(array $config = []): AssetStrategy
     {
-        return new class($config) extends AssetStrategy {
-
+        return new class ($config) extends AssetStrategy {
             public function get(string $name, ?string $extension = null)
             {
                 return $this->assets;
             }
-
         };
     }
 

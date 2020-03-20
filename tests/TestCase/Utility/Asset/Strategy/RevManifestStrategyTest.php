@@ -43,7 +43,7 @@ class RevManifestStrategyTest extends TestCase
             'name and extension' => [
                 'script-622a2cc4f5.js',
                 'script',
-                'js'
+                'js',
             ],
             'not found' => [
                 null,

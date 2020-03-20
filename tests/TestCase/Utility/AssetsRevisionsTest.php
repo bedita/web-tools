@@ -14,9 +14,9 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase\Utility;
 
-use BEdita\WebTools\Utility\AssetsRevisions;
 use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
+use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\TestSuite\TestCase;
 
 /**
