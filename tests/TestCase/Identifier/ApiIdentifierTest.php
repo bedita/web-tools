@@ -210,5 +210,8 @@ class ApiIdentifierTest extends TestCase
 
         static::assertNull($identity);
         static::assertEquals('Invalid username or password', current($identifier->getErrors()));
+
+        // restore api client
+        ApiClientProvider::setApiClient($this->apiClient);
     }
 }
