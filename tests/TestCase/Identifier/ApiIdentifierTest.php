@@ -187,8 +187,7 @@ class ApiIdentifierTest extends TestCase
      */
     public function testMissingMetaFromResponse(): void
     {
-        $apiClient = new class('mockUrl') extends BEditaClient {
-
+        $apiClient = new class ('mockUrl') extends BEditaClient {
             public function __construct(string $apiUrl, ?string $apiKey = null, array $tokens = [])
             {
             }
@@ -197,7 +196,6 @@ class ApiIdentifierTest extends TestCase
             {
                 return [];
             }
-
         };
 
         ApiClientProvider::setApiClient($apiClient);
