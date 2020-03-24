@@ -50,15 +50,13 @@ class ApiIdentifier extends AbstractIdentifier
     {
         $usernameField = $this->getConfig('fields.' . self::CREDENTIAL_USERNAME);
         $passwordField = $this->getConfig('fields.' . self::CREDENTIAL_PASSWORD);
-        if (!$data[$usernameField] || !$data[$passwordField]) {
-            $this->setError(__('Missing required data'));
-
+        if (!isset($data[$usernameField]) || !isset($data[$passwordField])) {
             return null;
         }
 
         /** @var \BEdita\SDK\BEditaClient $apiClient */
         $apiClient = ApiClientProvider::getApiClient();
-        $errorReason = __('Username or password is incorrect');
+        $errorReason = __('Invalid username or password');
         try {
             $result = $apiClient->authenticate(
                 $data[$usernameField],
@@ -82,9 +80,8 @@ class ApiIdentifier extends AbstractIdentifier
             return null;
         }
 
-        $identity = $result['data']
-            + compact('tokens')
-            + Hash::combine($result, 'included.{n}.attributes.name', 'included.{n}.id', 'included.{n}.type');
+        $roles = Hash::extract($result, 'included.{n}.attributes.name');
+        $identity = $result['data'] + compact('tokens') + compact('roles');
 
         return $identity;
     }
