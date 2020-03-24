@@ -25,6 +25,7 @@ use Cake\Utility\Hash;
  * An authentication adapter for authenticating using BEdita 4 API /auth endpoint.
  *
  * @see https://docs.bedita.net/en/latest/authorization.html#authentication
+ * @deprecated 2.2.0 Use \BEdita\WebTools\Identifier\ApiIdentifier for Authentication plugin instead.
  */
 class ApiAuthenticate extends BaseAuthenticate
 {
