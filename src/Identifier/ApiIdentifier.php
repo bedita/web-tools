@@ -56,14 +56,13 @@ class ApiIdentifier extends AbstractIdentifier
 
         /** @var \BEdita\SDK\BEditaClient $apiClient */
         $apiClient = ApiClientProvider::getApiClient();
-        $errorReason = __('Invalid username or password');
         try {
             $result = $apiClient->authenticate(
                 $data[$usernameField],
                 $data[$passwordField]
             );
             if (empty($result['meta'])) {
-                $this->setError($errorReason);
+                $this->setError('Invalid username or password');
 
                 return null;
             }
@@ -71,11 +70,7 @@ class ApiIdentifier extends AbstractIdentifier
             $result = $apiClient->get('/auth/user', null, ['Authorization' => sprintf('Bearer %s', $tokens['jwt'])]);
         } catch (BEditaClientException $e) {
             $this->log('Login failed - ' . $e->getMessage(), LogLevel::INFO);
-            $attributes = $e->getAttributes();
-            if (!empty($attributes['reason'])) {
-                $errorReason = $attributes['reason'];
-            }
-            $this->setError(__($errorReason));
+            $this->setError($e->getMessage());
 
             return null;
         }

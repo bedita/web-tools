@@ -151,7 +151,7 @@ class ApiIdentifierTest extends TestCase
         ]);
 
         static::assertNull($identity);
-        static::assertEquals('Invalid username or password', current($identifier->getErrors()));
+        static::assertEquals('[401] Login request not successful', current($identifier->getErrors()));
     }
 
     /**
