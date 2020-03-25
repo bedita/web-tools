@@ -85,3 +85,59 @@ customElements.define('awesome-table', AwesomeTable, { extends: 'table' });
     </tbody>
 </table>
 ```
+
+## Identifiers
+
+### ApiIdentifier
+
+`ApiIdentifier` is an [identifier](https://book.cakephp.org/authentication/2/en/identifiers.html) of [Authentication](https://github.com/cakephp/authentication) plugin that helps to identify a user through the BEdita API.
+
+In order to use the identifier you need to load [Authentication](https://github.com/cakephp/authentication) plugin in the application bootstrap in `Application.php`
+
+```php
+public function bootstrap(): void
+{
+    parent::bootstrap();
+
+    $this->addPlugin('Authentication');
+}
+```
+
+then add the `AuthenticationMiddleware`
+
+```php
+public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
+{
+    // Various other middlewares for error handling, routing etc. added here.
+
+    // Create an authentication middleware object
+    $authentication = new AuthenticationMiddleware($this);
+
+    // Add the middleware to the middleware queue.
+    // Authentication should be added *after* RoutingMiddleware.
+    // So that subdirectory information and routes are loaded.
+    $middlewareQueue->add($authentication);
+
+    return $middlewareQueue;
+}
+```
+
+and take advantage of `getAuthenticationService()` hook to set up the identifier.
+
+```php
+public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
+{
+    $service = new AuthenticationService();
+
+    // Load the authenticators, you want session first
+    $service->loadAuthenticator('Authentication.Session');
+    $service->loadAuthenticator('Authentication.Form', [
+        'loginUrl' => '/users/login'
+    ]);
+
+    // Load identifiers
+    $service->loadIdentifier('BEdita/WebTools.Api');
+
+    return $service;
+}
+```
