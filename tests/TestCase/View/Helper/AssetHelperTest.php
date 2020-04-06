@@ -14,6 +14,8 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
+use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
+use BEdita\WebTools\Utility\AssetsRevisions;
 use BEdita\WebTools\View\Helper\AssetHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -34,6 +36,7 @@ class AssetHelperTest extends TestCase
      */
     public function testGet(): void
     {
+        AssetsRevisions::setStrategy(new RevManifestStrategy());
         $Asset = new AssetHelper(new View());
         $result = $Asset->get('script.js');
         static::assertEquals('script-622a2cc4f5.js', $result);

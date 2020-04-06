@@ -14,6 +14,10 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
+use BEdita\WebTools\Utility\Asset\AssetStrategyInterface;
+use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
+use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
+use BEdita\WebTools\Utility\AssetsRevisions;
 use BEdita\WebTools\View\Helper\HtmlHelper;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
@@ -50,6 +54,7 @@ class HtmlHelperTest extends TestCase
     public function tearDown(): void
     {
         unset($this->Html);
+        AssetsRevisions::clearStrategy();
 
         parent::tearDown();
     }
@@ -496,18 +501,36 @@ class HtmlHelperTest extends TestCase
     {
         return [
             'simple' => [
-                '<script src="/script-622a2cc4f5.js"></script>',
+                ['script' => ['src' => '/script-622a2cc4f5.js']],
                 'script',
+                new RevManifestStrategy(),
             ],
             'not found' => [
-                '<script src="/functions.js"></script>',
+                ['script' => ['src' => '/functions.js']],
                 'functions.js',
+                new RevManifestStrategy(),
             ],
             'multi' => [
-                '<script src="/script-622a2cc4f5.js"></script>' .
-                "\n\t" .
-                '<script src="/page-1x4f92530c.js"></script>',
+                [
+                    ['script' => ['src' => '/script-622a2cc4f5.js']],
+                    '/script',
+                    ['script' => ['src' => '/page-1x4f92530c.js']],
+                    '/script',
+                ],
                 ['script', 'page'],
+                new RevManifestStrategy(),
+            ],
+            'entrypoint app' => [
+                [
+                    ['script' => ['src' => '/build/runtime.f011bcb1.js']],
+                    '/script',
+                    ['script' => ['src' => '/build/0.54651780.js']],
+                    '/script',
+                    ['script' => ['src' => '/build/app.82269f26.js']],
+                    '/script',
+                ],
+                'app',
+                new EntrypointsStrategy(['manifestPath' => WWW_ROOT . 'entrypoints.json']),
             ],
         ];
     }
@@ -515,17 +538,19 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `script` method
      *
+     * @param array $expected The expected result
+     * @param string|string[] $name The asset name
+     * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
+     * @return void
+     *
      * @dataProvider scriptProvider()
      * @covers ::script()
-     *
-     * @param string|string[] $expected The expected result
-     * @param string|string[] $name The asset name
-     * @return void
      */
-    public function testScript($expected, $name): void
+    public function testScript($expected, $name, AssetStrategyInterface $strategy): void
     {
+        AssetsRevisions::setStrategy($strategy);
         $result = $this->Html->script($name);
-        static::assertEquals($expected, trim($result));
+        $this->assertHtml($expected, $result);
     }
 
     /**
@@ -537,18 +562,52 @@ class HtmlHelperTest extends TestCase
     {
         return [
             'simple' => [
-                '<link rel="stylesheet" href="/style-b7c54b4c5a.css"/>',
+                [
+                    'link' => [
+                        'rel' => 'stylesheet',
+                        'href' => '/style-b7c54b4c5a.css',
+                    ],
+                ],
                 'style',
+                new RevManifestStrategy(),
             ],
             'not found' => [
-                '<link rel="stylesheet" href="/home.css"/>',
+                [
+                    'link' => [
+                        'rel' => 'stylesheet',
+                        'href' => '/home.css',
+                    ],
+                ],
                 'home.css',
+                new RevManifestStrategy(),
             ],
             'multi' => [
-                '<link rel="stylesheet" href="/style-b7c54b4c5a.css"/>' .
-                "\n\t" .
-                '<link rel="stylesheet" href="/page.css"/>',
+                [
+                    [
+                        'link' => [
+                            'rel' => 'stylesheet',
+                            'href' => '/style-b7c54b4c5a.css',
+                        ],
+                    ],
+                    [
+                        'link' => [
+                            'rel' => 'stylesheet',
+                            'href' => '/page.css',
+                        ],
+                    ],
+                ],
                 ['style', 'page'],
+                new RevManifestStrategy(),
+            ],
+            'entrypoint style' => [
+                [
+                    'link' => [
+                        'rel' => 'stylesheet',
+                        'href' => '/build/style.12c5249c.css',
+                    ],
+                ],
+                'style',
+                new EntrypointsStrategy(['manifestPath' => WWW_ROOT . 'entrypoints.json']),
             ],
         ];
     }
@@ -556,16 +615,73 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `css` method
      *
+     * @param array $expected The expected result
+     * @param string|string[] $name The asset name
+     * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
+     * @return void
+     *
      * @dataProvider cssProvider()
      * @covers ::css()
-     *
-     * @param string|string[] $expected The expected result
-     * @param string|string[] $name The asset name
-     * @return void
      */
-    public function testCss($expected, $name): void
+    public function testCss($expected, $name, AssetStrategyInterface $strategy): void
     {
+        AssetsRevisions::setStrategy($strategy);
         $result = $this->Html->css($name);
-        static::assertEquals($expected, trim($result));
+        $this->assertHtml($expected, $result);
+    }
+
+    /**
+     * Data provider for `testAssets` test case.
+     *
+     * @return array
+     */
+    public function assetsProvider(): array
+    {
+        return [
+            'css found and js fallback' => [
+                [
+                    'link' => [
+                        'rel' => 'stylesheet',
+                        'href' => '/style-b7c54b4c5a.css',
+                    ],
+                    'script' => [
+                        'src' => '/style.js',
+                    ],
+                ],
+                'style',
+                new RevManifestStrategy(),
+            ],
+            'entrypoint style' => [
+                [
+                    'link' => [
+                        'rel' => 'stylesheet',
+                        'href' => '/build/style.12c5249c.css',
+                    ],
+                    'script' => [
+                        'src' => '/build/runtime.f011bcb1.js',
+                    ],
+                ],
+                'style',
+                new EntrypointsStrategy(['manifestPath' => WWW_ROOT . 'entrypoints.json']),
+            ],
+        ];
+    }
+
+    /**
+     * Test `asset` method.
+     *
+     * @param array $expected The expected result
+     * @param string|string[] $name The asset name
+     * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
+     * @return void
+     *
+     * @dataProvider assetsProvider()
+     * @covers ::assets()
+     */
+    public function testAssets($expected, $name, AssetStrategyInterface $strategy): void
+    {
+        AssetsRevisions::setStrategy($strategy);
+        $result = $this->Html->assets($name);
+        $this->assertHtml($expected, $result);
     }
 }
