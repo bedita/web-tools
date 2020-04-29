@@ -71,7 +71,7 @@ class BaseApplication extends CakeBaseApplication
             }
         }
         // Load more plugins here
-        $this->addPlugin('WyriHaximus/TwigView', ['bootstrap' => true]);
+        $this->addPlugin('Cake/TwigView');
     }
 
     /**

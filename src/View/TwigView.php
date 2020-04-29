@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\View;
 
 use BEdita\WebTools\View\Twig\BeditaTwigExtension;
-use WyriHaximus\TwigView\View\TwigView as BaseTwigView;
+use Cake\TwigView\View\TwigView as BaseTwigView;
 
 /**
  * View class that uses TwigView and adds Twig extensions
@@ -25,9 +25,9 @@ class TwigView extends BaseTwigView
     /**
      * {@inheritDoc}
      */
-    public function initialize(): void
+    public function initializeExtensions(): void
     {
-        parent::initialize();
+        parent::initializeExtensions();
 
         $this->getTwig()
             ->addExtension(new BeditaTwigExtension());
