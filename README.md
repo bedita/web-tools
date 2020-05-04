@@ -187,4 +187,4 @@ Once a strategy is set you can link assets using `\BEdita\WebTools\View\Helper\H
 
 The javascript `app` asset will be searched first from your asset strategy falling back to CakePHP `HtmlHelper` if strategy doesn't resolve the asset.
 
-In this way you can continue to load assets as it will be placed in common `webroot/js` or `webroot/css` and delegate to `\BEdita\WebTools\View\Helper\HtmlHelper` the task of resolve the link to them.
+In this way you can continue to load assets as it was placed in common `webroot/js` or `webroot/css` and delegate to `\BEdita\WebTools\View\Helper\HtmlHelper` the task of resolve the link to them.
