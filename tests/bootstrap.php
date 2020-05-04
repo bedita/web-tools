@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Routing\Router;
 
@@ -106,7 +107,5 @@ if (!getenv('db_dsn')) {
 ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
 Router::reload();
 
-require ROOT . 'Application.php';
-
-$app = new TestApp\Application(dirname(__DIR__) . '/config');
-$app->bootstrap();
+require $root . DS . 'config' . DS . 'bootstrap.php';
+Plugin::getCollection()->add(new \BEdita\WebTools\Plugin());
