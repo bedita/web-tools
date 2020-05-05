@@ -17,14 +17,6 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function bootstrap(): void
-    {
-        $this->addPlugin('BEdita/WebTools');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function middleware(MiddlewareQueue $middleware): MiddlewareQueue
     {
         return $middleware;

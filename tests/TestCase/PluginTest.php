@@ -36,7 +36,6 @@ class PluginTest extends TestCase
     public function testConsole(): void
     {
         $app = new Application(CONFIG);
-        $app->bootstrap();
         $commands = $app->console(new CommandCollection([]));
         $commands = $app->pluginConsole($commands);
         $cacheClearAll = $commands->get('cache clear_all');
