@@ -31,7 +31,7 @@ class CacheClearallCommand extends BaseCommand
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
-        $twigCachePath = CACHE . 'twigView';
+        $twigCachePath = CACHE . 'twig_view';
         $folder = new Folder($twigCachePath);
         if (file_exists($twigCachePath) && !$folder->delete()) {
             $io->error("Error removing Twig cache files in {$twigCachePath}");
