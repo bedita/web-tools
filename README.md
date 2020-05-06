@@ -151,7 +151,7 @@ Through `\BEdita\WebTools\View\Helper\HtmlHelper` you can transparently link bui
 
 ### Define which strategy to use
 
-The best place to define which startegy your app will use is the `Application::bootstrap()`
+The best place to define which strategy your app will use is the `Application::bootstrap()`
 
 ```php
 use BEdita\WebTools\Utility\AssetRevisions;
