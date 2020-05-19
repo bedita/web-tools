@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\View;
 
 use BEdita\WebTools\View\Twig\BeditaTwigExtension;
+use Cake\Core\Configure;
 use Cake\TwigView\View\TwigView as BaseTwigView;
 
 /**
@@ -22,6 +23,17 @@ use Cake\TwigView\View\TwigView as BaseTwigView;
  */
 class TwigView extends BaseTwigView
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function initialize(): void
+    {
+        $environment = Configure::read('Twig.environment', []) + ['strict_variables' => false];
+        $this->setConfig('environment', $environment);
+
+        parent::initialize();
+    }
+
     /**
      * {@inheritDoc}
      */
