@@ -28,7 +28,7 @@ class TwigView extends BaseTwigView
      */
     public function initialize(): void
     {
-        $environment = Configure::read('Twig.environment', []) + ['strict_variables' => false];
+        $environment = (array)Configure::read('Twig.environment', []) + ['strict_variables' => false];
         $this->setConfig('environment', $environment);
 
         parent::initialize();
