@@ -15,18 +15,34 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Controller;
 
 use BEdita\SDK\BEditaClientException;
+use BEdita\WebTools\ApiClientProvider;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 
 /**
- * Trait to directly proxy requests to BE4 API.
+ * Use this Trait in a controller to directly proxy requests to BE4 API.
+ * The response will be the same of the API itself with links masked.
  *
- * It should be used in controller with route rules configured as
+ * You need also to define routing rules configured as (for ApiController)
  *
+ * ```
+ * $builder->scope('/api', ['_namePrefix' => 'api:'], function (RouteBuilder $builder) {
+ *     $builder->get('/**', ['controller' => 'Api', 'action' => 'get'], 'get');
+ *     $builder->post('/**', ['controller' => 'Api', 'action' => 'post'], 'post');
+ *     // and so on for patch, delete if you want to use it
+ * });
+ * ```
  */
 trait ApiProxyTrait
 {
+    /**
+     * BEdita4 API client
+     *
+     * @var \BEdita\SDK\BEditaClient
+     */
+    protected $apiClient = null;
+
     /**
      * Base URL used for mask links.
      *
@@ -36,12 +52,14 @@ trait ApiProxyTrait
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     public function initialize(): void
     {
         parent::initialize();
+
+        if ($this->apiClient === null) {
+            $this->apiClient = ApiClientProvider::getApiClient();
+        }
 
         $this->viewBuilder()
             ->setClassName('Json')
@@ -131,6 +149,7 @@ trait ApiProxyTrait
 
     /**
      * Handle error.
+     * Set error var for view.
      *
      * @param \Throwable $error The error thrown.
      * @return void
