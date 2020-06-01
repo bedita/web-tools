@@ -19,10 +19,16 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 
+/**
+ * Trait to directly proxy requests to BE4 API.
+ *
+ * It should be used in controller with route rules configured as
+ *
+ */
 trait ApiProxyTrait
 {
     /**
-     * Replace links with
+     * Base URL used for mask links.
      *
      * @var string
      */
@@ -124,7 +130,7 @@ trait ApiProxyTrait
     }
 
     /**
-     * Handle error
+     * Handle error.
      *
      * @param \Throwable $error The error thrown.
      * @return void
@@ -187,9 +193,10 @@ trait ApiProxyTrait
     }
 
     /**
-     * Mask links across multidimensional array inside an array relationships data.
+     * Mask links across multidimensional array.
+     * By default search for `relationships` and mask their `links`.
      *
-     * @param array $data The data with relationships and links to mask
+     * @param array $data The data with links to mask
      * @param string $path The path to search for
      * @param string $key The key on which are the links
      * @return array
