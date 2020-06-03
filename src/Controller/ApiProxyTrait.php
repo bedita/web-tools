@@ -19,6 +19,7 @@ use BEdita\WebTools\ApiClientProvider;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
+use Cake\View\ViewVarsTrait;
 
 /**
  * Use this Trait in a controller to directly proxy requests to BE4 API.
@@ -36,6 +37,22 @@ use Cake\Utility\Hash;
  */
 trait ApiProxyTrait
 {
+    use ViewVarsTrait;
+
+    /**
+     * An instance of a \Cake\Http\ServerRequest object that contains information about the current request.
+     *
+     * @var \Cake\Http\ServerRequest
+     */
+    protected $request;
+
+    /**
+     * An instance of a Response object that contains information about the impending response.
+     *
+     * @var \Cake\Http\Response
+     */
+    protected $response;
+
     /**
      * BEdita4 API client
      *
@@ -88,7 +105,7 @@ trait ApiProxyTrait
     public function get($path = '')
     {
         $this->setBaseUrl($path);
-        $this->request([
+        $this->apiRequest([
             'method' => 'get',
             'path' => $path,
             'query' => $this->request->getQueryParams(),
@@ -108,7 +125,7 @@ trait ApiProxyTrait
      * @param array $options The request options
      * @return void
      */
-    protected function request(array $options): void
+    protected function apiRequest(array $options): void
     {
         $options += [
             'method' => '',
@@ -193,13 +210,13 @@ trait ApiProxyTrait
             $response = $this->maskMultiLinks($response, 'meta.resources', 'href');
         }
 
-        $data = Hash::get($response, 'data');
+        $data = (array)Hash::get($response, 'data');
         if (empty($data)) {
             return $response;
         }
 
         if (Hash::numeric(array_keys($data))) {
-            foreach ($data as $key => &$item) {
+            foreach ($data as &$item) {
                 $item = $this->maskLinks($item, 'links');
                 $item = $this->maskMultiLinks($item);
             }
@@ -208,7 +225,7 @@ trait ApiProxyTrait
             $response['data']['relationships'] = $this->maskMultiLinks($data);
         }
 
-        return $response;
+        return (array)$response;
     }
 
     /**
@@ -220,7 +237,7 @@ trait ApiProxyTrait
      * @param string $key The key on which are the links
      * @return array
      */
-    protected function maskMultiLinks(array $data, $path = 'relationships', $key = 'links'): array
+    protected function maskMultiLinks(array $data, string $path = 'relationships', string $key = 'links'): array
     {
         $relationships = Hash::get($data, $path, []);
         foreach ($relationships as &$rel) {
@@ -233,11 +250,11 @@ trait ApiProxyTrait
     /**
      * Mask links found in `$path`
      *
-     * @param array|string $data The data with links to mask
+     * @param array $data The data with links to mask
      * @param string $path The path to search for
      * @return array
      */
-    protected function maskLinks($data, $path): array
+    protected function maskLinks(array $data, string $path): array
     {
         $links = Hash::get($data, $path, []);
         if (empty($links)) {

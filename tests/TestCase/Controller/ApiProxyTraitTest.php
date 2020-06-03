@@ -82,7 +82,7 @@ class ApiProxyTraitTest extends TestCase
      * @covers ::initialize()
      * @covers ::get()
      * @covers ::setBaseUrl()
-     * @covers ::request()
+     * @covers ::apiRequest()
      * @covers ::maskResponseLinks()
      * @covers ::maskMultiLinks()
      * @covers ::maskLinks()
@@ -121,7 +121,7 @@ class ApiProxyTraitTest extends TestCase
      * @return void
      *
      * @covers ::get()
-     * @covers ::request()
+     * @covers ::apiRequest()
      * @covers ::handleError()
      */
     public function testNotFoundError(): void
