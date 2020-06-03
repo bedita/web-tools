@@ -123,15 +123,15 @@ trait ApiProxyTrait
                 case 'get':
                     $response = $this->apiClient->get($options['path'], $options['query'], $options['headers']);
                     break;
-                case 'post':
-                    $response = $this->apiClient->post($options['path'], $options['body'], $options['headers']);
-                    break;
-                case 'patch':
-                    $response = $this->apiClient->patch($options['path'], $options['body'], $options['headers']);
-                    break;
-                case 'delete':
-                    $response = $this->apiClient->delete($options['path'], $options['body'], $options['headers']);
-                    break;
+                // case 'post':
+                //     $response = $this->apiClient->post($options['path'], $options['body'], $options['headers']);
+                //     break;
+                // case 'patch':
+                //     $response = $this->apiClient->patch($options['path'], $options['body'], $options['headers']);
+                //     break;
+                // case 'delete':
+                //     $response = $this->apiClient->delete($options['path'], $options['body'], $options['headers']);
+                //     break;
                 default:
                     throw new MethodNotAllowedException();
             }
@@ -162,7 +162,7 @@ trait ApiProxyTrait
         }
         $this->response = $this->response->withStatus($status);
         $errorData = [
-            'status' => $status,
+            'status' => (string)$status,
             'title' => $error->getMessage(),
         ];
         $this->set('error', $errorData);

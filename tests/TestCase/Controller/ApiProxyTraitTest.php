@@ -14,7 +14,11 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase\Controller;
 
+use BEdita\SDK\BEditaClient;
 use BEdita\WebTools\ApiClientProvider;
+use BEdita\WebTools\Controller\ApiProxyTrait;
+use Cake\Controller\Controller;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -61,6 +65,16 @@ class ApiProxyTraitTest extends TestCase
     }
 
     /**
+     * Get base URL.
+     *
+     * @return string
+     */
+    protected function getBaseUrl(): string
+    {
+        return Router::url('/', true);
+    }
+
+    /**
      * Test get() method
      *
      * @return void
@@ -91,7 +105,7 @@ class ApiProxyTraitTest extends TestCase
         static::assertArrayHasKey('links', $response);
         static::assertArrayHasKey('meta', $response);
 
-        $baseUrl = Router::url('/', true);
+        $baseUrl = $this->getBaseUrl();
         foreach ($response['links'] as $link) {
             static::assertStringContainsString($baseUrl, $link);
         }
@@ -122,5 +136,100 @@ class ApiProxyTraitTest extends TestCase
         static::assertArrayHasKey('error', $response);
         static::assertArrayHasKey('status', $response['error']);
         static::assertArrayHasKey('title', $response['error']);
+    }
+
+    /**
+     * Test that masking links with value searched equal to string works.
+     *
+     * @return void
+     *
+     * @covers ::maskLinks()
+     */
+    public function testMaskLinksString(): void
+    {
+        $this->get('/api/model/schema/users');
+        $this->assertResponseOk();
+        $this->assertContentType('application/json');
+        $response = json_decode((string)$this->_response, true);
+        static::assertStringContainsString($this->getBaseUrl(), Hash::get($response, '$id'));
+    }
+
+    /**
+     * Test that getting a list of objects the relationships links are masked.
+     *
+     * @return void
+     *
+     * @covers ::maskResponseLinks()
+     */
+    public function testMaskRelationshipsLinksGettingList(): void
+    {
+        $this->get('/api/users');
+        $this->assertResponseOk();
+        $this->assertContentType('application/json');
+        $response = json_decode((string)$this->_response, true);
+
+        foreach (Hash::extract($response, 'data.{n}.relationships.{s}.links.{s}') as $link) {
+            static::assertStringContainsString($this->getBaseUrl(), $link);
+        }
+    }
+
+    /**
+     * Test that getting /home the resources links are masked.
+     *
+     * @return void
+     *
+     * @covers ::maskResponseLinks()
+     */
+    public function testMaskResourcesGettingHome(): void
+    {
+        $this->get('/api/home');
+        $this->assertResponseOk();
+        $this->assertContentType('application/json');
+        $response = json_decode((string)$this->_response, true);
+
+        foreach (Hash::extract($response, 'meta.resources.{s}.href') as $link) {
+            static::assertStringContainsString($this->getBaseUrl(), $link);
+        }
+    }
+
+    /**
+     * Test that an exception different from BEditaClientException throws in BEditaClient request
+     * is correctly handled
+     *
+     * @return void
+     *
+     * @covers ::handleError()
+     */
+    public function testNotBEditaClientException(): void
+    {
+        $controller = new class (new ServerRequest()) extends Controller {
+            use ApiProxyTrait;
+
+            public function setApiCLient($apiClient)
+            {
+                $this->apiClient = $apiClient;
+            }
+
+            protected function setBaseUrl($path): void
+            {
+                $this->baseUrl = '/';
+            }
+        };
+
+        $apiClientMock = $this->getMockBuilder(BEditaClient::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+
+        $apiClientMock->method('get')->willThrowException(new \LogicException('Broken'));
+
+        $controller->setApiCLient($apiClientMock);
+        $controller->get('/gustavo');
+        $error = $controller->viewBuilder()->getVar('error');
+
+        static::assertArrayHasKey('status', $error);
+        static::assertArrayHasKey('title', $error);
+        static::assertEquals('500', $error['status']);
+        static::assertEquals('Broken', $error['title']);
     }
 }
