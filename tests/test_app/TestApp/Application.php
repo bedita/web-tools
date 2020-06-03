@@ -5,6 +5,8 @@ namespace TestApp;
 
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
+use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Routing\RouteBuilder;
 
 /**
  * Application setup class.
@@ -16,9 +18,31 @@ class Application extends BaseApplication
 {
     /**
      * {@inheritDoc}
+     *
+     * Do not require config/bootstrap.php
+     */
+    public function bootstrap(): void
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function routes(RouteBuilder $routes): void
+    {
+        // add rules for ApiProxyTrait
+        $routes->scope('/api', ['_namePrefix' => 'api:'], function (RouteBuilder $routes) {
+            $routes->get('/**', ['controller' => 'Api', 'action' => 'get'], 'get');
+        });
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function middleware(MiddlewareQueue $middleware): MiddlewareQueue
     {
+        $middleware->add(new RoutingMiddleware($this));
+
         return $middleware;
     }
 }
