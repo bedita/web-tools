@@ -106,7 +106,5 @@ if (!getenv('db_dsn')) {
 ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
 Router::reload();
 
-require ROOT . 'Application.php';
-
 $app = new TestApp\Application(dirname(__DIR__) . '/config');
 $app->bootstrap();
