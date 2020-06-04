@@ -251,7 +251,9 @@ class ApiProxyTraitTest extends TestCase
     public function testNullResponseFromBEditaClient(): void
     {
         $controller = new class (new ServerRequest()) extends Controller {
+            // @codingStandardsIgnoreStart
             use ApiProxyTrait;
+            // @codingStandardsIgnoreEnd
 
             public function setApiClient($apiClient)
             {
