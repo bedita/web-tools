@@ -33,7 +33,9 @@ use Cake\Utility\Hash;
  */
 class ApiProxyTraitTest extends TestCase
 {
+    // @codingStandardsIgnoreStart
     use IntegrationTestTrait;
+    // @codingStandardsIgnoreEnd
 
     /**
      * Instance of BEditaClient
@@ -203,7 +205,9 @@ class ApiProxyTraitTest extends TestCase
     public function testNotBEditaClientException(): void
     {
         $controller = new class (new ServerRequest()) extends Controller {
+            // @codingStandardsIgnoreStart
             use ApiProxyTrait;
+            // @codingStandardsIgnoreEnd
 
             public function setApiCLient($apiClient)
             {
