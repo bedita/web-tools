@@ -44,14 +44,14 @@ trait ApiProxyTrait
      *
      * @var \Cake\Http\ServerRequest
      */
-    protected $request;
+    public $request;
 
     /**
      * An instance of a Response object that contains information about the impending response.
      *
      * @var \Cake\Http\Response
      */
-    protected $response;
+    public $response;
 
     /**
      * BEdita4 API client
@@ -79,8 +79,9 @@ trait ApiProxyTrait
         }
 
         $this->viewBuilder()
-            ->setClassName('Json')
-            ->setOption('serialize', true);
+            ->setClassName('Json');
+
+        $this->set('_serialize', true);
     }
 
     /**

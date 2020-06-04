@@ -28,7 +28,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    public function routes(RouteBuilder $routes): void
+    public function routes($routes)
     {
         // add rules for ApiProxyTrait
         $routes->scope('/api', ['_namePrefix' => 'api:'], function (RouteBuilder $routes) {
