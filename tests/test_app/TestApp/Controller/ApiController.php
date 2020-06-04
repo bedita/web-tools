@@ -16,7 +16,7 @@ namespace TestApp\Controller;
 
 use BEdita\WebTools\Controller\ApiProxyTrait;
 use Cake\Controller\Controller;
-use Cake\Event\EventInterface;
+use Cake\Event\Event;
 
 class ApiController extends Controller
 {
@@ -25,7 +25,7 @@ class ApiController extends Controller
     /**
      * {@inheritDoc}
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
 
