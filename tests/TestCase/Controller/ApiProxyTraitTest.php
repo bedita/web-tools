@@ -102,10 +102,14 @@ class ApiProxyTraitTest extends TestCase
         static::assertNotEmpty($meta);
         static::assertEquals('1', Hash::get($data, 'id'));
 
+        $varNotSerialized = $this->viewVariable('varNotSerialized');
+        static::assertTrue($varNotSerialized);
+
         $response = json_decode((string)$this->_response, true);
         static::assertArrayHasKey('data', $response);
         static::assertArrayHasKey('links', $response);
         static::assertArrayHasKey('meta', $response);
+        static::assertArrayNotHasKey('varNotSerialized', $response);
 
         $baseUrl = $this->getBaseUrl();
         foreach ($response['links'] as $link) {
@@ -209,7 +213,7 @@ class ApiProxyTraitTest extends TestCase
             use ApiProxyTrait;
             // @codingStandardsIgnoreEnd
 
-            public function setApiCLient($apiClient)
+            public function setApiClient($apiClient)
             {
                 $this->apiClient = $apiClient;
             }
@@ -227,7 +231,7 @@ class ApiProxyTraitTest extends TestCase
 
         $apiClientMock->method('get')->willThrowException(new \LogicException('Broken'));
 
-        $controller->setApiCLient($apiClientMock);
+        $controller->setApiClient($apiClientMock);
         $controller->get('/gustavo');
         $error = $controller->viewVars['error'];
 
@@ -235,5 +239,42 @@ class ApiProxyTraitTest extends TestCase
         static::assertArrayHasKey('title', $error);
         static::assertEquals('500', $error['status']);
         static::assertEquals('Broken', $error['title']);
+    }
+
+    /**
+     * Test that if BEditaClient return null the response has empty body.
+     *
+     * @return void
+     *
+     * @covers ::apiRequest()
+     */
+    public function testNullResponseFromBEditaClient(): void
+    {
+        $controller = new class (new ServerRequest()) extends Controller {
+            use ApiProxyTrait;
+
+            public function setApiClient($apiClient)
+            {
+                $this->apiClient = $apiClient;
+            }
+
+            protected function setBaseUrl($path): void
+            {
+                $this->baseUrl = '/';
+            }
+        };
+
+        $apiClientMock = $this->getMockBuilder(BEditaClient::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+
+        $apiClientMock->method('get')->willReturn(null);
+
+        $controller->setApiClient($apiClientMock);
+        $controller->get('/gustavo');
+
+        $body = (string)$controller->getResponse()->getBody();
+        static::assertEmpty($body);
     }
 }
