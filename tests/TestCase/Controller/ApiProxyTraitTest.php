@@ -116,7 +116,10 @@ class ApiProxyTraitTest extends TestCase
             static::assertStringStartsWith($baseUrl, $link);
         }
 
-        foreach (Hash::extract($response, 'data.relationships.{s}.links') as $link) {
+        $relationshipsLinks = (array)Hash::extract($response, 'data.relationships.{s}.links.{s}');
+        static::assertNotEmpty($relationshipsLinks);
+
+        foreach ($relationshipsLinks as $link) {
             static::assertStringStartsWith($baseUrl, $link);
         }
     }
@@ -174,7 +177,10 @@ class ApiProxyTraitTest extends TestCase
         $this->assertContentType('application/json');
         $response = json_decode((string)$this->_response, true);
 
-        foreach (Hash::extract($response, 'data.{n}.relationships.{s}.links.{s}') as $link) {
+        $relationshipsLinks = (array)Hash::extract($response, 'data.{n}.relationships.{s}.links.{s}');
+        static::assertNotEmpty($relationshipsLinks);
+
+        foreach ($relationshipsLinks as $link) {
             static::assertStringStartsWith($this->getBaseUrl(), $link);
         }
     }
