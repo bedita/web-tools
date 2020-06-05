@@ -225,7 +225,7 @@ trait ApiProxyTrait
             }
             $response['data'] = $data;
         } else {
-            $response['data']['relationships'] = $this->maskMultiLinks($data);
+            $response['data'] = $this->maskMultiLinks($data);
         }
 
         return (array)$response;
