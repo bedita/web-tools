@@ -78,10 +78,7 @@ trait ApiProxyTrait
             $this->apiClient = ApiClientProvider::getApiClient();
         }
 
-        $this->viewBuilder()
-            ->setClassName('Json');
-
-        $this->set('_serialize', true);
+        $this->viewBuilder()->setClassName('Json');
     }
 
     /**
@@ -154,12 +151,16 @@ trait ApiProxyTrait
                     throw new MethodNotAllowedException();
             }
 
-            if (empty($response) || !is_array($response)) {
+            if ($response === null) {
+                $this->autoRender = false;
+                $this->response = $this->response->withStringBody(null);
+
                 return;
             }
 
             $response = $this->maskResponseLinks($response);
             $this->set($response);
+            $this->set('_serialize', array_keys($response));
         } catch (\Throwable $e) {
             $this->handleError($e);
         }
@@ -184,6 +185,7 @@ trait ApiProxyTrait
             'title' => $error->getMessage(),
         ];
         $this->set('error', $errorData);
+        $this->set('_serialize', ['error']);
 
         if (!$error instanceof BEditaClientException) {
             return;

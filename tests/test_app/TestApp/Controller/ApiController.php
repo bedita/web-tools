@@ -16,8 +16,19 @@ namespace TestApp\Controller;
 
 use BEdita\WebTools\Controller\ApiProxyTrait;
 use Cake\Controller\Controller;
+use Cake\Event\Event;
 
 class ApiController extends Controller
 {
     use ApiProxyTrait;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        $this->set('varNotSerialized', true);
+    }
 }
