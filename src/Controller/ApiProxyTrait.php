@@ -90,7 +90,8 @@ trait ApiProxyTrait
     protected function setBaseUrl($path): void
     {
         $requestPath = $this->request->getPath();
-        $basePath = substr($requestPath, 0, strpos($requestPath, $path));
+        $pos = strpos(urldecode($requestPath), $path);
+        $basePath = substr($requestPath, 0, $pos);
         $this->baseUrl = Router::url(rtrim($basePath, '/'), true);
     }
 
