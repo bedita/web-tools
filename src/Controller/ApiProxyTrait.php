@@ -16,6 +16,7 @@ namespace BEdita\WebTools\Controller;
 
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
@@ -90,7 +91,11 @@ trait ApiProxyTrait
     protected function setBaseUrl($path): void
     {
         $requestPath = $this->request->getPath();
-        $pos = strpos(urldecode($requestPath), $path);
+        $pos = strpos(rawurldecode($requestPath), $path);
+        if ($pos === false) {
+            throw new BadRequestException('Path not found in request');
+        }
+
         $basePath = substr($requestPath, 0, $pos);
         $this->baseUrl = Router::url(rtrim($basePath, '/'), true);
     }
@@ -103,7 +108,6 @@ trait ApiProxyTrait
      */
     public function get($path = '')
     {
-        $this->setBaseUrl($path);
         $this->apiRequest([
             'method' => 'get',
             'path' => $path,
@@ -135,6 +139,7 @@ trait ApiProxyTrait
         ];
 
         try {
+            $this->setBaseUrl($options['path']);
             switch (strtolower($options['method'])) {
                 case 'get':
                     $response = $this->apiClient->get($options['path'], $options['query'], $options['headers']);

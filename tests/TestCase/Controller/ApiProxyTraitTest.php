@@ -138,6 +138,7 @@ class ApiProxyTraitTest extends TestCase
         $this->assertContentType('application/json');
         $error = $this->viewVariable('error');
         static::assertNotEmpty($error);
+        $this->assertResponseCode(404);
 
         $response = json_decode((string)$this->_response, true);
         static::assertArrayHasKey('error', $response);
@@ -237,6 +238,7 @@ class ApiProxyTraitTest extends TestCase
         $controller->get('/gustavo');
         $error = $controller->viewBuilder()->getVar('error');
 
+        static::assertEquals(500, $controller->getResponse()->getStatusCode());
         static::assertArrayHasKey('status', $error);
         static::assertArrayHasKey('title', $error);
         static::assertEquals('500', $error['status']);
@@ -278,5 +280,61 @@ class ApiProxyTraitTest extends TestCase
 
         $body = (string)$controller->getResponse()->getBody();
         static::assertEmpty($body);
+    }
+
+    /**
+     * Test that if path was unexpected an error 400 Bad Request was sent.
+     *
+     * @return void
+     *
+     * @covers ::setBaseUrl()
+     */
+    public function testErrorIfPathNotFound(): void
+    {
+        $controller = new class (new ServerRequest(['url' => '/api/users'])) extends Controller {
+            use ApiProxyTrait {
+                 setBaseUrl as setBaseUrlTrait;
+            }
+
+            protected function setBaseUrl($path): void
+            {
+                $path = '/injected/path';
+
+                $this->setBaseUrlTrait($path);
+            }
+        };
+
+        $controller->get('/users');
+        $error = $controller->viewBuilder()->getVar('error');
+
+        static::assertEquals(400, $controller->getResponse()->getStatusCode());
+        static::assertArrayHasKey('status', $error);
+        static::assertArrayHasKey('title', $error);
+        static::assertEquals('400', $error['status']);
+        static::assertEquals('Path not found in request', $error['title']);
+    }
+
+    /**
+     * Test that url is urlencoded the baseUrl is found.
+     *
+     * @return void
+     *
+     * @covers ::setBaseUrl()
+     */
+    public function testMatchUrlEncodedPath(): void
+    {
+        $controller = new class (new ServerRequest(['url' => '/api/space%20here'])) extends Controller {
+            use ApiProxyTrait;
+
+            public function get($path): void
+            {
+                $this->setBaseUrl($path);
+                $this->set('baseUrl', $this->baseUrl);
+            }
+        };
+
+        $controller->get('/space here');
+        $baseUrl = $controller->viewBuilder()->getVar('baseUrl');
+        static::assertEquals('/api', $baseUrl);
     }
 }
