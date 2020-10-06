@@ -183,6 +183,9 @@ trait ApiProxyTrait
             'headers' => null,
         ];
 
+        if (empty($options['body'])) {
+            $options['body'] = null;
+        }
         if (is_array($options['body'])) {
             $options['body'] = json_encode($options['body']);
         }
