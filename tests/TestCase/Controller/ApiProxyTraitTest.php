@@ -229,7 +229,7 @@ class ApiProxyTraitTest extends TestCase
 
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get'])
+            ->onlyMethods(['get'])
             ->getMock();
 
         $apiClientMock->method('get')->willThrowException(new \LogicException('Broken'));
@@ -270,7 +270,7 @@ class ApiProxyTraitTest extends TestCase
 
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
             ->disableOriginalConstructor()
-            ->setMethods(['get'])
+            ->onlyMethods(['get'])
             ->getMock();
 
         $apiClientMock->method('get')->willReturn(null);
@@ -336,5 +336,58 @@ class ApiProxyTraitTest extends TestCase
         $controller->get('/space here');
         $baseUrl = $controller->viewBuilder()->getVar('baseUrl');
         static::assertEquals('/api', $baseUrl);
+    }
+
+    /**
+     * Test POST request
+     *
+     * @return void
+     */
+    public function testPost(): void
+    {
+        $this->configRequest([
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+        ]);
+
+        $this->post('/api/users', [
+            'data' => [
+                'type' => 'users',
+                'attributes' => [
+                    'username' => 'GusTavo',
+                    'name' => 'Gustavo',
+                    'surname' => 'Supporto',
+                ],
+            ],
+        ]);
+        $this->assertResponseOk();
+        $this->assertContentType('application/json');
+        $data = $this->viewVariable('data');
+        $links = $this->viewVariable('links');
+        $meta = $this->viewVariable('meta');
+        static::assertNotEmpty($data);
+        static::assertNotEmpty($links);
+        static::assertNotEmpty($meta);
+        static::assertEquals('2', Hash::get($data, 'id'));
+
+        $response = json_decode((string)$this->_response, true);
+        static::assertArrayHasKey('data', $response);
+        static::assertArrayHasKey('links', $response);
+        static::assertArrayHasKey('meta', $response);
+        static::assertEquals('GusTavo', Hash::get($response, 'data.attributes.username'));
+
+        $baseUrl = $this->getBaseUrl();
+        foreach ($response['links'] as $link) {
+            static::assertStringStartsWith($baseUrl, $link);
+        }
+
+        $relationshipsLinks = (array)Hash::extract($response, 'data.relationships.{s}.links.{s}');
+        static::assertNotEmpty($relationshipsLinks);
+
+        foreach ($relationshipsLinks as $link) {
+            static::assertStringStartsWith($baseUrl, $link);
+        }
     }
 }

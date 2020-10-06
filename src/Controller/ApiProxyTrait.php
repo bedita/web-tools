@@ -126,7 +126,7 @@ trait ApiProxyTrait
         $this->apiRequest([
             'method' => 'post',
             'path' => $path,
-            'body' => (string)$this->request->getBody(),
+            'body' => $this->request->getData(),
         ]);
     }
 
@@ -141,7 +141,7 @@ trait ApiProxyTrait
         $this->apiRequest([
             'method' => 'patch',
             'path' => $path,
-            'body' => (string)$this->request->getBody(),
+            'body' => $this->request->getData(),
         ]);
     }
 
@@ -156,7 +156,7 @@ trait ApiProxyTrait
         $this->apiRequest([
             'method' => 'delete',
             'path' => $path,
-            'body' => (string)$this->request->getBody(),
+            'body' => $this->request->getData(),
         ]);
     }
 
@@ -182,6 +182,10 @@ trait ApiProxyTrait
             'body' => null,
             'headers' => null,
         ];
+
+        if (is_array($options['body'])) {
+            $options['body'] = json_encode($options['body']);
+        }
 
         try {
             $this->setBaseUrl($options['path']);
