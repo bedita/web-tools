@@ -35,7 +35,7 @@ class Application extends BaseApplication
             $routes->get('/**', ['controller' => 'Api', 'action' => 'get'], 'get');
             $routes->post('/**', ['controller' => 'Api', 'action' => 'post'], 'post');
             $routes->patch('/**', ['controller' => 'Api', 'action' => 'patch'], 'patch');
-            $routes->delete('/**', ['controller' => 'Api', 'action' => 'patch'], 'delete');
+            $routes->delete('/**', ['controller' => 'Api', 'action' => 'delete'], 'delete');
         });
     }
 
