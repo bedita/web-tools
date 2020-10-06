@@ -390,4 +390,63 @@ class ApiProxyTraitTest extends TestCase
             static::assertStringStartsWith($baseUrl, $link);
         }
     }
+
+    /**
+     * Test PATCH request
+     *
+     * @return void
+     *
+     * @covers ::patch()
+     */
+    public function testPatch(): void
+    {
+        $data = [
+            'type' => 'documents',
+            'attributes' => [
+                'title' => 'new doc',
+            ],
+        ];
+        $this->post('/api/documents', compact('data'));
+        $this->assertResponseOk();
+
+        $response = json_decode((string)$this->_response, true);
+        $id = Hash::get($response, 'data.id');
+        $data['id'] = $id;
+        $data['attributes']['title'] = 'new doc title';
+
+        $this->patch('/api/documents/' . $id, compact('data'));
+        $this->assertResponseOk();
+        $response = json_decode((string)$this->_response, true);
+        static::assertArrayHasKey('data', $response);
+        static::assertArrayHasKey('links', $response);
+        static::assertArrayHasKey('meta', $response);
+
+        static::assertEquals($data['attributes']['title'], Hash::get($response, 'data.attributes.title'));
+    }
+
+    /**
+     * Test DELETE request
+     *
+     * @return void
+     *
+     * @covers ::delete()
+     */
+    public function testDelete(): void
+    {
+        $data = [
+            'type' => 'documents',
+            'attributes' => [
+                'title' => 'new doc',
+            ],
+        ];
+        $this->post('/api/documents', compact('data'));
+        $this->assertResponseOk();
+
+        $response = json_decode((string)$this->_response, true);
+        $id = Hash::get($response, 'data.id');
+        $this->delete('/api/documents/' . $id);
+        $this->assertResponseOk();
+        $response = json_decode((string)$this->_response, true);
+        static::assertEmpty($response);
+    }
 }
