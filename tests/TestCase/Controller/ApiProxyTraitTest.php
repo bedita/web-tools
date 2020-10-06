@@ -342,53 +342,28 @@ class ApiProxyTraitTest extends TestCase
      * Test POST request
      *
      * @return void
+     *
+     * @covers ::post()
+     * @covers ::apiRequest()
      */
     public function testPost(): void
     {
-        $this->configRequest([
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-        ]);
-
-        $this->post('/api/users', [
+        $this->post('/api/documents', [
             'data' => [
-                'type' => 'users',
+                'type' => 'documents',
                 'attributes' => [
-                    'username' => 'GusTavo',
-                    'name' => 'Gustavo',
-                    'surname' => 'Supporto',
+                    'title' => 'The Doc',
                 ],
             ],
         ]);
+
         $this->assertResponseOk();
         $this->assertContentType('application/json');
-        $data = $this->viewVariable('data');
-        $links = $this->viewVariable('links');
-        $meta = $this->viewVariable('meta');
-        static::assertNotEmpty($data);
-        static::assertNotEmpty($links);
-        static::assertNotEmpty($meta);
-        static::assertEquals('2', Hash::get($data, 'id'));
-
         $response = json_decode((string)$this->_response, true);
         static::assertArrayHasKey('data', $response);
         static::assertArrayHasKey('links', $response);
         static::assertArrayHasKey('meta', $response);
-        static::assertEquals('GusTavo', Hash::get($response, 'data.attributes.username'));
-
-        $baseUrl = $this->getBaseUrl();
-        foreach ($response['links'] as $link) {
-            static::assertStringStartsWith($baseUrl, $link);
-        }
-
-        $relationshipsLinks = (array)Hash::extract($response, 'data.relationships.{s}.links.{s}');
-        static::assertNotEmpty($relationshipsLinks);
-
-        foreach ($relationshipsLinks as $link) {
-            static::assertStringStartsWith($baseUrl, $link);
-        }
+        static::assertEquals('The Doc', Hash::get($response, 'data.attributes.title'));
     }
 
     /**
@@ -397,6 +372,7 @@ class ApiProxyTraitTest extends TestCase
      * @return void
      *
      * @covers ::patch()
+     * @covers ::apiRequest()
      */
     public function testPatch(): void
     {
@@ -414,6 +390,8 @@ class ApiProxyTraitTest extends TestCase
         $data['id'] = $id;
         $data['attributes']['title'] = 'new doc title';
 
+        Router::resetRoutes();
+
         $this->patch('/api/documents/' . $id, compact('data'));
         $this->assertResponseOk();
         $response = json_decode((string)$this->_response, true);
@@ -430,6 +408,7 @@ class ApiProxyTraitTest extends TestCase
      * @return void
      *
      * @covers ::delete()
+     * @covers ::apiRequest()
      */
     public function testDelete(): void
     {
@@ -441,6 +420,8 @@ class ApiProxyTraitTest extends TestCase
         ];
         $this->post('/api/documents', compact('data'));
         $this->assertResponseOk();
+
+        Router::resetRoutes();
 
         $response = json_decode((string)$this->_response, true);
         $id = Hash::get($response, 'data.id');
