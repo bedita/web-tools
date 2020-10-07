@@ -94,19 +94,63 @@ trait ApiProxyTrait
         $this->baseUrl = Router::url(rtrim($basePath, '/'), true);
     }
 
-    /**
-     * Proxy for GET requests to BEdita4 API
-     *
-     * @param string $path The path for API request
-     * @return void
-     */
-    public function get($path = '')
+    /*
+    * Proxy for GET requests to BEdita4 API
+    *
+    * @param string $path The path for API request
+    * @return void
+    */
+    public function get($path = ''): void
     {
-        $this->setBaseUrl($path);
         $this->apiRequest([
             'method' => 'get',
             'path' => $path,
             'query' => $this->request->getQueryParams(),
+        ]);
+    }
+
+    /**
+     * Proxy for POST requests to BEdita4 API
+     *
+     * @param string $path The path for API request
+     * @return void
+     */
+    public function post($path = ''): void
+    {
+        $this->apiRequest([
+            'method' => 'post',
+            'path' => $path,
+            'body' => $this->request->getData(),
+        ]);
+    }
+
+    /**
+     * Proxy for PATCH requests to BEdita4 API
+     *
+     * @param string $path The path for API request
+     * @return void
+     */
+    public function patch($path = ''): void
+    {
+        $this->apiRequest([
+            'method' => 'patch',
+            'path' => $path,
+            'body' => $this->request->getData(),
+        ]);
+    }
+
+    /**
+     * Proxy for DELETE requests to BEdita4 API
+     *
+     * @param string $path The path for API request
+     * @return void
+     */
+    public function delete($path = ''): void
+    {
+        $this->apiRequest([
+            'method' => 'delete',
+            'path' => $path,
+            'body' => $this->request->getData(),
         ]);
     }
 
@@ -133,22 +177,27 @@ trait ApiProxyTrait
             'headers' => null,
         ];
 
+        if (empty($options['body'])) {
+            $options['body'] = null;
+        }
+        if (is_array($options['body'])) {
+            $options['body'] = json_encode($options['body']);
+        }
+
         try {
-            switch (strtolower($options['method'])) {
-                case 'get':
-                    $response = $this->apiClient->get($options['path'], $options['query'], $options['headers']);
-                    break;
-                // case 'post':
-                //     $response = $this->apiClient->post($options['path'], $options['body'], $options['headers']);
-                //     break;
-                // case 'patch':
-                //     $response = $this->apiClient->patch($options['path'], $options['body'], $options['headers']);
-                //     break;
-                // case 'delete':
-                //     $response = $this->apiClient->delete($options['path'], $options['body'], $options['headers']);
-                //     break;
-                default:
-                    throw new MethodNotAllowedException();
+            $this->setBaseUrl($options['path']);
+            $method = strtolower($options['method']);
+            if (!in_array($method, ['get', 'post', 'patch', 'delete'])) {
+                throw new MethodNotAllowedException();
+            }
+
+            if ($method === 'get') {
+                $response = $this->apiClient->get($options['path'], $options['query'], $options['headers']);
+            } else {
+                $response = call_user_func_array(
+                    [$this->apiClient, $method], // call 'post', 'patch' or 'delete'
+                    [$options['path'], $options['body'], $options['headers']]
+                );
             }
 
             if ($response === null) {
