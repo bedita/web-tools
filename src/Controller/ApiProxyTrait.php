@@ -94,12 +94,12 @@ trait ApiProxyTrait
         $this->baseUrl = Router::url(rtrim($basePath, '/'), true);
     }
 
-    /*
-    * Proxy for GET requests to BEdita4 API
-    *
-    * @param string $path The path for API request
-    * @return void
-    */
+    /**
+     * Proxy for GET requests to BEdita4 API
+     *
+     * @param string $path The path for API request
+     * @return void
+     */
     public function get($path = ''): void
     {
         $this->apiRequest([
