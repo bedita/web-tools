@@ -102,7 +102,6 @@ trait ApiProxyTrait
      */
     public function get($path = ''): void
     {
-        $this->setBaseUrl($path);
         $this->apiRequest([
             'method' => 'get',
             'path' => $path,
@@ -118,7 +117,6 @@ trait ApiProxyTrait
      */
     public function post($path = ''): void
     {
-        $this->setBaseUrl($path);
         $this->apiRequest([
             'method' => 'post',
             'path' => $path,
@@ -134,7 +132,6 @@ trait ApiProxyTrait
      */
     public function patch($path = ''): void
     {
-        $this->setBaseUrl($path);
         $this->apiRequest([
             'method' => 'patch',
             'path' => $path,
@@ -150,7 +147,6 @@ trait ApiProxyTrait
      */
     public function delete($path = ''): void
     {
-        $this->setBaseUrl($path);
         $this->apiRequest([
             'method' => 'delete',
             'path' => $path,
