@@ -30,7 +30,6 @@ class PluginTest extends TestCase
      * Test `console` method
      *
      * @return void
-     *
      * @covers ::console
      */
     public function testConsole(): void

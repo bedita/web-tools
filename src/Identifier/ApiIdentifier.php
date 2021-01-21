@@ -44,7 +44,7 @@ class ApiIdentifier extends AbstractIdentifier
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function identify(array $data)
     {

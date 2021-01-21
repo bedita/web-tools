@@ -31,7 +31,6 @@ class AssetHelperTest extends TestCase
      * Test `get` method
      *
      * @covers ::get()
-     *
      * @return void
      */
     public function testGet(): void

@@ -48,14 +48,14 @@ use Cake\Utility\Hash;
 class EntrypointsStrategy extends AssetStrategy
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $_defaultConfig = [
         'manifestPath' => WWW_ROOT . 'build' . DS . 'entrypoints.json',
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function get(string $name, ?string $extension = null)
     {

@@ -26,7 +26,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function routes(RouteBuilder $routes): void
     {
@@ -40,7 +40,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function middleware(MiddlewareQueue $middleware): MiddlewareQueue
     {

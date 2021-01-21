@@ -47,7 +47,7 @@ class Plugin extends BasePlugin
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {

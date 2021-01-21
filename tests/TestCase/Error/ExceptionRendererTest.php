@@ -82,7 +82,6 @@ class ExceptionRendererTest extends TestCase
      * @param \Exception $exception Expected error.
      * @param string $expected Template.
      * @return void
-     *
      * @dataProvider templateProvider
      * @covers ::_template()
      */
@@ -102,7 +101,6 @@ class ExceptionRendererTest extends TestCase
      * and the `Error/error500.twig` will be used.
      *
      * @return void
-     *
      * @covers ::_outputMessageSafe()
      */
     public function testOutputMessageSafe()
@@ -138,7 +136,6 @@ class ExceptionRendererTest extends TestCase
      * In that case the `\Cake\View\View` class is used.
      *
      * @return void
-     *
      * @covers ::_outputMessageSafe()
      */
     public function testOutputMessageSafeFallback()

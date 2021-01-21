@@ -27,7 +27,7 @@ use Cake\TestSuite\TestCase;
 class AssetsRevisionsTest extends TestCase
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp(): void
     {
@@ -35,7 +35,7 @@ class AssetsRevisionsTest extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function tearDown(): void
     {
@@ -46,7 +46,6 @@ class AssetsRevisionsTest extends TestCase
      * Test set, get and reset strategy
      *
      * @return void
-     *
      * @covers ::setStrategy()
      * @covers ::getStrategy()
      * @covers ::clearStrategy()
@@ -96,7 +95,6 @@ class AssetsRevisionsTest extends TestCase
      * @param string $name The asset name
      * @param string $extension The asset extension
      * @return void
-     *
      * @dataProvider getProvider()
      * @covers ::get()
      */
@@ -110,7 +108,6 @@ class AssetsRevisionsTest extends TestCase
      * Test that `get()` method returns the passed asset name when no strategy was set.
      *
      * @return void
-     *
      * @covers ::get()
      */
     public function testGetWithoutStrategy(): void
@@ -124,7 +121,6 @@ class AssetsRevisionsTest extends TestCase
      * Test `getMulti` method
      *
      * @return void
-     *
      * @covers ::getMulti()
      */
     public function testGetMulti(): void
@@ -143,7 +139,6 @@ class AssetsRevisionsTest extends TestCase
      *
      * @covers ::loadManifest()
      * @return void
-     *
      * @covers ::loadManifest()
      */
     public function testLoadManifest()
@@ -167,7 +162,6 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      * @expectException \LogicException
-     *
      * @covers ::loadManifest()
      */
     public function testLoadManifestWithoutStrategy(): void

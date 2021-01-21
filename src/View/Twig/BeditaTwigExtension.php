@@ -27,7 +27,7 @@ use Twig\TwigFunction;
 class BeditaTwigExtension extends AbstractExtension
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -35,7 +35,7 @@ class BeditaTwigExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFunctions(): array
     {
@@ -51,7 +51,7 @@ class BeditaTwigExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFilters(): array
     {

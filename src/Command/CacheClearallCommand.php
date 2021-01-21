@@ -25,9 +25,9 @@ use Cake\Filesystem\Folder;
 class CacheClearallCommand extends BaseCommand
 {
     /**
-     * Add `twig` compiled files removal step.
-     *
      * {@inheritDoc}
+     *
+     * Add `twig` compiled files removal step.
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
@@ -37,7 +37,7 @@ class CacheClearallCommand extends BaseCommand
             $io->error("Error removing Twig cache files in {$twigCachePath}");
             $this->abort();
         }
-        $io->out("<success>Cleared twig cache</success>");
+        $io->out('<success>Cleared twig cache</success>');
 
         return parent::execute($args, $io);
     }

@@ -23,7 +23,7 @@ class ApiController extends Controller
     use ApiProxyTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function beforeFilter(EventInterface $event)
     {
