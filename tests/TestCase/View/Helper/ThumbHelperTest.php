@@ -36,7 +36,7 @@ class ThumbHelperTest extends TestCase
     public $Thumb;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp(): void
     {
@@ -50,7 +50,7 @@ class ThumbHelperTest extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function tearDown(): void
     {

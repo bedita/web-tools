@@ -28,7 +28,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
     use LogTrait;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _template(\Throwable $exception, string $method, int $code): string
     {
@@ -41,7 +41,7 @@ class ExceptionRenderer extends CakeExceptionRenderer
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function _outputMessageSafe(string $template): Response
     {

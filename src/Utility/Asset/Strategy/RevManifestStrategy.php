@@ -30,14 +30,14 @@ use BEdita\WebTools\Utility\Asset\AssetStrategy;
 class RevManifestStrategy extends AssetStrategy
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $_defaultConfig = [
         'manifestPath' => WWW_ROOT . 'rev-manifest.json',
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function get(string $name, ?string $extension = null)
     {

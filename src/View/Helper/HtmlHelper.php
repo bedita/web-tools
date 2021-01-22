@@ -351,9 +351,9 @@ class HtmlHelper extends CakeHtmlHelper
     }
 
     /**
-     * Use `AssetsRevisions` class to load revisioned assets.
-     *
      * {@inheritDoc}
+     *
+     * Use `AssetsRevisions` class to load revisioned assets.
      */
     public function script($url, array $options = []): ?string
     {
@@ -367,9 +367,9 @@ class HtmlHelper extends CakeHtmlHelper
     }
 
     /**
-     * Use `AssetsRevisions` class to load revisioned assets.
-     *
      * {@inheritDoc}
+     *
+     * Use `AssetsRevisions` class to load revisioned assets.
      */
     public function css($url, array $options = []): ?string
     {

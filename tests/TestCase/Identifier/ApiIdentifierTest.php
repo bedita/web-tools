@@ -60,7 +60,7 @@ class ApiIdentifierTest extends TestCase
     protected $role = null;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp(): void
     {
@@ -70,7 +70,7 @@ class ApiIdentifierTest extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function tearDown(): void
     {
@@ -120,7 +120,6 @@ class ApiIdentifierTest extends TestCase
      * Test missing data for identifier.
      *
      * @return void
-     *
      * @covers ::identify()
      */
     public function testIdentifyMissingData(): void
@@ -136,7 +135,6 @@ class ApiIdentifierTest extends TestCase
      * Test authentication failure.
      *
      * @return void
-     *
      * @covers ::identify()
      * @covers ::setError()
      */
@@ -158,7 +156,6 @@ class ApiIdentifierTest extends TestCase
      * Test authentication ok.
      *
      * @return {void}
-     *
      * @covers ::identify()
      */
     public function testIdentifyCorrect(): void
@@ -182,7 +179,6 @@ class ApiIdentifierTest extends TestCase
      * Test that if missing `meta` from response then identification fails.
      *
      * @return void
-     *
      * @covers ::identify()
      */
     public function testMissingMetaFromResponse(): void

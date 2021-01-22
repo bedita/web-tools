@@ -24,7 +24,7 @@ use Cake\TwigView\View\TwigView as BaseTwigView;
 class TwigView extends BaseTwigView
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(): void
     {
@@ -35,7 +35,7 @@ class TwigView extends BaseTwigView
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initializeExtensions(): void
     {

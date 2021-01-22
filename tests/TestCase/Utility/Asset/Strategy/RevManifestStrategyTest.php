@@ -58,7 +58,6 @@ class RevManifestStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $name The configuration used
      * @return void
-     *
      * @dataProvider getProvider()
      * @covers ::get()
      */

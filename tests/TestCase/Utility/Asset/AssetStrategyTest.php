@@ -67,7 +67,6 @@ class AssetStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $config The configuration used
      * @return void
-     *
      * @dataProvider manifestPathProvider()
      * @covers ::__construct()
      */
@@ -82,7 +81,6 @@ class AssetStrategyTest extends TestCase
      * Test `loadASsets()`
      *
      * @return void
-     *
      * @covers ::loadAssets()
      */
     public function testLoadAssets(): void

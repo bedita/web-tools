@@ -23,7 +23,7 @@ use Cake\View\Helper;
 class WebComponentsHelper extends Helper
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      **/
     public $helpers = ['Html'];
 
@@ -62,7 +62,13 @@ class WebComponentsHelper extends Helper
         }
 
         if (!empty($statements)) {
-            $content = sprintf('(function(){var elem = document.querySelector(\'[data-wc="%s"]\');%s}());if(document.currentScript)document.currentScript.parentNode.removeChild(document.currentScript);', $id, join('', $statements));
+            // @codingStandardsIgnoreStart
+            $content = sprintf(
+                '(function(){var elem = document.querySelector(\'[data-wc="%s"]\');%s}());if(document.currentScript)document.currentScript.parentNode.removeChild(document.currentScript);',
+                $id,
+                join('', $statements)
+            );
+            // @codingStandardsIgnoreEnd
             $this->Html->scriptBlock($content, [ 'block' => 'scriptsComponents' ]);
         }
 

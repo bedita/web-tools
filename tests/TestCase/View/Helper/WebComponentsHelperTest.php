@@ -33,7 +33,7 @@ class WebComponentsHelperTest extends TestCase
     public $WebComponents;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp(): void
     {
@@ -44,7 +44,7 @@ class WebComponentsHelperTest extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function tearDown(): void
     {
@@ -101,7 +101,6 @@ class WebComponentsHelperTest extends TestCase
      *
      * @dataProvider propsProvider()
      * @covers ::props()
-     *
      * @param array $expected The expected result
      * @param array $properties The element properties
      * @return void
@@ -144,7 +143,6 @@ class WebComponentsHelperTest extends TestCase
      *
      * @dataProvider isProvider()
      * @covers ::is()
-     *
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
@@ -187,7 +185,6 @@ class WebComponentsHelperTest extends TestCase
      *
      * @dataProvider elementProvider()
      * @covers ::element()
-     *
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void

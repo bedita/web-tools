@@ -38,7 +38,7 @@ class HtmlHelperTest extends TestCase
     public $Html;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp(): void
     {
@@ -49,7 +49,7 @@ class HtmlHelperTest extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function tearDown(): void
     {
@@ -542,7 +542,6 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     *
      * @dataProvider scriptProvider()
      * @covers ::script()
      */
@@ -619,7 +618,6 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     *
      * @dataProvider cssProvider()
      * @covers ::css()
      */
@@ -674,7 +672,6 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     *
      * @dataProvider assetsProvider()
      * @covers ::assets()
      */

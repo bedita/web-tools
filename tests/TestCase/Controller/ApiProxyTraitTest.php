@@ -43,7 +43,7 @@ class ApiProxyTraitTest extends TestCase
     protected $apiClient = null;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setUp(): void
     {
@@ -55,7 +55,7 @@ class ApiProxyTraitTest extends TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function tearDown(): void
     {
@@ -78,7 +78,6 @@ class ApiProxyTraitTest extends TestCase
      * Test get() method
      *
      * @return void
-     *
      * @covers ::initialize()
      * @covers ::get()
      * @covers ::setBaseUrl()
@@ -126,7 +125,6 @@ class ApiProxyTraitTest extends TestCase
      * Test non found error proxied from API.
      *
      * @return void
-     *
      * @covers ::get()
      * @covers ::apiRequest()
      * @covers ::handleError()
@@ -150,7 +148,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that masking links with value searched equal to string works.
      *
      * @return void
-     *
      * @covers ::maskLinks()
      */
     public function testMaskLinksString(): void
@@ -166,7 +163,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that getting a list of objects the relationships links are masked.
      *
      * @return void
-     *
      * @covers ::maskResponseLinks()
      */
     public function testMaskRelationshipsLinksGettingList(): void
@@ -188,7 +184,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that getting /home the resources links are masked.
      *
      * @return void
-     *
      * @covers ::maskResponseLinks()
      */
     public function testMaskResourcesGettingHome(): void
@@ -208,7 +203,6 @@ class ApiProxyTraitTest extends TestCase
      * is correctly handled
      *
      * @return void
-     *
      * @covers ::handleError()
      */
     public function testNotBEditaClientException(): void
@@ -249,7 +243,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that if BEditaClient return null the response has empty body.
      *
      * @return void
-     *
      * @covers ::apiRequest()
      */
     public function testNullResponseFromBEditaClient(): void
@@ -286,7 +279,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that if path was unexpected an error 400 Bad Request was sent.
      *
      * @return void
-     *
      * @covers ::setBaseUrl()
      */
     public function testErrorIfPathNotFound(): void
@@ -318,7 +310,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that url is urlencoded the baseUrl is found.
      *
      * @return void
-     *
      * @covers ::setBaseUrl()
      */
     public function testMatchUrlEncodedPath(): void
@@ -342,7 +333,6 @@ class ApiProxyTraitTest extends TestCase
      * Test POST request
      *
      * @return void
-     *
      * @covers ::post()
      * @covers ::apiRequest()
      */
@@ -370,7 +360,6 @@ class ApiProxyTraitTest extends TestCase
      * Test PATCH request
      *
      * @return void
-     *
      * @covers ::patch()
      * @covers ::apiRequest()
      */
@@ -406,7 +395,6 @@ class ApiProxyTraitTest extends TestCase
      * Test DELETE request
      *
      * @return void
-     *
      * @covers ::delete()
      * @covers ::apiRequest()
      */

@@ -69,7 +69,7 @@ trait ApiProxyTrait
     protected $baseUrl = '';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(): void
     {
