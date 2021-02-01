@@ -18,7 +18,7 @@ use BEdita\SDK\BEditaClient;
 use Cake\Core\Configure;
 
 /**
- * BEdita4 API client provider singleton class.
+ * BEdita4 API client provider singleton class. // test
  */
 class ApiClientProvider
 {
