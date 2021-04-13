@@ -10,7 +10,7 @@ declare(strict_types=1);
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
+ * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details
  */
 namespace BEdita\WebTools;
 
