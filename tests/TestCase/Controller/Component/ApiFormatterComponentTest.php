@@ -42,7 +42,6 @@ class ApiFormatterComponentTest extends TestCase
     public function tearDown(): void
     {
         unset($this->ApiFormatter);
-
         parent::tearDown();
     }
 
@@ -139,31 +138,7 @@ class ApiFormatterComponentTest extends TestCase
     public function embedIncludedProvider(): array
     {
         $gustavo = ['id' => 1, 'type' => 'persons', 'attributes' => ['name' => 'Gustavo'], 'relationships' => [['chief_of' => [['id' => 777, 'type' => 'universes']]]]];
-        $universe = ['id' => 777, 'type' => 'universes', 'attributes' => ['is_infinite' => true]];
-        $gustavoChief = array_merge(
-            $gustavo,
-            [
-                'relationships' => [
-                    'chief_of' => [
-                        'data' => [$universe],
-                    ],
-                ],
-            ],
-        );
-
         $tv = ['id' => 2, 'type' => 'things', 'attributes' => ['name' => 'Television'], 'relationships' => [['part_of' => [['id' => 888, 'type' => 'furnitures']]]]];
-        $furniture = ['id' => 888, 'type' => 'furnitures', 'attributes' => ['is_expensive' => false]];
-        $tvFurniture = array_merge(
-            $tv,
-            [
-                'relationships' => [
-                    'part_of' => [
-                        'data' => [$tv],
-                    ],
-                ],
-            ],
-        );
-
         $relationships = [
             'a' => [['id' => 1, 'type' => 'persons']],
             'b' => [['id' => 2, 'type' => 'things']],
