@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
+
 namespace BEdita\WebTools\Test\TestCase\Controller\Component;
 
 use BEdita\WebTools\Controller\Component\ApiFormatterComponent;
+use Cake\Controller\ComponentRegistry;
 use Cake\I18n\Number;
 use Cake\TestSuite\TestCase;
-use Cake\Controller\ComponentRegistry;
 
 /**
  * {@see \BEdita\WebTools\Controller\Component\ApiFormatter} Test Case
@@ -119,7 +121,6 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data for test
      * @param array $expected The expected resulting data
      * @return void
-     *
      * @covers ::addObjectsStream()
      * @covers ::extractFromIncluded()
      * @dataProvider addObjectsStreamProvider()
@@ -145,7 +146,7 @@ class ApiFormatterComponentTest extends TestCase
                 'relationships' => [
                     'chief_of' => [
                         'data' => [$universe],
-                    ]
+                    ],
                 ],
             ],
         );
@@ -158,7 +159,7 @@ class ApiFormatterComponentTest extends TestCase
                 'relationships' => [
                     'part_of' => [
                         'data' => [$tv],
-                    ]
+                    ],
                 ],
             ],
         );
@@ -284,7 +285,6 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data for test
      * @param array $expected The expected resulting data
      * @return void
-     *
      * @covers ::embedIncluded()
      * @covers ::addIncluded()
      * @covers ::extractFromIncluded()
