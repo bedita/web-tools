@@ -5,7 +5,6 @@ namespace BEdita\WebTools\Test\TestCase\Controller\Component;
 
 use BEdita\WebTools\Controller\Component\ApiFormatterComponent;
 use Cake\Controller\ComponentRegistry;
-use Cake\I18n\Number;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -43,91 +42,6 @@ class ApiFormatterComponentTest extends TestCase
     {
         unset($this->ApiFormatter);
         parent::tearDown();
-    }
-
-    /**
-     * Provider for `testAddObjectsStream` method
-     *
-     * @return array
-     */
-    public function addObjectsStreamProvider(): array
-    {
-        $streams = [
-            ['id' => '11', 'type' => 'streams', 'attributes' => ['key' => 111], 'meta' => ['file_size' => 1024 ** 1]],
-            ['id' => '22', 'type' => 'streams', 'attributes' => ['key' => 222], 'meta' => ['file_size' => 1024 ** 2]],
-            ['id' => '33', 'type' => 'streams', 'attributes' => ['key' => 333], 'meta' => ['file_size' => 1024 ** 3]],
-        ];
-        $expectedStreams = [
-            ['id' => '11', 'type' => 'streams', 'attributes' => ['key' => 111], 'meta' => ['file_size' => Number::toReadableSize(1024 ** 1)]],
-            ['id' => '22', 'type' => 'streams', 'attributes' => ['key' => 222], 'meta' => ['file_size' => Number::toReadableSize(1024 ** 2)]],
-            ['id' => '33', 'type' => 'streams', 'attributes' => ['key' => 333], 'meta' => ['file_size' => Number::toReadableSize(1024 ** 3)]],
-        ];
-
-        return [
-            'empty data' => [
-                [],
-                [],
-            ],
-            'empty included' => [
-                ['data' => [['id' => 1]]],
-                ['data' => [['id' => 1]]],
-            ],
-            'no streams' => [
-                ['data' => [['id' => 1]], 'included' => [['id' => 2, 'type' => 'dummies']]],
-                ['data' => [['id' => 1]], 'included' => [['id' => 2, 'type' => 'dummies']]],
-            ],
-            'streams' => [
-                [
-                    'data' => [
-                        ['id' => 1, 'type' => 'dummies', 'relationships' => ['streams' => ['data' => [$streams[0]]]]],
-                        ['id' => 2, 'type' => 'dummies', 'relationships' => ['streams' => ['data' => [$streams[1]]]]],
-                        ['id' => 3, 'type' => 'dummies', 'relationships' => ['streams' => ['data' => [$streams[2]]]]],
-                        ['id' => 4, 'type' => 'dummies'],
-                    ],
-                    'included' => $streams,
-                ],
-                [
-                    'data' => [
-                        [
-                            'id' => 1,
-                            'type' => 'dummies',
-                            'relationships' => ['streams' => ['data' => [$streams[0]]]],
-                            'stream' => $expectedStreams[0],
-                        ],
-                        [
-                            'id' => 2,
-                            'type' => 'dummies',
-                            'relationships' => ['streams' => ['data' => [$streams[1]]]],
-                            'stream' => $expectedStreams[1],
-                        ],
-                        [
-                            'id' => 3,
-                            'type' => 'dummies',
-                            'relationships' => ['streams' => ['data' => [$streams[2]]]],
-                            'stream' => $expectedStreams[2],
-                        ],
-                        ['id' => 4, 'type' => 'dummies'],
-                    ],
-                    'included' => $streams,
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Test `addObjectsStream` method
-     *
-     * @param array $response The response data for test
-     * @param array $expected The expected resulting data
-     * @return void
-     * @covers ::addObjectsStream()
-     * @covers ::extractFromIncluded()
-     * @dataProvider addObjectsStreamProvider()
-     */
-    public function testAddObjectsStream(array $response, array $expected): void
-    {
-        $actual = $this->ApiFormatter->addObjectsStream($response);
-        static::assertEquals($expected, $actual);
     }
 
     /**
