@@ -27,7 +27,7 @@ class ApiFormatterComponent extends Component
     {
         $data = (array)Hash::get($response, 'data');
         if (empty($data)) {
-            return $data;
+            return $response;
         }
 
         $included = (array)Hash::get($response, 'included');
