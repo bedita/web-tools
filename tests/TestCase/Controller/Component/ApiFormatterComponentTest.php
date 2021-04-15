@@ -67,9 +67,13 @@ class ApiFormatterComponentTest extends TestCase
         ];
 
         return [
+            'no data' => [
+                ['something'],
+                ['something'],
+            ],
             'empty data' => [
-                [],
-                [],
+                ['data' => [], 'something'],
+                ['data' => [], 'something'],
             ],
             'empty included' => [
                 ['data' => [['id' => 1]]],
