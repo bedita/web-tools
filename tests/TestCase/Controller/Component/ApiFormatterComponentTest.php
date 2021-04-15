@@ -9,9 +9,9 @@ use Cake\I18n\Number;
 use Cake\TestSuite\TestCase;
 
 /**
- * {@see \BEdita\WebTools\Controller\Component\ApiFormatter} Test Case
+ * {@see \BEdita\WebTools\Controller\Component\ApiFormatterComponent} Test Case
  *
- * @coversDefaultClass \BEdita\WebTools\Controller\Component\ApiFormatter
+ * @coversDefaultClass \BEdita\WebTools\Controller\Component\ApiFormatterComponent
  */
 class ApiFormatterComponentTest extends TestCase
 {
