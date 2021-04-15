@@ -10,7 +10,6 @@ namespace BEdita\WebTools\Controller\Component;
 
 use Cake\Collection\Collection;
 use Cake\Controller\Component;
-use Cake\I18n\Number;
 use Cake\Utility\Hash;
 
 /**
@@ -18,42 +17,6 @@ use Cake\Utility\Hash;
  */
 class ApiFormatterComponent extends Component
 {
-    /**
-     * Add 'stream' to each object in response data, when available in included data.
-     *
-     * @param array $response The response data
-     * @return array
-     */
-    public function addObjectsStream(array $response): array
-    {
-        $objects = (array)Hash::get($response, 'data');
-        if (empty($objects)) {
-            return $response;
-        }
-        $included = (array)Hash::get($response, 'included');
-        if (empty($included)) {
-            return $response;
-        }
-        $included = collection($included);
-        /** @var array $object */
-        foreach ($objects as &$object) {
-            if (!Hash::check($object, 'relationships.streams.data')) {
-                continue;
-            }
-            $relationData = (array)Hash::get($object, 'relationships.streams.data');
-            $streams = $this->extractFromIncluded($included, $relationData);
-            $stream = $streams[0];
-            if (Hash::check($stream, 'meta.file_size')) {
-                $size = (int)Hash::get($stream, 'meta.file_size');
-                $stream['meta']['file_size'] = Number::toReadableSize($size);
-            }
-            $object['stream'] = $stream;
-        }
-        $response['data'] = $objects;
-
-        return $response;
-    }
-
     /**
      * Embed included data into relationships.
      *
