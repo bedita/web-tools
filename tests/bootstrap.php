@@ -84,6 +84,11 @@ Configure::write('Error', [
 ]);
 
 Cache::setConfig([
+    'default' => [
+        'className' => 'File',
+        'path' => CACHE,
+        'url' => env('CACHE_DEFAULT_URL', null),
+    ],
     '_cake_core_' => [
         'engine' => 'File',
         'prefix' => 'cake_core_',
