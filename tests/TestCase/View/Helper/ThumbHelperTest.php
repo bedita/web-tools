@@ -142,7 +142,7 @@ class ThumbHelperTest extends TestCase
         $expected = 'default';
         static::assertEquals($expected, $actual);
 
-        Cache::setConfig('cache', 'default');
+        Cache::setConfig('cache', 'test');
         $actual = $this->Thumb->getConfig('cache');
         $expected = 'default';
         static::assertEquals($expected, $actual);
