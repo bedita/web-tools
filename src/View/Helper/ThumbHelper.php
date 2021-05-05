@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace BEdita\WebTools\View\Helper;
 
 use BEdita\WebTools\ApiClientProvider;
-use Cake\Log\LogTrait;
-use Cake\View\Helper;
 use Cake\Cache\Cache;
+use Cake\Log\LogTrait;
 use Cake\Utility\Hash;
+use Cake\View\Helper;
 
 /**
  * Helper to obtain thumbnail url
@@ -190,7 +190,7 @@ class ThumbHelper extends Helper
     /**
      * Retrieve thumb URL using cache.
      * Silently fail with log if no image 'id' is found in array.
-     * 
+     *
      * @param  array  $image   Image object array containing at least `id`
      * @param  string $options Thumb options
      * @return string
@@ -213,5 +213,4 @@ class ThumbHelper extends Helper
             $this->getConfig('cache')
         );
     }
-
 }
