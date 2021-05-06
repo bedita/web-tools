@@ -69,7 +69,13 @@ class ThumbHelper extends Helper
      */
     public function initialize(array $config): void
     {
-        if (Cache::getConfig($this->getConfig('cache')) === null) {
+        parent::initialize($config);
+        if (!empty($config['cache'])) {
+            $this->setConfig('cache', $config['cache']);
+        }
+        $cacheCfg = $this->getConfig('cache');
+        $cfg = Cache::getConfig($cacheCfg);
+        if ($cfg === null) {
             $this->setConfig('cache', 'default');
         }
     }

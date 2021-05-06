@@ -134,6 +134,7 @@ class ThumbHelperTest extends TestCase
      * Initialize Thumb Helper test
      *
      * @return void
+     * @covers ::initialize()
      */
     public function testInitialize(): void
     {
@@ -141,10 +142,27 @@ class ThumbHelperTest extends TestCase
         $actual = $this->Thumb->getConfig('cache');
         $expected = 'default';
         static::assertEquals($expected, $actual);
+    }
 
-        Cache::setConfig('cache', 'test');
+    /**
+     * Initialize Thumb Helper test, custom cfg
+     *
+     * @return void
+     * @covers ::initialize()
+     */
+    public function testInitializeCustomConfig(): void
+    {
+        $expected = 'dummy';
+        Cache::setConfig(
+            $expected,
+            [
+                'engine' => 'File',
+                'prefix' => sprintf('%s_', $expected),
+                'serialize' => true,
+            ]
+        );
+        $this->Thumb = new ThumbHelper(new View(), ['cache' => $expected]);
         $actual = $this->Thumb->getConfig('cache');
-        $expected = 'default';
         static::assertEquals($expected, $actual);
     }
 
