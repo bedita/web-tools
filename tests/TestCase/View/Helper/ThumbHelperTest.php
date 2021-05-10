@@ -17,8 +17,10 @@ namespace BEdita\WebTools\Test\TestCase\View\Helper;
 use BEdita\SDK\BEditaClient;
 use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\View\Helper\ThumbHelper;
+use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Cake\View\View;
 
 /**
@@ -98,6 +100,70 @@ class ThumbHelperTest extends TestCase
         $response = $apiClient->createMediaFromStream($streamId, $type, $body);
 
         return (int)$response['data']['id'];
+    }
+
+    /**
+     * Create image and media stream for test.
+     * Return id
+     *
+     * @param string $filename the File name.
+     * @return array|null The image Data.
+     */
+    private function _imageData($filename = 'test.png'): ?array
+    {
+        $apiClient = ApiClientProvider::getApiClient();
+
+        $filepath = sprintf('%s/tests/files/%s', getcwd(), $filename);
+        $response = $apiClient->upload($filename, $filepath);
+
+        $streamId = $response['data']['id'];
+        $response = $apiClient->get(sprintf('/streams/%s', $streamId));
+
+        $type = 'images';
+        $title = 'The test image';
+        $attributes = compact('title');
+        $data = compact('type', 'attributes');
+        $body = compact('data');
+        $response = $apiClient->createMediaFromStream($streamId, $type, $body);
+        $response['id'] = (int)$response['data']['id'];
+
+        return $response;
+    }
+
+    /**
+     * Initialize Thumb Helper test
+     *
+     * @return void
+     * @covers ::initialize()
+     */
+    public function testInitialize(): void
+    {
+        $this->Thumb = new ThumbHelper(new View());
+        $actual = $this->Thumb->getConfig('cache');
+        $expected = 'default';
+        static::assertEquals($expected, $actual);
+    }
+
+    /**
+     * Initialize Thumb Helper test, custom cfg
+     *
+     * @return void
+     * @covers ::initialize()
+     */
+    public function testInitializeCustomConfig(): void
+    {
+        $expected = 'dummy';
+        Cache::setConfig(
+            $expected,
+            [
+                'engine' => 'File',
+                'prefix' => sprintf('%s_', $expected),
+                'serialize' => true,
+            ]
+        );
+        $this->Thumb = new ThumbHelper(new View(), ['cache' => $expected]);
+        $actual = $this->Thumb->getConfig('cache');
+        static::assertEquals($expected, $actual);
     }
 
     /**
@@ -358,5 +424,41 @@ class ThumbHelperTest extends TestCase
     {
         $status = $this->Thumb->status(null);
         static::assertEquals($status, ThumbHelper::NOT_ACCEPTABLE);
+    }
+
+    /**
+     * Test `getUrl()` method for 3 cases:
+     * 1) image with empty id
+     * 2) image NOT present in cache
+     * 3) image already present in cache
+     *
+     * @covers ::getUrl()
+     * @return void
+     */
+    public function testGetUrl(): void
+    {
+        //empty id
+        $this->Thumb = new ThumbHelper(new View());
+        $id = [];
+        $actual = $this->Thumb->getUrl($id);
+        $expected = '';
+        static::assertEquals($expected, $actual);
+
+        //fake data NOT in cache
+        $image = $this->_imageData();
+        $options = [];
+        $expected = $this->Thumb->url($image['id'], $options);
+        $actual = $this->Thumb->getUrl($image);
+        static::assertEquals($expected, $actual);
+
+        //fake data in cache
+        $image = $this->_imageData();
+        $options = [];
+        $actual = $this->Thumb->getUrl($image);
+        $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
+        $key = sprintf('%d_%s', $image['id'], $thumbHash);
+        Cache::write($key, $actual);
+        $expected = $this->Thumb->url($image['id'], []);
+        static::assertEquals($expected, $actual);
     }
 }

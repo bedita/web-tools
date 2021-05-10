@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace BEdita\WebTools\View\Helper;
 
 use BEdita\WebTools\ApiClientProvider;
+use Cake\Cache\Cache;
 use Cake\Log\LogTrait;
+use Cake\Utility\Hash;
 use Cake\View\Helper;
 
 /**
@@ -24,6 +26,15 @@ use Cake\View\Helper;
 class ThumbHelper extends Helper
 {
     use LogTrait;
+
+    /**
+     * Default config for this helper.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'cache' => '_thumbs_',
+    ];
 
     /**
      * @var int Thumb not available
@@ -49,6 +60,25 @@ class ThumbHelper extends Helper
      * @var int Thumb is OK
      */
     public const OK = 1;
+
+    /**
+     * Use 'default' as fallback if no cache configuration is found.
+     *
+     * @param array $config The configuration settings provided to this helper.
+     * @return void
+     */
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
+        if (!empty($config['cache'])) {
+            $this->setConfig('cache', $config['cache']);
+        }
+        $cacheCfg = $this->getConfig('cache');
+        $cfg = Cache::getConfig($cacheCfg);
+        if ($cfg === null) {
+            $this->setConfig('cache', 'default');
+        }
+    }
 
     /**
      * Verify status of image thumb.
@@ -161,5 +191,32 @@ class ThumbHelper extends Helper
         }
 
         return false;
+    }
+
+    /**
+     * Retrieve thumb URL using cache.
+     * Silently fail with log if no image 'id' is found in array.
+     *
+     * @param  array  $image   Image object array containing at least `id`
+     * @param  string $options Thumb options
+     * @return string
+     */
+    public function getUrl(array $image, array $options = []): string
+    {
+        if (empty($image['id'])) {
+            $this->log(sprintf('Missing image ID - %s', json_encode($image)), 'warning');
+
+            return '';
+        }
+        $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
+        $key = sprintf('%d_%s', $image['id'], $thumbHash);
+
+        return (string)Cache::remember(
+            $key,
+            function () use ($image, $options) {
+                return $this->url($image['id'], $options);
+            },
+            $this->getConfig('cache')
+        );
     }
 }
