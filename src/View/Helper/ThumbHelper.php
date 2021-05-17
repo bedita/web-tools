@@ -197,13 +197,13 @@ class ThumbHelper extends Helper
      * Retrieve thumb URL using cache.
      * Silently fail with log if no image 'id' is found in array.
      *
-     * @param  array  $image   Image object array containing at least `id`
-     * @param  string $options Thumb options
+     * @param array|null $image Image object array containing at least `id`
+     * @param string $options Thumb options
      * @return string
      */
-    public function getUrl(array $image, array $options = []): string
+    public function getUrl(?array $image, array $options = []): string
     {
-        if (empty($image['id'])) {
+        if (empty($image) || empty($image['id'])) {
             $this->log(sprintf('Missing image ID - %s', json_encode($image)), 'warning');
 
             return '';

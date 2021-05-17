@@ -427,35 +427,30 @@ class ThumbHelperTest extends TestCase
     }
 
     /**
-     * Test `getUrl()` method for 3 cases:
-     * 1) image with empty id
-     * 2) image NOT present in cache
-     * 3) image already present in cache
+     * Test `getUrl()`
      *
      * @covers ::getUrl()
      * @return void
      */
     public function testGetUrl(): void
     {
-        //empty id
+        //null and []
         $this->Thumb = new ThumbHelper(new View());
-        $id = [];
-        $actual = $this->Thumb->getUrl($id);
-        $expected = '';
-        static::assertEquals($expected, $actual);
+        $actual = $this->Thumb->getUrl(null);
+        static::assertEquals('', $actual);
+        $actual = $this->Thumb->getUrl([]);
+        static::assertEquals('', $actual);
 
         //fake data NOT in cache
         $image = $this->_imageData();
-        $options = [];
-        $expected = $this->Thumb->url($image['id'], $options);
+        $expected = $this->Thumb->url($image['id'], []);
         $actual = $this->Thumb->getUrl($image);
         static::assertEquals($expected, $actual);
 
         //fake data in cache
         $image = $this->_imageData();
-        $options = [];
         $actual = $this->Thumb->getUrl($image);
-        $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
+        $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode([]));
         $key = sprintf('%d_%s', $image['id'], $thumbHash);
         Cache::write($key, $actual);
         $expected = $this->Thumb->url($image['id'], []);
