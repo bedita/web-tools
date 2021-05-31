@@ -45,8 +45,33 @@ class ApiCacheComponentTest extends TestCase
      */
     public function testInitialize(): void
     {
+        //default config
+        $expected = '_apicache_';
+        Cache::setConfig(
+            $expected,
+            [
+                'engine' => 'File',
+                'prefix' => sprintf('%s_', $expected),
+                'serialize' => true,
+            ]
+        );
+        $registry = new ComponentRegistry();
+        $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);
         $actual = $this->ApiCache->getConfig('cache');
-        $expected = 'default';
+        static::assertEquals($expected, $actual);
+        // custom config
+        $expected = 'dummy';
+        Cache::setConfig(
+            $expected,
+            [
+                'engine' => 'File',
+                'prefix' => sprintf('%s_', $expected),
+                'serialize' => true,
+            ]
+        );
+        $registry = new ComponentRegistry();
+        $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);
+        $actual = $this->ApiCache->getConfig('cache');
         static::assertEquals($expected, $actual);
     }
 
@@ -82,6 +107,30 @@ class ApiCacheComponentTest extends TestCase
                             ],
                         ],
                     ],
+                ],
+            ],
+            'links' => [
+              'available' => 'http://localhost:8090/roles',
+              'self' => 'http://localhost:8090/users/1/roles',
+              'home' => 'http://localhost:8090/home',
+              'first' => 'http://localhost:8090/users/1/roles',
+              'last' => 'http://localhost:8090/users/1/roles',
+              'prev' => null,
+              'next' => null,
+            ],
+            'meta' => [
+              'pagination' => [
+                'count' => 1,
+                'page' => 1,
+                'page_count' => 1,
+                'page_items' => 1,
+                'page_size' => 20,
+              ],
+              'schema' => [
+                'roles' => [
+                  '$id' => 'http://localhost:8090/model/schema/roles',
+                  'revision' => '734553033',
+                ],
                 ],
             ],
         ];
@@ -121,6 +170,30 @@ class ApiCacheComponentTest extends TestCase
                     ],
                 ],
             ],
+            'links' => [
+              'available' => 'http://localhost:8090/roles',
+              'self' => 'http://localhost:8090/users/1/roles',
+              'home' => 'http://localhost:8090/home',
+              'first' => 'http://localhost:8090/users/1/roles',
+              'last' => 'http://localhost:8090/users/1/roles',
+              'prev' => null,
+              'next' => null,
+            ],
+            'meta' => [
+              'pagination' => [
+                'count' => 1,
+                'page' => 1,
+                'page_count' => 1,
+                'page_items' => 1,
+                'page_size' => 20,
+              ],
+              'schema' => [
+                'roles' => [
+                  '$id' => 'http://localhost:8090/model/schema/roles',
+                  'revision' => '734553033',
+                ],
+                ],
+            ],
         ];
     }
 
@@ -129,8 +202,8 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return void
      * @covers ::get()
-     * @covers ::cacheKey()
-     * @covers ::updateCacheKey()
+     * @covers: cacheKey()
+     * @covers: updateCacheKey()
      */
     public function testGet(): void
     {
@@ -138,11 +211,6 @@ class ApiCacheComponentTest extends TestCase
         $query = null;
 
         // case response with mock
-        /**
-         * An instance of a \BEdita\SDK\BEditaClient for API Mock.
-         *
-         * @var \BEdita\SDK\BEditaClient
-         */
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
             ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
             ->getMock();

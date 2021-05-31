@@ -43,8 +43,8 @@ class ApiCacheComponent extends Component
      */
     public function initialize(array $config): void
     {
-        if (Cache::getConfig($this->getConfig('cache')) === null) {
-            $this->setConfig('cache', 'default');
+        if (Cache::getConfig($this->getConfig('cache')) === null && !empty($config['cache'])) {
+            $this->setConfig('cache', $config['cache']);
         }
     }
 
