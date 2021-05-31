@@ -56,23 +56,33 @@ class ApiCacheComponentTest extends TestCase
             ]
         );
         $registry = new ComponentRegistry();
-        $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);
+        $this->ApiCache = new ApiCacheComponent($registry);
         $actual = $this->ApiCache->getConfig('cache');
         static::assertEquals($expected, $actual);
-        // custom config
-        $expected = 'dummy';
-        Cache::setConfig(
-            $expected,
-            [
-                'engine' => 'File',
-                'prefix' => sprintf('%s_', $expected),
-                'serialize' => true,
-            ]
-        );
-        $registry = new ComponentRegistry();
-        $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);
-        $actual = $this->ApiCache->getConfig('cache');
-        static::assertEquals($expected, $actual);
+    }
+
+    /**
+     * Initialize Api Cache component test with custom config
+     *
+     * @return void
+     * @covers ::initialize()
+     */
+    public function testInitializeCustomConfig(): void
+    {
+         // custom config
+         $expected = 'cfapicache';
+         Cache::setConfig(
+             $expected,
+             [
+                 'engine' => 'File',
+                 'prefix' => sprintf('%s_', $expected),
+                 'serialize' => true,
+             ]
+         );
+         $registry = new ComponentRegistry();
+         $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);
+         $actual = $this->ApiCache->getConfig('cache');
+         static::assertEquals($expected, $actual);
     }
 
     /**
@@ -210,29 +220,31 @@ class ApiCacheComponentTest extends TestCase
         $path = '/users/1/roles';
         $query = null;
 
-        // case response with mock
-        $apiMockClient = $this->getMockBuilder(BEditaClient::class)
-            ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
-            ->getMock();
-
-        $apiMockClient->method('get')->willReturn($this->createFirstGet());
+         // case response empty, with mock
+         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
+         ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
+         ->setMethods(['thumbs'])
+         ->getMock();
+        $response = $this->createFirstGet();
+        $apiMockClient->method('get')->willReturn($response);
         ApiClientProvider::setApiClient($apiMockClient);
         $this->ApiCache->get($path, $query);
         // response is cached
-        $expected = $this->createFirstGet();
         $key = $this->ApiCache->cacheKey($path, $query);
-        $actual = Cache::read($key);
+        $expected = $this->createFirstGet();
+        $actual = Cache::read($key, '_apicache_');
         static::assertEquals($expected, $actual);
 
         // response is changed but first get is cached (chron will unvalidate cahce)
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
             ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
+            ->setMethods(['thumbs'])
             ->getMock();
 
         $apiMockClient->method('get')->willReturn($this->createSecondGet());
         ApiClientProvider::setApiClient($apiMockClient);
         $this->ApiCache->get($path, $query);
-        $actual = Cache::read($key);
+        $actual = Cache::read($key, '_apicache_');
         $expected = $this->createFirstGet();
         static::assertEquals($expected, $actual);
     }
