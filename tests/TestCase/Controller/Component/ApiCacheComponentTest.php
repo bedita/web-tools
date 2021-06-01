@@ -12,7 +12,7 @@ use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
 /**
- * {@see \Bedita\WebTools\Controller\Component\ApiCacheComponent} Test Case
+ * {@see \BEdita\WebTools\Controller\Component\ApiCacheComponent} Test Case
  *
  * @coversDefaultClass \Bedita\WebTools\Controller\Component\ApiCacheComponent
  */
@@ -35,6 +35,16 @@ class ApiCacheComponentTest extends TestCase
         parent::setUp();
         $registry = new ComponentRegistry();
         $this->ApiCache = new ApiCacheComponent($registry);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        ApiClientProvider::setApiClient(null);
     }
 
     /**
@@ -211,9 +221,9 @@ class ApiCacheComponentTest extends TestCase
      * Cached GET API call test
      *
      * @return void
+     * @covers ::cacheKey()
+     * @covers ::updateCacheIndex()
      * @covers ::get()
-     * @covers: cacheKey()
-     * @covers: updateCacheKey()
      */
     public function testGet(): void
     {
@@ -223,7 +233,7 @@ class ApiCacheComponentTest extends TestCase
          // case response empty, with mock
          $apiMockClient = $this->getMockBuilder(BEditaClient::class)
          ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
-         ->setMethods(['thumbs'])
+         ->onlyMethods(['get'])
          ->getMock();
         $response = $this->createFirstGet();
         $apiMockClient->method('get')->willReturn($response);
@@ -238,7 +248,7 @@ class ApiCacheComponentTest extends TestCase
         // response is changed but first get is cached (chron will unvalidate cahce)
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
             ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
-            ->setMethods(['thumbs'])
+            ->onlyMethods(['get'])
             ->getMock();
 
         $apiMockClient->method('get')->willReturn($this->createSecondGet());
