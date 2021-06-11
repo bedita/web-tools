@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase\Error;
 
+use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\Error\ExceptionRenderer;
 use Cake\Controller\ErrorController;
 use Cake\Event\Event;
@@ -72,6 +73,14 @@ class ExceptionRendererTest extends TestCase
             '500 exception' => [
                 new InternalErrorException('hello'),
                 'error500',
+            ],
+            '503 BEditaClientException' => [
+                new BEditaClientException('hello'),
+                'error500',
+            ],
+            '404 BEditaClientException' => [
+                new BEditaClientException('hello', 404),
+                'error400',
             ],
         ];
     }
