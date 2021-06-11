@@ -93,6 +93,7 @@ class ExceptionRendererTest extends TestCase
      * @return void
      * @dataProvider templateProvider
      * @covers ::_template()
+     * @covers ::getHttpCode()
      */
     public function testTemplate(\Exception $exception, $expected)
     {
