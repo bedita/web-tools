@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\Error;
 
+use BEdita\SDK\BEditaClientException;
 use Cake\Error\ExceptionRenderer as CakeExceptionRenderer;
 use Cake\Http\Response;
 use Cake\Log\LogTrait;
@@ -38,6 +39,20 @@ class ExceptionRenderer extends CakeExceptionRenderer
         }
 
         return $this->template = $template;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Handle BEditaClientException.
+     */
+    protected function getHttpCode(\Throwable $exception): int
+    {
+        if ($exception instanceof BEditaClientException) {
+            return $exception->getCode();
+        }
+
+        return parent::getHttpCode($exception);
     }
 
     /**
