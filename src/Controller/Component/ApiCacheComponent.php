@@ -36,6 +36,13 @@ class ApiCacheComponent extends Component
     ];
 
     /**
+     * Cache index
+     *
+     * @var array
+     */
+    protected $cacheIndex = [];
+
+    /**
      * Use 'default' as fallback if no cache configuration is found.
      *
      * @param array $config The configuration settings provided to this helper.
@@ -43,10 +50,6 @@ class ApiCacheComponent extends Component
      */
     public function initialize(array $config): void
     {
-        parent::initialize($config);
-        if (!empty($config['cache'])) {
-            $this->setConfig('cache', $config['cache']);
-        }
         if (Cache::getConfig($this->getConfig('cache')) === null) {
             $this->setConfig('cache', 'default');
         }
@@ -59,7 +62,7 @@ class ApiCacheComponent extends Component
      * @param array|null $query Optional query string
      * @return string
      */
-    public function cacheKey(string $path, ?array $query = null): string
+    protected function cacheKey(string $path, ?array $query = null): string
     {
         $hash = md5(json_encode($query));
         $path = str_replace('/', '_', $path);
@@ -68,7 +71,7 @@ class ApiCacheComponent extends Component
     }
 
     /**
-     * -
+     * Update cache index
      *
      * @param string $key Cache Key
      * @param array $params Cache params
@@ -76,12 +79,24 @@ class ApiCacheComponent extends Component
      */
     protected function updateCacheIndex(string $key, array $params): void
     {
-        $index = (array)Cache::read('index', $this->getConfig('cache'));
-        if (!empty($index[$key])) {
+        if (!empty($this->cacheIndex[$key])) {
             return;
         }
-        $index[$key] = $params;
-        Cache::write('index', $index, $this->getConfig('cache'));
+        $this->cacheIndex[$key] = $params;
+        Cache::write('index', $this->cacheIndex, $this->getConfig('cache'));
+    }
+
+    /**
+     * Read current cache index
+     *
+     * @return void
+     */
+    protected function readIndex(): void
+    {
+        if (!empty($this->cacheIndex)) {
+            return;
+        }
+        $this->cacheIndex = array_filter((array)Cache::read('index', $this->getConfig('cache')));
     }
 
     /**
@@ -93,17 +108,18 @@ class ApiCacheComponent extends Component
      */
     public function get(string $path, ?array $query = null): array
     {
+        $this->readIndex();
         $key = $this->cacheKey($path, $query);
 
-        return (array)Cache::remember(
+        $response = (array)Cache::remember(
             $key,
             function () use ($key, $path, $query) {
-                $response = (array)ApiClientProvider::getApiClient()->get($path, $query);
-                $this->updateCacheIndex($key, compact('path', 'query'));
-
-                return $response;
+                return (array)ApiClientProvider::getApiClient()->get($path, $query);
             },
             $this->getConfig('cache')
         );
+        $this->updateCacheIndex($key, compact('path', 'query'));
+
+        return $response;
     }
 }
