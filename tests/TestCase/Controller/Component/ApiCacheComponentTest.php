@@ -1,7 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace BEdita\WebTools\Test\TestCase\Controller\Component;
+/**
+ * BEdita, API-first content management framework
+ * Copyright 2021 ChannelWeb Srl, Chialab Srl
+ *
+ * This file is part of BEdita: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
+ */
+namespace BEdita\DevTools\Test\TestCase\Controller\Component;
 
 use BEdita\SDK\BEditaClient;
 use BEdita\WebTools\ApiClientProvider;
@@ -69,6 +80,7 @@ class ApiCacheComponentTest extends TestCase
         $this->ApiCache = new ApiCacheComponent($registry);
         $actual = $this->ApiCache->getConfig('cache');
         static::assertEquals($expected, $actual);
+        Cache::drop($expected);
     }
 
     /**
@@ -93,6 +105,7 @@ class ApiCacheComponentTest extends TestCase
          $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);
          $actual = $this->ApiCache->getConfig('cache');
          static::assertEquals($expected, $actual);
+         Cache::drop($expected);
     }
 
     /**
@@ -100,7 +113,7 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return array
      */
-    public function createFirstGet(): array
+    protected function createFirstGet(): array
     {
         return [
             'data' => [
@@ -161,7 +174,7 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return array
      */
-    public function createSecondGet(): array
+    protected function createSecondGet(): array
     {
         return [
             'data' => [
@@ -218,10 +231,27 @@ class ApiCacheComponentTest extends TestCase
     }
 
     /**
+     * Setup mocked API client
+     *
+     * @return void
+     */
+    protected function setupClient(array $response): void
+    {
+        $apiMockClient = $this->getMockBuilder(BEditaClient::class)
+            ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
+            ->onlyMethods(['get'])
+            ->getMock();
+
+        $apiMockClient->method('get')->willReturn($response);
+        ApiClientProvider::setApiClient($apiMockClient);
+    }
+
+    /**
      * Cached GET API call test
      *
      * @return void
      * @covers ::cacheKey()
+     * @covers ::readIndex()
      * @covers ::updateCacheIndex()
      * @covers ::get()
      */
@@ -229,33 +259,50 @@ class ApiCacheComponentTest extends TestCase
     {
         $path = '/users/1/roles';
         $query = null;
+        $key = sprintf('_users_1_roles_%s', md5(json_encode($query)));
 
-         // case response empty, with mock
-         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
-         ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
-         ->onlyMethods(['get'])
-         ->getMock();
-        $response = $this->createFirstGet();
-        $apiMockClient->method('get')->willReturn($response);
-        ApiClientProvider::setApiClient($apiMockClient);
+        // case response empty, with mock
+        $this->setupClient($this->createFirstGet());
         $this->ApiCache->get($path, $query);
-        // response is cached
-        $key = $this->ApiCache->cacheKey($path, $query);
+        // check response is cached
         $expected = $this->createFirstGet();
-        $actual = Cache::read($key, '_apicache_');
+        $actual = Cache::read($key);
         static::assertEquals($expected, $actual);
 
-        // response is changed but first get is cached (chron will unvalidate cahce)
-        $apiMockClient = $this->getMockBuilder(BEditaClient::class)
-            ->setConstructorArgs([Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey')])
-            ->onlyMethods(['get'])
-            ->getMock();
-
-        $apiMockClient->method('get')->willReturn($this->createSecondGet());
-        ApiClientProvider::setApiClient($apiMockClient);
+        // response is changed but first get is cached (another script will invalidate cache)
+        $this->setupClient($this->createSecondGet());
         $this->ApiCache->get($path, $query);
-        $actual = Cache::read($key, '_apicache_');
+        $actual = Cache::read($key);
         $expected = $this->createFirstGet();
         static::assertEquals($expected, $actual);
+    }
+
+    /**
+     * Test cache API index
+     *
+     * @return void
+     * @covers ::updateCacheIndex()
+     * @covers ::readIndex()
+     */
+    public function testIndex(): void
+    {
+        $path = '/users/1/roles';
+        $query = null;
+        $key = sprintf('_users_1_roles_%s', md5(json_encode($query)));
+
+        Cache::clearAll();
+        $this->setupClient($this->createFirstGet());
+        $this->ApiCache->get($path, $query);
+
+        $idx = array_keys(array_filter((array)Cache::read('index')));
+        static::assertEquals([$key], $idx);
+
+        // empty 'index' key and test it is rebuilt on next ApiCache::get()
+        Cache::write('index', []);
+        $this->setupClient($this->createSecondGet());
+        $this->ApiCache = new ApiCacheComponent(new ComponentRegistry());
+        $this->ApiCache->get($path, $query);
+        $idx = array_keys(array_filter((array)Cache::read('index')));
+        static::assertEquals([$key], $idx);
     }
 }
