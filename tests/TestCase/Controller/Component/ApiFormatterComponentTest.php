@@ -109,6 +109,16 @@ class ApiFormatterComponentTest extends TestCase
                                 'title' => 'test',
                             ],
                             'relationships' => [
+                                'object' => [
+                                    'links' => [],
+                                    'data' => [
+                                        'id' => '999999',
+                                        'type' => 'dummies',
+                                        'attributes' => [
+                                            'title' => 'dummy object',
+                                        ],
+                                    ],
+                                ],
                                 'streams' => [
                                     'links' => [],
                                     'data' => [
@@ -122,6 +132,13 @@ class ApiFormatterComponentTest extends TestCase
                         ],
                     ],
                     'included' => [
+                        [
+                            'id' => '999999',
+                            'type' => 'dummies',
+                            'attributes' => [
+                                'title' => 'dummy object',
+                            ],
+                        ],
                         [
                             'id' => 'af829cbb-c570-4282-94c3-782cf315983a',
                             'type' => 'streams',
