@@ -90,7 +90,7 @@ class ApiFormatterComponent extends Component
      */
     protected function extractFromIncluded(Collection $included, array $relationshipData): array
     {
-        // include=object case
+        // case is 1-1 relationship - object relation in translations is a special case
         if (array_key_exists('id', $relationshipData)) {
             return (array)$included->firstMatch([
                 'type' => $relationshipData['type'],
