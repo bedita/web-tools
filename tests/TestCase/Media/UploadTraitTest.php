@@ -54,14 +54,14 @@ class UploadTraitTest extends TestCase
     }
 
     /**
-     * Undocumented function
+     * Test `uploadMedia()` method
      *
      * @return void
      * @covers ::uploadMedia()
      */
     public function testUpload(): void
     {
-        $path = getcwd() . sprintf('/tests/files/test.png');
+        $path = sprintf('%s/tests/files/test.png', getcwd());
         $resource = fopen($path, 'r');
 
         $file = new UploadedFile(
@@ -90,14 +90,14 @@ class UploadTraitTest extends TestCase
     }
 
     /**
-     * Undocumented function
+     * Test `uploadMedia()` failure
      *
      * @return void
      * @covers ::uploadMedia()
      */
     public function testFailUpload(): void
     {
-        $path = getcwd() . sprintf('/tests/files/test.png');
+        $path = sprintf('%s/tests/files/test.png', getcwd());
         $file = new UploadedFile($path, filesize($path), UPLOAD_ERR_OK);
 
         $this->expectException(BadRequestException::class);
