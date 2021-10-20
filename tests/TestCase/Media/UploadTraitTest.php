@@ -19,8 +19,8 @@ use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\Media\UploadTrait;
 use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
-use Laminas\Diactoros\UploadedFile;
 use Psr\Http\Message\UploadedFileInterface;
+use Zend\Diactoros\UploadedFile;
 
 /**
  * {@see \BEdita\WebTools\Media\UploadTrait} Test Case
