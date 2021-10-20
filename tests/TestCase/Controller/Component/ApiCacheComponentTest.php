@@ -12,7 +12,7 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-namespace BEdita\DevTools\Test\TestCase\Controller\Component;
+namespace BEdita\WebTools\Test\TestCase\Controller\Component;
 
 use BEdita\SDK\BEditaClient;
 use BEdita\WebTools\ApiClientProvider;
@@ -32,7 +32,7 @@ class ApiCacheComponentTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Controller\Component\ApiCacheComponent
+     * @var \BEdita\WebTools\Controller\Component\ApiCacheComponent
      */
     public $ApiCache;
 
