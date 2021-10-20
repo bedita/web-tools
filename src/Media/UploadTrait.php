@@ -44,7 +44,7 @@ trait UploadTrait
         /** @var \BEdita\SDK\BEditaClient $apiClient */
         $apiClient = ApiClientProvider::getApiClient();
 
-        $headers = ['Content-type' => $file->getClientMediaType()];
+        $headers = ['Content-Type' => $file->getClientMediaType()];
         $fileTmp = file_get_contents($file->getStream()->getMetadata('uri'));
         $query = $private ? '?private_url=true' : '';
 
