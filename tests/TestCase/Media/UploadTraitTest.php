@@ -80,7 +80,7 @@ class UploadTraitTest extends TestCase
         ];
         $apiMockClient = $this->getMockBuilder(BEditaClient::class)
             ->setConstructorArgs(['https://api.example.org'])
-            ->onlyMethods(['post'])
+            ->setMethods(['post'])
             ->getMock();
         $apiMockClient->method('post')->willReturn($expected);
         ApiClientProvider::setApiClient($apiMockClient);
