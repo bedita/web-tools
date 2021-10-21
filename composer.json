@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "bedita/php-sdk": "^1.0.3",
+        "bedita/php-sdk": "^1.2.0",
         "cakephp/cakephp": "~3.8.1",
         "josegonzalez/dotenv": "2.*",
         "wyrihaximus/twig-view": "^4.3"
