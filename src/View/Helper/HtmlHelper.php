@@ -25,7 +25,6 @@ use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
  */
 class HtmlHelper extends CakeHtmlHelper
 {
-
     /**
      * Meta data for helper
      */

@@ -22,16 +22,16 @@
     "require": {
         "php": ">=7.1",
         "bedita/php-sdk": "^1.2.0",
-        "cakephp/cakephp": "~3.8.1",
+        "cakephp/cakephp": "3.10.*",
         "josegonzalez/dotenv": "2.*",
-        "wyrihaximus/twig-view": "^4.3"
+        "wyrihaximus/twig-view": "^4.4"
     },
     "require-dev": {
-        "cakephp/bake": "^1.11",
-        "cakephp/debug_kit": "^3.19.0",
-        "cakephp/cakephp-codesniffer": "^3.1",
+        "cakephp/bake": "^1.12",
+        "cakephp/debug_kit": "^3.23",
+        "cakephp/cakephp-codesniffer": "^3.3",
         "cakephp/plugin-installer": "^1.0",
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^6.5"
     },
     "autoload": {
         "psr-4": {

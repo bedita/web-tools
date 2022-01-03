@@ -26,7 +26,6 @@ use Cake\Utility\Hash;
  */
 class ApiAuthenticate extends BaseAuthenticate
 {
-
     /**
      * Default config for this object.
      *

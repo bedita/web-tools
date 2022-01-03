@@ -23,7 +23,6 @@ use Cake\TestSuite\TestCase;
  */
 class TwigViewTest extends TestCase
 {
-
     /**
      * Test `initialize` method
      *
