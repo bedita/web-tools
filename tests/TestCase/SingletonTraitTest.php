@@ -30,7 +30,6 @@ class MySingletonClass
  */
 class SingletonTraitTest extends TestCase
 {
-
     /**
      * Assert that the class cannot be instantiated.
      *

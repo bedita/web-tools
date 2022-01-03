@@ -21,7 +21,6 @@ use Cake\Core\Configure;
  */
 class BeditaTwigExtension extends \Twig_Extension
 {
-
     /**
      * {@inheritDoc}
      */

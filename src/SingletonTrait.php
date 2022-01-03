@@ -19,7 +19,6 @@ namespace BEdita\WebTools;
  */
 trait SingletonTrait
 {
-
     /**
      * Singleton instance.
      *

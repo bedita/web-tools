@@ -23,7 +23,6 @@ use WyriHaximus\TwigView\View\TwigView as BaseTwigView;
  */
 class TwigView extends BaseTwigView
 {
-
     /**
      * {@inheritDoc}
      */
