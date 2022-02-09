@@ -61,6 +61,7 @@ class ApiProxyTraitTest extends TestCase
     {
         parent::tearDown();
 
+        $this->apiClient->setupTokens([]);
         $this->apiClient = null;
     }
 
