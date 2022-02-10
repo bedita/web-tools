@@ -8,7 +8,8 @@ use Cake\Http\ServerRequest;
 
 class InvokeCustomPolicy
 {
-    public function __invoke(?IdentityInterface $identity, ServerRequest $request) {
+    public function __invoke(?IdentityInterface $identity, ServerRequest $request)
+    {
         return true;
     }
 }
