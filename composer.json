@@ -33,7 +33,7 @@
         "phpunit/phpunit": "^8.0"
     },
     "suggest": {
-        "cakephp/authentication": "^2.5 To use \"ApiIdentifier\" and other authentication features",
+        "cakephp/authentication": "^2.5 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
         "cakephp/authorization": "^2.2 To use \"RequestRolesPolicy\" and other authorization features"
     },
     "autoload": {

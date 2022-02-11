@@ -63,7 +63,6 @@ class IdentityTest extends TestCase
      *
      * @return void
      * @covers ::hasRole()
-     * @covers ::getRoles()
      */
     public function testHasRole(): void
     {

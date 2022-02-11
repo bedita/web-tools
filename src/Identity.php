@@ -30,21 +30,6 @@ class Identity extends AuthenticationIdentity
      */
     public function hasRole(string $name): bool
     {
-        return in_array($name, $this->getRoles());
-    }
-
-    /**
-     * Get identity roles.
-     *
-     * @return array
-     */
-    public function getRoles(): array
-    {
-        static $roles = null;
-        if ($roles === null) {
-            $roles = (array)Hash::get((array)$this->getOriginalData(), 'roles');
-        }
-
-        return $roles;
+        return in_array($name, $this->get('roles'));
     }
 }
