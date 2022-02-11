@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace BEdita\WebTools;
 
 use Authentication\Identity as AuthenticationIdentity;
-use Cake\Utility\Hash;
 
 /**
  * Extends Authorization Identity adding useful methods.
