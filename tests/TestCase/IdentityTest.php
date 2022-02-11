@@ -49,6 +49,16 @@ class IdentityTest extends TestCase
     }
 
     /**
+     * @inheritDoc
+     */
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->identity = null;
+    }
+
+    /**
      * Test hasRole()
      *
      * @return void
