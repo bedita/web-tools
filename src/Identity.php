@@ -29,6 +29,6 @@ class Identity extends AuthenticationIdentity
      */
     public function hasRole(string $name): bool
     {
-        return in_array($name, $this->get('roles'));
+        return in_array($name, (array)$this->get('roles'));
     }
 }
