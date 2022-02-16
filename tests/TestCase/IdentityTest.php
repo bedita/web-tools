@@ -27,38 +27,6 @@ use Cake\TestSuite\TestCase;
 class IdentityTest extends TestCase
 {
     /**
-     * Keep Identity instance.
-     *
-     * @var \BEdita\WebTools\Identity
-     */
-    protected $identity = null;
-
-    /**
-     * @inheritDoc
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $data = [
-            'id' => 1,
-            'roles' => ['admin', 'basic'],
-        ];
-
-        $this->identity = new Identity($data);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->identity = null;
-    }
-
-    /**
      * Test hasRole()
      *
      * @return void
@@ -66,11 +34,29 @@ class IdentityTest extends TestCase
      */
     public function testHasRole(): void
     {
-        static::assertTrue($this->identity->hasRole('admin'));
-        static::assertFalse($this->identity->hasRole('manager'));
+        $data = [
+            'id' => 1,
+            'roles' => ['admin', 'basic'],
+        ];
+        $identity = new Identity($data);
 
-        $authorizationIdentity = new AuthorizationIdentity($this->createMock(AuthorizationService::class), $this->identity);
+        static::assertTrue($identity->hasRole('admin'));
+        static::assertFalse($identity->hasRole('manager'));
+
+        $authorizationIdentity = new AuthorizationIdentity($this->createMock(AuthorizationService::class), $identity);
         static::assertTrue($authorizationIdentity->hasRole('admin'));
         static::assertFalse($authorizationIdentity->hasRole('manager'));
+    }
+
+    /**
+     * Test that hasRole() returns False for identity without role set.
+     *
+     * @return void
+     * @covers ::hasRole()
+     */
+    public function testHasRoleWithoutRoleInEntity(): void
+    {
+        $identity = new Identity(['id' => 1]);
+        static::assertFalse($identity->hasRole('admin'));
     }
 }
