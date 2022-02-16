@@ -32,7 +32,6 @@ class IdentityHelper extends AuthenticationIdentityHelper
     protected $_defaultConfig = [
         'identityAttribute' => 'identity',
         'delegateMethods' => [
-            'getRoles',
             'hasRole',
         ],
     ];
