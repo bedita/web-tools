@@ -60,13 +60,20 @@ class ApiIdentifierTest extends TestCase
     protected $role = null;
 
     /**
+     * Undocumented variable
+     *
+     * @var array
+     */
+    protected $jwtTokens = null;
+
+    /**
      * @inheritDoc
      */
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->apiClient = ApiClientProvider::getApiClient();
-        $response = $this->apiClient->authenticate(getenv('BEDITA_ADMIN_USR'), getenv('BEDITA_ADMIN_PWD'));
-        $this->apiClient->setupTokens($response['meta']);
     }
 
     /**
@@ -74,6 +81,11 @@ class ApiIdentifierTest extends TestCase
      */
     public function tearDown(): void
     {
+        parent::tearDown();
+
+        // ensure to use the right auth token
+        $this->apiClient->setupTokens($this->authAdmin());
+
         $roleId = Hash::get((array)$this->role, 'data.id');
         $userId = Hash::get((array)$this->user, 'data.id');
         if ($roleId) {
@@ -84,9 +96,26 @@ class ApiIdentifierTest extends TestCase
             $this->apiClient->delete(sprintf('/trash/%s', $userId));
         }
 
+        $this->apiClient->setupTokens([]);
         $this->apiClient = null;
         $this->user = null;
         $this->role = null;
+    }
+
+    /**
+     * Authenticate the client with admin user and return JWT tokens.
+     *
+     * @return array
+     */
+    protected function authAdmin(): array
+    {
+        if (!empty($this->jwtTokens)) {
+            return $this->jwtTokens;
+        }
+
+        $response = $this->apiClient->authenticate(getenv('BEDITA_ADMIN_USR'), getenv('BEDITA_ADMIN_PWD'));
+
+        return $this->jwtTokens = $response['meta'];
     }
 
     /**
@@ -98,7 +127,10 @@ class ApiIdentifierTest extends TestCase
      */
     protected function createUserAndRole(string $username, string $role): void
     {
-        $this->user = $this->apiClient->saveObject('users', [
+        $currentJwt = $this->apiClient->getTokens();
+        $this->apiClient->setupTokens($this->authAdmin());
+
+        $this->user = $this->apiClient->save('users', [
             'username' => $username,
             'password' => 'xyz',
         ]);
@@ -114,6 +146,8 @@ class ApiIdentifierTest extends TestCase
                 ],
             ]
         );
+
+        $this->apiClient->setupTokens($currentJwt);
     }
 
     /**
