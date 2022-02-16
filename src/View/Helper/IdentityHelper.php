@@ -45,7 +45,7 @@ class IdentityHelper extends AuthenticationIdentityHelper
      */
     public function __call($method, $args)
     {
-        if (!in_array($method, $this->getConfig('delegateMethods'))) {
+        if (!in_array($method, (array)$this->getConfig('delegateMethods'))) {
             throw new \BadMethodCallException("Cannot call `{$method}`. Make sure to add it to `delegateMethods`.");
         }
 
