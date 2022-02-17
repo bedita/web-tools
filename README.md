@@ -212,6 +212,8 @@ To use them ensure to install [Authentication](https://github.com/cakephp/authen
 composer require cakephp/authentication
 ```
 
+and load plugin `$this->addPlugin('Authentication')` in `Application::bootstrap()`.
+
 Then setup your application to use `Identity`, for example
 
 ```php
@@ -261,6 +263,8 @@ First of all install [Authorization](https://github.com/cakephp/authorization) p
 ```bash
 composer require cakephp/authorization
 ```
+
+and load plugin `$this->addPlugin('Authorization')` in `Application::bootstrap()`.
 
 Then proceed with setup the policy in `Application` class.
 Add the `AuthorizationMiddleware` and the `RequestAuthorizationMiddleware`
