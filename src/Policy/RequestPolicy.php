@@ -24,10 +24,10 @@ use Cake\Http\ServerRequest;
 use Cake\Utility\Hash;
 
 /**
- * RequestRolesPolicy class.
- * Given a request and an identity applies the corresponding role based rule for controller and action.
+ * RequestPolicy class.
+ * Given a request and an identity applies the corresponding rule for controller and action.
  */
-class RequestRolesPolicy implements RequestPolicyInterface
+class RequestPolicy implements RequestPolicyInterface
 {
     use InstanceConfigTrait;
 
@@ -116,7 +116,7 @@ class RequestRolesPolicy implements RequestPolicyInterface
 
         if (!is_string($rule)) {
             throw new \LogicException(sprintf(
-                'Invalid rule for %s::%s() in RequestRolesPolicy',
+                'Invalid rule for %s::%s() in RequestPolicy',
                 $request->getParam('controller'),
                 $request->getParam('action')
             ));
@@ -187,7 +187,7 @@ class RequestRolesPolicy implements RequestPolicyInterface
         }
 
         if (!is_array($rule)) {
-            throw new \LogicException(sprintf('Invalid Rule for %s in RequestRolesPolicy', $controller));
+            throw new \LogicException(sprintf('Invalid Rule for %s in RequestPolicy', $controller));
         }
 
         $action = $request->getParam('action');

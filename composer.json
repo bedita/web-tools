@@ -34,7 +34,7 @@
     },
     "suggest": {
         "cakephp/authentication": "^2.5 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
-        "cakephp/authorization": "^2.2 To use \"RequestRolesPolicy\" and other authorization features"
+        "cakephp/authorization": "^2.2 To use \"RequestPolicy\" and other authorization features"
     },
     "autoload": {
         "psr-4": {

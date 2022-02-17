@@ -18,7 +18,7 @@ use Authorization\AuthorizationService;
 use Authorization\IdentityDecorator;
 use Authorization\Policy\Exception\MissingMethodException;
 use Authorization\Policy\Result;
-use BEdita\WebTools\Policy\RequestRolesPolicy;
+use BEdita\WebTools\Policy\RequestPolicy;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Laminas\Diactoros\Uri;
@@ -26,11 +26,11 @@ use TestApp\Policy\CustomPolicy;
 use TestApp\Policy\InvokeCustomPolicy;
 
 /**
- * {@see BEdita\WebTools\Policy\RequestRolesPolicy} Test Case
+ * {@see BEdita\WebTools\Policy\RequestPolicy} Test Case
  *
- * @coversDefaultClass \BEdita\WebTools\Policy\RequestRolesPolicy
+ * @coversDefaultClass \BEdita\WebTools\Policy\RequestPolicy
  */
-class RequestRolesPolicyTest extends TestCase
+class RequestPolicyTest extends TestCase
 {
     /**
      * Data provider for testCanAccess()
@@ -256,7 +256,7 @@ class RequestRolesPolicyTest extends TestCase
                 ],
             ],
             'ko invalid policy instance' => [
-                new \LogicException('Invalid rule for Dashboard::profile() in RequestRolesPolicy'),
+                new \LogicException('Invalid rule for Dashboard::profile() in RequestPolicy'),
                 (new ServerRequest(['uri' => new Uri('/dashboard/profile')]))
                     ->withParam('controller', 'Dashboard')
                     ->withParam('action', 'profile'),
@@ -273,7 +273,7 @@ class RequestRolesPolicyTest extends TestCase
                 ],
             ],
             'ko invalid rule' => [
-                new \LogicException('Invalid Rule for Dashboard in RequestRolesPolicy'),
+                new \LogicException('Invalid Rule for Dashboard in RequestPolicy'),
                 (new ServerRequest(['uri' => new Uri('/dashboard/profile')]))
                     ->withParam('controller', 'Dashboard')
                     ->withParam('action', 'profile'),
@@ -314,7 +314,7 @@ class RequestRolesPolicyTest extends TestCase
             $identity = new IdentityDecorator($authService, $identityData);
         }
 
-        $policy = new RequestRolesPolicy($policyConfig);
+        $policy = new RequestPolicy($policyConfig);
 
         $actual = $policy->canAccess($identity, $request);
 
