@@ -293,8 +293,8 @@ public function getAuthorizationService(ServerRequestInterface $request): Author
             'rules' => [
                 'Dashboard' => [
                     'index' => ['premium', 'basic'], // allow access to DashboardController::index() for these roles
-                    'special' => 'premium', // allow access only to Dashboard::special() for 'premium' role
-                    '*' => false, // fallback for other DashboardController action. Forbidden to all
+                    'special' => 'premium', // allow access to Dashboard::special() only for 'premium' role
+                    '*' => false, // fallback for other DashboardController actions. Forbidden to all
                 ],
             ],
         ]);
