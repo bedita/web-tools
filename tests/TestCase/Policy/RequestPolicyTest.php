@@ -28,7 +28,7 @@ use TestApp\Policy\InvokeCustomPolicy;
 /**
  * {@see BEdita\WebTools\Policy\RequestPolicy} Test Case
  *
- * @coversDefaultClass \BEdita\WebTools\Policy\RequestPolicy
+ * @covers \BEdita\WebTools\Policy\RequestPolicy
  */
 class RequestPolicyTest extends TestCase
 {
