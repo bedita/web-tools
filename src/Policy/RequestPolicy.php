@@ -161,11 +161,11 @@ class RequestPolicy implements RequestPolicyInterface
     {
         $identityRoles = (array)Hash::get((array)$identity->getOriginalData(), 'roles');
 
-        if (!empty(array_intersect($identityRoles, $roles))) {
-            return new Result(true);
+        if (empty(array_intersect($identityRoles, $roles))) {
+            return new Result(false, 'request forbidden for identity\'s roles');
         }
 
-        return new Result(false, 'request forbidden for identity\'s roles');
+        return new Result(true);
     }
 
     /**
