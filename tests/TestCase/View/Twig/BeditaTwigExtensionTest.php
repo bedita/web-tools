@@ -13,6 +13,7 @@
 namespace BEdita\WebTools\Test\TestCase\View\Twig;
 
 use BEdita\WebTools\View\Twig\BeditaTwigExtension;
+use BEdita\WebTools\View\TwigView;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -22,8 +23,14 @@ use Cake\TestSuite\TestCase;
  */
 class BeditaTwigExtensionTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $this->extension = new BeditaTwigExtension();
+        parent::setUp();
+    }
+
     /**
-     * Test all methods
+     * Test getName, getFunctions, getFilters
      *
      * @return void
      * @covers ::getName()
@@ -32,17 +39,71 @@ class BeditaTwigExtensionTest extends TestCase
      */
     public function testExtension(): void
     {
-        $extension = new BeditaTwigExtension();
         $expected = 'bedita';
-        $actual = $extension->getName();
+        $actual = $this->extension->getName();
         static::assertSame($expected, $actual);
 
         $expected = 3;
-        $actual = count($extension->getFunctions());
+        $actual = count($this->extension->getFunctions());
         static::assertSame($expected, $actual);
 
         $expected = 3;
-        $actual = count($extension->getFilters());
+        $actual = count($this->extension->getFilters());
         static::assertSame($expected, $actual);
+
+        $expected = 'something';
+        $callable = $this->getFunction('write_config')->getCallable();
+        call_user_func($callable, 'foo', $expected);
+
+        $callable = $this->getFunction('config')->getCallable();
+        $actual = call_user_func($callable, 'foo');
+        static::assertSame($expected, $actual);
+
+        $this->expectException('Cake\View\Exception\MissingElementException');
+        $context['_view'] = new TwigView();
+        $callable = $this->getFunction('element')->getCallable();
+        $actual = call_user_func($callable, $context, 'foo', []);
+        static::assertNull($actual);
+    }
+
+    /**
+     * Test filters
+     *
+     * @return void
+     * @covers ::getFilters()
+     */
+    public function testFilters(): void
+    {
+        $callable = $this->getFilter('shuffle')->getCallable();
+        $actual = call_user_func_array($callable, [[]]);
+        static::assertEmpty($actual);
+
+        $callable = $this->getFilter('ksort')->getCallable();
+        $actual = call_user_func_array($callable, [['z' => 3, 'q' => 2, 'a' => 1]]);
+        static::assertSame(['a' => 1, 'q' => 2, 'z' => 3], $actual);
+
+        $callable = $this->getFilter('krsort')->getCallable();
+        $actual = call_user_func_array($callable, [['a' => 1, 'q' => 2, 'z' => 3]]);
+        static::assertSame(['z' => 3, 'q' => 2, 'a' => 1], $actual);
+    }
+
+    protected function getFilter($name)
+    {
+        $filters = $this->extension->getFilters();
+        foreach ($filters as $filter) {
+            if ($filter->getName() === $name) {
+                return $filter;
+            }
+        }
+    }
+
+    protected function getFunction($name)
+    {
+        $functions = $this->extension->getFunctions();
+        foreach ($functions as $function) {
+            if ($function->getName() === $name) {
+                return $function;
+            }
+        }
     }
 }
