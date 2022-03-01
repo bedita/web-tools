@@ -13,7 +13,6 @@
 namespace BEdita\WebTools\Test\TestCase\View;
 
 use BEdita\WebTools\View\TwigView;
-use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
 /**
