@@ -12,8 +12,8 @@
  */
 namespace BEdita\WebTools\Test\TestCase\View\Twig;
 
-use BEdita\WebTools\View\Twig\BeditaTwigExtension;
 use BEdita\WebTools\View\TwigView;
+use BEdita\WebTools\View\Twig\BeditaTwigExtension;
 use Cake\TestSuite\TestCase;
 
 /**
