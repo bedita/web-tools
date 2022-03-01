@@ -13,6 +13,7 @@
 namespace BEdita\WebTools\View\Twig;
 
 use Cake\Core\Configure;
+use Twig\TwigFunction;
 
 /**
  * BEdita Twig extension class.
@@ -42,6 +43,14 @@ class BeditaTwigExtension extends \Twig_Extension
 
                 return;
             }),
+            // from https://github.com/cakephp/twig-view/blob/1.x/src/Twig/Extension/ViewExtension.php#L43
+            new TwigFunction(
+                'element',
+                function ($context, string $name, array $data = [], array $options = []) {
+                    return $context['_view']->element($name, $data, $options);
+                },
+                ['needs_context' => true, 'is_safe' => ['all']]
+            ),
         ];
     }
 
