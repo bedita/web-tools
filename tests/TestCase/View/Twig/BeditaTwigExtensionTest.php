@@ -23,11 +23,12 @@ use Cake\TestSuite\TestCase;
 class BeditaTwigExtensionTest extends TestCase
 {
     /**
-     * Test `getName` method
+     * Test all methods
      *
      * @return void
      * @covers ::getName()
      * @covers ::getFunctions()
+     * @covers ::getFilters()
      */
     public function testExtension(): void
     {
@@ -38,6 +39,10 @@ class BeditaTwigExtensionTest extends TestCase
 
         $expected = 3;
         $actual = count($extension->getFunctions());
+        static::assertSame($expected, $actual);
+
+        $expected = 3;
+        $actual = count($extension->getFilters());
         static::assertSame($expected, $actual);
     }
 }
