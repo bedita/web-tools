@@ -326,7 +326,9 @@ trait ApiProxyTrait
         }
 
         foreach ($links as &$link) {
-            $link = str_replace($this->apiClient->getApiBaseUrl(), $this->baseUrl, $link);
+            if (is_string($link)) {
+                $link = str_replace($this->apiClient->getApiBaseUrl(), $this->baseUrl, $link);
+            }
         }
 
         return Hash::insert($data, $path, $links);
