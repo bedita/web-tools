@@ -23,13 +23,18 @@
         "php": ">=7.2",
         "bedita/php-sdk": "^1.2.0",
         "cakephp/cakephp": "^4.2.2",
-        "josegonzalez/dotenv": "^3.2",
-        "cakephp/authentication": "^2.5.0",
         "cakephp/twig-view": "^1.2.0"
     },
     "require-dev": {
+        "cakephp/authentication": "^2.5",
+        "cakephp/authorization": "^2.2",
         "cakephp/cakephp-codesniffer": "~4.2.0",
+        "josegonzalez/dotenv": "^3.2",
         "phpunit/phpunit": "^8.0"
+    },
+    "suggest": {
+        "cakephp/authentication": "^2.5 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
+        "cakephp/authorization": "^2.2 To use \"RequestPolicy\" and other authorization features"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +49,6 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
         "check": [
             "@test",
             "@cs-check"
