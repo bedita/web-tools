@@ -68,7 +68,12 @@ class ApiClientProvider
      */
     protected function createClient(array $options = []): BEditaClient
     {
-        $this->apiClient = new BEditaClient(Configure::read('API.apiBaseUrl'), Configure::read('API.apiKey'), [], Configure::read('API.guzzleConfig', []));
+        $this->apiClient = new BEditaClient(
+            Configure::read('API.apiBaseUrl'),
+            Configure::read('API.apiKey'),
+            [],
+            Configure::read('API.guzzleConfig', [])
+        );
         $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
         if (!empty($logOptions)) {
             $this->apiClient->initLogger($logOptions);
