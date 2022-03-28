@@ -1,6 +1,7 @@
 # Project files #
 #################
 /composer.lock
+/phpstan.neon
 /phpunit.xml
 /coverage
 /vendor
