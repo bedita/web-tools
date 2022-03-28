@@ -85,13 +85,13 @@ class HtmlHelperTest extends TestCase
                 null,
                 'My Controller',
             ],
-            'title from controller, action' => [
+            'title from controller, action 1' => [
                 'my_controller',
                 'my_action',
                 null,
                 'My Controller - My Action',
             ],
-            'title from controller, action' => [
+            'title from controller, action 2' => [
                 'my_controller',
                 'my_action',
                 'My title',
@@ -251,11 +251,11 @@ class HtmlHelperTest extends TestCase
     public function metaGeneratorProvider(): array
     {
         return [
-            'empty project and version' => [
+            'empty project and version 1' => [
                 [],
                 '',
             ],
-            'empty project and version' => [
+            'empty project and version 2' => [
                 [
                     'name' => '',
                     'version' => '',
