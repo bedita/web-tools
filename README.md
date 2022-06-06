@@ -2,6 +2,7 @@
 
 [![Github Actions](https://github.com/bedita/web-tools/workflows/php/badge.svg)](https://github.com/bedita/web-tools/actions?query=workflow%3Aphp)
 [![codecov](https://codecov.io/gh/bedita/web-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/bedita/web-tools)
+[![phpstan](https://img.shields.io/badge/PHPStan-level%200-brightgreen.svg)](https://phpstan.org)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bedita/web-tools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bedita/web-tools/?branch=master)
 [![image](https://img.shields.io/packagist/v/bedita/web-tools.svg?label=stable)](https://packagist.org/packages/bedita/web-tools)
 [![image](https://img.shields.io/github/license/bedita/web-tools.svg)](https://github.com/bedita/web-tools/blob/master/LICENSE.LGPL)
