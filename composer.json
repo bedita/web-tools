@@ -26,7 +26,7 @@
         "cakephp/twig-view": "^1.2.0"
     },
     "require-dev": {
-        "cakephp/authentication": "^2.5",
+        "cakephp/authentication": "^2.9",
         "cakephp/authorization": "^2.2",
         "cakephp/cakephp-codesniffer": "~4.2.0",
         "josegonzalez/dotenv": "^3.2",
@@ -34,7 +34,7 @@
         "phpunit/phpunit": "^8.0|^9.0"
     },
     "suggest": {
-        "cakephp/authentication": "^2.5 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
+        "cakephp/authentication": "^2.9 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
         "cakephp/authorization": "^2.2 To use \"RequestPolicy\" and other authorization features"
     },
     "autoload": {
