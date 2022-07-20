@@ -17,7 +17,6 @@ namespace BEdita\WebTools\Authenticator;
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
-use Cake\Core\Configure;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\LogTrait;
 use Cake\Routing\Router;
@@ -41,6 +40,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
     protected $_defaultConfig = [
         'sessionKey' => 'oauth2state',
         'redirect' => ['_name' => 'login'],
+        'providers' => [], // configured OAuth2 providers
     ];
 
     /**
@@ -56,7 +56,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
             return new Result($connect, Result::SUCCESS);
         }
 
-        $usernameField = (string)Configure::read(sprintf('OAuth2Providers.%s.map.provider_username', $provider));
+        $usernameField = (string)$this->getConfig(sprintf('providers.%s.map.provider_username', $provider));
         $data = [
             'auth_provider' => $provider,
             'provider_username' => Hash::get($connect, sprintf('user.%s', $usernameField)),
@@ -91,7 +91,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
 
         if (!isset($query['code'])) {
             // If we don't have an authorization code then get one
-            $options = (array)Configure::read(sprintf('OAuth2Providers.%s.options', $provider));
+            $options = (array)$this->getConfig(sprintf('providers.%s.options', $provider));
             $authUrl = $this->provider->getAuthorizationUrl($options);
             $session->write($sessionKey, $this->provider->getState());
 
@@ -123,7 +123,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
      */
     protected function initProvider(string $provider, ServerRequestInterface $request): void
     {
-        $providerConf = (array)Configure::read(sprintf('OAuth2Providers.%s', $provider));
+        $providerConf = (array)$this->getConfig(sprintf('providers.%s', $provider));
         if (empty($providerConf['class']) || empty($providerConf['setup'])) {
             throw new BadRequestException('Invalid auth provider ' . $provider);
         }

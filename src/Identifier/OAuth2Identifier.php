@@ -18,7 +18,6 @@ use ArrayObject;
 use Authentication\Identifier\AbstractIdentifier;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
-use Cake\Core\Configure;
 use Cake\Log\LogTrait;
 use Cake\Utility\Hash;
 
@@ -38,6 +37,7 @@ class OAuth2Identifier extends AbstractIdentifier
         ],
         'autoSignup' => false,
         'signupRoles' => [],
+        'providers' => [], // configured OAuth2 providers
     ];
 
     /**
@@ -111,7 +111,7 @@ class OAuth2Identifier extends AbstractIdentifier
      */
     protected function signupData(array $credentials): array
     {
-        $user = (array)Configure::read(sprintf('OAuth2Providers.%s.map', $credentials['auth_provider']));
+        $user = (array)$this->getConfig(sprintf('providers.%s.map', $credentials['auth_provider']));
         foreach ($user as $key => $value) {
             $user[$key] = Hash::get($credentials, sprintf('provider_userdata.%s', $value));
         }
