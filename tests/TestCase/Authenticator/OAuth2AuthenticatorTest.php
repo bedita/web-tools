@@ -159,7 +159,8 @@ class OAuth2AuthenticatorTest extends TestCase
         }
 
         $identifier = new class ($identity) implements IdentifierInterface {
-            public function __construct($identity) {
+            public function __construct($identity)
+            {
                 $this->identity = $identity;
             }
 
