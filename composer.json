@@ -29,6 +29,7 @@
         "cakephp/authentication": "^2.9",
         "cakephp/authorization": "^2.2",
         "cakephp/cakephp-codesniffer": "~4.2.0",
+        "league/oauth2-client": "^2.6",
         "josegonzalez/dotenv": "^3.2",
         "phpstan/phpstan": "^1.5",
         "phpunit/phpunit": "^8.0|^9.0"
