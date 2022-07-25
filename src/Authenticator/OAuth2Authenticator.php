@@ -17,12 +17,18 @@ namespace BEdita\WebTools\Authenticator;
 use Authentication\Authenticator\AbstractAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
+use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\LogTrait;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Authenticator class for the OAuth2 flow.
+ * Provides a connection to the external OAuth2 provider and use
+ * the identifier class to verify the credentials.
+ */
 class OAuth2Authenticator extends AbstractAuthenticator
 {
     use LogTrait;
@@ -35,13 +41,34 @@ class OAuth2Authenticator extends AbstractAuthenticator
     protected $provider = null;
 
     /**
+     * Authentication URL key
+     *
+     * @var string
+     */
+    public const AUTH_URL_KEY = 'authUrl';
+
+    /**
      * @inheritDoc
      */
     protected $_defaultConfig = [
         'sessionKey' => 'oauth2state',
-        'redirect' => ['_name' => 'login'],
+        'redirect' => ['_name' => 'login'], // named route used to redirect
         'providers' => [], // configured OAuth2 providers
+        'urlResolver' => null,
     ];
+
+    /**
+     * Constructor
+     *
+     * @param \Authentication\Identifier\IdentifierInterface $identifier Identifier or identifiers collection.
+     * @param array $config Configuration settings.
+     */
+    public function __construct(IdentifierInterface $identifier, array $config = [])
+    {
+        // Setup default URL resolver
+        $this->setConfig('urlResolver', fn ($route) => Router::url($route, true));
+        parent::__construct($identifier, $config);
+    }
 
     /**
      * @inheritDoc
@@ -52,7 +79,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
         $provider = basename($request->getUri()->getPath());
 
         $connect = $this->providerConnect($provider, $request);
-        if (!empty($connect['authUrl'])) {
+        if (!empty($connect[static::AUTH_URL_KEY])) {
             return new Result($connect, Result::SUCCESS);
         }
 
@@ -95,7 +122,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
             $authUrl = $this->provider->getAuthorizationUrl($options);
             $session->write($sessionKey, $this->provider->getState());
 
-            return compact('authUrl');
+            return [static::AUTH_URL_KEY => $authUrl];
         }
 
         // Check given state against previously stored one to mitigate CSRF attack
@@ -128,17 +155,30 @@ class OAuth2Authenticator extends AbstractAuthenticator
             throw new BadRequestException('Invalid auth provider ' . $provider);
         }
 
+        $redirectUri = $this->redirectUri($provider, $request);
+        $this->log(sprintf('Creating %s provider with redirect url %s', $provider, $redirectUri), 'info');
+        $setup = (array)Hash::get($providerConf, 'setup') + compact('redirectUri');
+
+        $class = Hash::get($providerConf, 'class');
+        $this->provider = new $class($setup);
+    }
+
+    /**
+     * Build redirect URL from request and provider information.
+     *
+     * @param string $provider Provider name.
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request to get authentication information from.
+     * @return string
+     */
+    protected function redirectUri(string $provider, ServerRequestInterface $request): string
+    {
         $redirectUri = (array)$this->getConfig('redirect') + compact('provider');
         $query = $request->getQueryParams();
         $queryRedirectUrl = Hash::get($query, 'redirect');
         if (!empty($queryRedirectUrl)) {
             $redirectUri['?'] = ['redirect' => $queryRedirectUrl];
         }
-        $redirectUri = Router::url($redirectUri, true);
-        $this->log(sprintf('Creating %s provider with redirect url %s', $provider, $redirectUri), 'info');
-        $setup = (array)Hash::get($providerConf, 'setup') + compact('redirectUri');
 
-        $class = Hash::get($providerConf, 'class');
-        $this->provider = new $class($setup);
+        return call_user_func($this->getConfig('urlResolver'), [$redirectUri]);
     }
 }

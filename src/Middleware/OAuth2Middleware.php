@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Middleware;
 
 use Authentication\Authenticator\Result;
+use BEdita\WebTools\Authenticator\OAuth2Authenticator;
 use Cake\Utility\Hash;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -37,7 +38,7 @@ class OAuth2Middleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $authUrl = Hash::get($result->getData(), 'authUrl');
+        $authUrl = Hash::get($result->getData(), OAuth2Authenticator::AUTH_URL_KEY);
         if (empty($authUrl)) {
             return $handler->handle($request);
         }
