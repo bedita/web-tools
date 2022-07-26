@@ -179,6 +179,6 @@ class OAuth2Authenticator extends AbstractAuthenticator
             $redirectUri['?'] = ['redirect' => $queryRedirectUrl];
         }
 
-        return call_user_func($this->getConfig('urlResolver'), [$redirectUri]);
+        return call_user_func($this->getConfig('urlResolver'), $redirectUri);
     }
 }
