@@ -26,15 +26,16 @@
         "cakephp/twig-view": "^1.2.0"
     },
     "require-dev": {
-        "cakephp/authentication": "^2.5",
+        "cakephp/authentication": "^2.9",
         "cakephp/authorization": "^2.2",
         "cakephp/cakephp-codesniffer": "~4.2.0",
+        "league/oauth2-client": "^2.6",
         "josegonzalez/dotenv": "^3.2",
         "phpstan/phpstan": "^1.5",
         "phpunit/phpunit": "^8.0|^9.0"
     },
     "suggest": {
-        "cakephp/authentication": "^2.5 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
+        "cakephp/authentication": "^2.9 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
         "cakephp/authorization": "^2.2 To use \"RequestPolicy\" and other authorization features"
     },
     "autoload": {
@@ -57,10 +58,7 @@
         "cs-check": "vendor/bin/phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "cs-fix": "vendor/bin/phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
         "test": "vendor/bin/phpunit --colors=always",
-        "update-dev": [
-            "@composer update",
-            "@cs-setup"
-        ]
+        "stan": "vendor/bin/phpstan analyse"
     },
     "prefer-stable": true,
     "config": {
