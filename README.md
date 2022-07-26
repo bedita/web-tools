@@ -307,7 +307,7 @@ public function getAuthorizationService(ServerRequestInterface $request): Author
 
 ## OAuth2 providers
 
-If you are using the `OAuth2Authenticator` and `OAuth2Identifier` classes you must pass the supported OAuth2 providers configuration when you are loadnig this classes in the authentication service.
+If you are using the `OAuth2Authenticator` and `OAuth2Identifier` classes you must pass the supported OAuth2 providers configuration when you are loading this classes in the authentication service.
 Here a brief example:
 
 ```php
