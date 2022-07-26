@@ -303,3 +303,73 @@ public function getAuthorizationService(ServerRequestInterface $request): Author
 
     return new AuthorizationService($mapResolver);
 }
+```
+
+## OAuth2 providers
+
+If you are using the `OAuth2Authenticator` and `OAuth2Identifier` classes you must pass the supported OAuth2 providers configuration when you are loadnig this classes in the authentication service.
+Here a brief example:
+
+```php
+
+    $service = new AuthenticationService();
+
+    $providers = (array)Configure::read('OAuth2Providers');
+    $service->loadIdentifier('BEdita/WebTools.OAuth2', compact('providers') + [
+        'autoSignup' => true,
+        'signupRoles' => ['customer'],
+    ]);
+    $service->loadAuthenticator('BEdita/WebTools.OAuth2', compact('providers') + [
+        'redirect' => ['_name' => 'login:oauth2'],
+    ]);
+```
+
+It is recommended to use a configuration key like `OAuth2Providers` to store the provider information, anyway you must pass providers settings array using the `providers` key.
+Other configuration are:
+
+* (`OAuth2Authenticator`) `'redirect'` - default `['_name' => 'login']`, redirect url route specified as named array
+* (`OAuth2Identifier`) `autoSignup` - default `false`, set to `true` if you want an automatic signup to be performed if login fails
+* (`OAuth2Identifier`) `'signupRoles'` - default `[]`, user roles to use during the signup process, used only if `autoSignup` is `true`
+
+### OAuth2 providers structure
+
+The providers configuration structure is in the following example.
+Here a single `google` provider is defined.
+Mandatory configuration keys are `class`, `setup`, `options` and `map` explained below.
+Each provider key must match the `auth_provider` name defined and configured in BEdita API.
+
+```php
+
+    'google' => [
+        // OAuth2 class name, must be a supported provider of `league/oauth2-client`
+        // see https://oauth2-client.thephpleague.com/providers/league/ official or third-party
+        'class' => '\League\OAuth2\Client\Provider\Google',
+
+        // Provider class setup parameters, normally this includes `clientId` and `clientSecret` keys
+        // Other parameters like 'redirectUri' will be added dynamically
+        'setup' => [
+            'clientId' => '####',
+            'clientSecret' => '####',
+        ],
+
+        // Provider authorization options, specify the user information scope that you want to read
+        // `'scope'` array will vary between providers, please read the oauth2-client documentation.
+        'options' => [
+            'scope' => ['https://www.googleapis.com/auth/userinfo.email'],
+        ],
+
+        // Map BEdita user fields with auth provider data path, using dot notation like 'user.id'
+        // In this array keys are BEdita fields, and values are paths to extract the desired item from the provider response
+        // only `'provider_username'` is mandatory, to uniquely identify the user in the provider context
+        // other fields could be used during signup
+        'map' => [
+            'provider_username' => 'sub',
+            'username' => 'email',
+            'email' => 'email',
+            'name' => 'given_name',
+            'surname' => 'family_name',
+        ],
+    ],
+```
+
+For a brief OAuth2 providers reference have a look at the [OAuth2 providers configuration wiki page](https://github.com/bedita/web-tools/wiki/OAuth2-providers-configurations)
