@@ -28,6 +28,16 @@ class OAuth2Identifier extends AbstractIdentifier
 {
     use LogTrait;
 
+    /**
+     * Configuration options
+     *
+     * - `fields` - Fields used in `/auth` endpoint using and external auth provider.
+     * - `autoSignup` - flag indicating whether `/signup` should be invoked automatically in case of authentication failure.
+     * - `signupRoles` - array of roles to use in `/signup` if `autoSignup` is set to `true`.
+     * - `providers` - configured OAuth2 providers, see https://github.com/bedita/web-tools/wiki/OAuth2-providers-configurations
+     *
+     * @var array
+     */
     protected $_defaultConfig = [
         'fields' => [
             'auth_provider' => 'auth_provider',

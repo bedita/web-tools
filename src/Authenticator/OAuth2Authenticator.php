@@ -48,12 +48,20 @@ class OAuth2Authenticator extends AbstractAuthenticator
     public const AUTH_URL_KEY = 'authUrl';
 
     /**
-     * @inheritDoc
+     * Configuration options
+     *
+     * - `sessionKey` - Session key to store the request attribute which holds the identity.
+     * - `redirect` - redirect URL in array format as named route,
+     *                  used to redirect from the provider to the application
+     * - `providers` - configured OAuth2 providers, see https://github.com/bedita/web-tools/wiki/OAuth2-providers-configurations
+     * - `urlResolver` - callback to resolve redirect URL, defaults to ` Router::url($route, true)`
+     *
+     * @var array
      */
     protected $_defaultConfig = [
         'sessionKey' => 'oauth2state',
-        'redirect' => ['_name' => 'login'], // named route used to redirect
-        'providers' => [], // configured OAuth2 providers
+        'redirect' => ['_name' => 'login'],
+        'providers' => [],
         'urlResolver' => null,
     ];
 
