@@ -20,19 +20,19 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "bedita/php-sdk": "^2.0.0",
+        "php": "^7.4 || ^8.0",
+        "bedita/php-sdk": "^2.1.0",
         "cakephp/cakephp": "^4.2.2",
-        "cakephp/twig-view": "^1.2.0"
+        "cakephp/twig-view": "^1.3.0"
     },
     "require-dev": {
         "cakephp/authentication": "^2.9",
         "cakephp/authorization": "^2.2",
-        "cakephp/cakephp-codesniffer": "~4.2.0",
+        "cakephp/cakephp-codesniffer": "~4.5.1",
         "league/oauth2-client": "^2.6",
         "josegonzalez/dotenv": "^3.2",
-        "phpstan/phpstan": "^1.5",
-        "phpunit/phpunit": "^8.0|^9.0"
+        "phpstan/phpstan": "^1.7",
+        "phpunit/phpunit": "^9.0"
     },
     "suggest": {
         "cakephp/authentication": "^2.9 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
