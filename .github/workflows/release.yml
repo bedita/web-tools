@@ -62,7 +62,7 @@ jobs:
         id: branch
 
       - name: Exit on bad tag
-        if: ${{ contains(github.event.head_commit.message, 'major') && !contains(steps.branch.outputs.BRANCH != 'master') }}
+        if: ${{ contains(github.event.head_commit.message, 'major') && !contains(steps.branch.outputs.BRANCH, 'master') }}
         run: |
           echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
