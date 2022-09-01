@@ -23,6 +23,6 @@ jobs:
         uses: K-Phoen/semver-release-action@master
         with:
           release_branch: 1.x
-          release_strategy: none
+          release_strategy: tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
