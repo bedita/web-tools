@@ -29,12 +29,23 @@ jobs:
           separator: '.'
           maxsplit: 3
 
+      - name: Calculate new versions
+        env:
+          MAJOR: ${{ steps.split.outputs._0 }}
+          MINOR: ${{ steps.split.outputs._1 }}
+          PATCH: ${{ steps.split.outputs._2 }}
+        run: |
+          echo ::set-env name=NEW_MAJOR::$(echo $((MAJOR+1)).0.0)
+          echo ::set-env name=NEW_MINOR::$(echo $MAJOR.$((MINOR+1)).0)
+          echo ::set-env name=NEW_PATCH::$(echo $MAJOR.$MINOR.$((PATCH+1)))
+        id: versions
+
       - name: Create Release
         id: create_release
         run: |
-          echo major ${{ steps.split.outputs._0 }}
-          echo minor ${{ steps.split.outputs._1 }}
-          echo patch ${{ steps.split.outputs._2 }}
+          echo new major ${{ steps.versions.outputs.NEW_MAJOR }}
+          echo new minor ${{ steps.versions.outputs.NEW_MINOR }}
+          echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
 
       # uses: actions/create-release@v1
       # env:
