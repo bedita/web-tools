@@ -12,12 +12,25 @@ jobs:
     runs-on: 'ubuntu-latest'
     #if: contains(github.event.pull_request.labels.*.name, 'release:minor')
     steps:
-     - name: Checkout Code
-       uses: actions/checkout@v3
-       with:
-        fetch-depth: 0
-     - name: Last Tag On branch
-       run: echo $(git describe --tags --abbrev=0)
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Retrieve last tag on branch
+        run: |
+          echo "::set-output name=TAG_NAME::$(git describe --tags --abbrev=0)"
+        id: last_tag
+
+      - name: Create Release
+        id: create_release
+        run: echo ${{ steps.last_tag.outputs.TAG_NAME }}
+
+      # uses: actions/create-release@v1
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.token }}
+      # with:
+      #   tag_name: ${{ steps.version.outputs.TAG_NAME }}
     #  - name: Create Release Notes File
     #    env:
     #     COMMITTEXT: "${{ github.event.head_commit.message }}"
