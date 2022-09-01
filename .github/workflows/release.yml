@@ -17,7 +17,7 @@ jobs:
        with:
         fetch-depth: 0
      - name: Last Tag On branch
-       run: echo $(git describe --tags)
+       run: echo $(git describe --tags --abbrev=0)
     #  - name: Create Release Notes File
     #    env:
     #     COMMITTEXT: "${{ github.event.head_commit.message }}"
