@@ -19,12 +19,22 @@ jobs:
 
       - name: Retrieve last tag on branch
         run: |
-          echo "::set-output name=TAG_NAME::$(git describe --tags --abbrev=0)"
+          echo "::set-output name=TAG_NAME::$(git describe --tags --abbrev=0 | cut -c 2-)"
         id: last_tag
+
+      - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: '${{ steps.last_tag.outputs.TAG_NAME }}'
+          separator: '.'
+          maxsplit: 3
 
       - name: Create Release
         id: create_release
-        run: echo ${{ steps.last_tag.outputs.TAG_NAME }}
+        run: |
+          echo major ${{ steps.split.outputs._0 }}
+          echo minor ${{ steps.split.outputs._1 }}
+          echo patch ${{ steps.split.outputs._2 }}
 
       # uses: actions/create-release@v1
       # env:
