@@ -56,50 +56,37 @@ jobs:
         run: |
           echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
 
-      # uses: actions/create-release@v1
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.token }}
-      # with:
-      #   tag_name: ${{ steps.version.outputs.TAG_NAME }}
-    #  - name: Create Release Notes File
-    #    env:
-    #     COMMITTEXT: "${{ github.event.head_commit.message }}"
-    #    run: |
-    #       php create-release-notes-file.php
-    #  - name: Set Tag Output
-    #    id: set-tag
-    #    run:  echo "::set-output name=tag_name::$(sh get-version.sh)"
-    #  - name: Create Tag
-    #    uses: actions/github-script@v3
-    #    env:
-    #       TAG: ${{ steps.set-tag.outputs.tag_name }}
-    #    with:
-    #       github-token: ${{ github.token }}
-    #       script: |
-    #         github.git.createRef({
-    #           owner: context.repo.owner,
-    #           repo: context.repo.repo,
-    #          ref: "refs/tags/${{ steps.set-tag.outputs.tag_name }}",
-    #           sha: context.sha
-    #         })
-    #  - name: Create release
+      - name: Extract branch name
+        shell: bash
+        run: echo "::set-output name=BRANCH::$(echo ${GITHUB_REF#refs/heads/})"
+        id: branch
+
+      - name: Exit on bad tag
+        if: ${{ (contains(github.event.head_commit.message, 'major')) && !(contains(steps.branch.outputs.BRANCH != 'master') }}
+        run: |
+          echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
+          exit 1
+
+    #  - name: Create major release
+    #    if: contains(github.event.head_commit.message, 'major')
     #    uses: ncipollo/release-action@v1
     #    with:
-    #     tag: ${{ steps.set-tag.outputs.tag_name }}
-    #     bodyFile: './release_notes.txt'
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    # runs-on: ubuntu-latest
-    # env:
-    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # steps:
-    #   - id: release
-    #     uses: rymndhng/release-on-push-action@master
-    #     with:
-    #       tag_prefix: v
-    #       use_github_release_notes: true
-    #       bump_version_scheme: norelease
+    #     tag: ${{ steps.versions.outputs.NEW_MAJOR }}
+    #     commit: ${{ steps.branch.outputs.BRANCH }}
+    #     generateReleaseNotes: true
 
-    #   - name: Check Output Parameters
-    #     run: |
-    #       echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-    #       echo "Got release version ${{ steps.release.outputs.version }}"
+    #  - name: Create minor release
+    #    if: contains(github.event.head_commit.message, 'minor')
+    #    uses: ncipollo/release-action@v1
+    #    with:
+    #     tag: ${{ steps.versions.outputs.NEW_MINOR }}
+    #     commit: ${{ steps.branch.outputs.BRANCH }}
+    #     generateReleaseNotes: true
+
+    #  - name: Create patch release
+    #    if: contains(github.event.head_commit.message, 'patch')
+    #    uses: ncipollo/release-action@v1
+    #    with:
+    #     tag: ${{ steps.versions.outputs.NEW_PATCH }}
+    #     commit: ${{ steps.branch.outputs.BRANCH }}
+    #     generateReleaseNotes: true
