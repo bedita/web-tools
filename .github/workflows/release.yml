@@ -2,13 +2,15 @@ name: Release
 
 on:
   push:
-    branches:
-      - master
-      - 1.x
-
+    # branches:
+    #   - master
+    #   - 1.x
+    paths:
+      - '.github/workflows/release.yml'
 jobs:
   release-on-push:
-    if: contains(github.event.pull_request.labels.*.name, 'release:minor')
+    runs-on: 'ubuntu-latest'
+    #if: contains(github.event.pull_request.labels.*.name, 'release:minor')
     steps:
      - name: Checkout Code
        uses: actions/checkout@v3
