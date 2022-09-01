@@ -10,6 +10,7 @@ on:
 jobs:
   release-on-push:
     runs-on: 'ubuntu-latest'
+    #if: ${{ (needs.rules.outputs.branch_name != 'production') && (needs.rules.outputs.branch_name != 'staging') }}
     #if: contains(github.event.pull_request.labels.*.name, 'release:minor')
     steps:
       - name: Checkout Code
@@ -40,11 +41,19 @@ jobs:
           echo "::set-output name=NEW_PATCH::$(echo $MAJOR.$MINOR.$((PATCH+1)))"
         id: versions
 
-      - name: Create Release
-        id: create_release
+      - name: New major release
+        if: contains(github.event.head_commit.message, 'major')
         run: |
           echo new major ${{ steps.versions.outputs.NEW_MAJOR }}
+
+      - name: New minor release
+        if: contains(github.event.head_commit.message, 'minor')
+        run: |
           echo new minor ${{ steps.versions.outputs.NEW_MINOR }}
+
+      - name: New patch release
+        if: contains(github.event.head_commit.message, 'patch')
+        run: |
           echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
 
       # uses: actions/create-release@v1
