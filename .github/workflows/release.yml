@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 1.x
-      - experimental/1.x/rymndhng-release-on-push-action
 
 jobs:
   release-on-push:
