@@ -16,6 +16,7 @@ jobs:
         with:
           tag_prefix: v
           use_github_release_notes: true
+          bump_version_scheme: norelease
 
       - name: Check Output Parameters
         run: |
