@@ -1,62 +1,106 @@
 name: Release
 
 on:
-  push:
-    # branches:
-    #   - master
-    #   - 1.x
-    paths:
-      - '.github/workflows/release.yml'
-jobs:
-  release-on-push:
-    runs-on: 'ubuntu-latest'
-    #if: contains(github.event.pull_request.labels.*.name, 'release:minor')
-    steps:
-     - name: Checkout Code
-       uses: actions/checkout@v3
-       with:
-        fetch-depth: 0
-     - name: Last Tag On branch
-       run: echo $(git describe --tags --abbrev=0)
-    #  - name: Create Release Notes File
-    #    env:
-    #     COMMITTEXT: "${{ github.event.head_commit.message }}"
-    #    run: |
-    #       php create-release-notes-file.php
-    #  - name: Set Tag Output
-    #    id: set-tag
-    #    run:  echo "::set-output name=tag_name::$(sh get-version.sh)"
-    #  - name: Create Tag
-    #    uses: actions/github-script@v3
-    #    env:
-    #       TAG: ${{ steps.set-tag.outputs.tag_name }}
-    #    with:
-    #       github-token: ${{ github.token }}
-    #       script: |
-    #         github.git.createRef({
-    #           owner: context.repo.owner,
-    #           repo: context.repo.repo,
-    #          ref: "refs/tags/${{ steps.set-tag.outputs.tag_name }}",
-    #           sha: context.sha
-    #         })
-    #  - name: Create release
-    #    uses: ncipollo/release-action@v1
-    #    with:
-    #     tag: ${{ steps.set-tag.outputs.tag_name }}
-    #     bodyFile: './release_notes.txt'
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    # runs-on: ubuntu-latest
-    # env:
-    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # steps:
-    #   - id: release
-    #     uses: rymndhng/release-on-push-action@master
-    #     with:
-    #       tag_prefix: v
-    #       use_github_release_notes: true
-    #       bump_version_scheme: norelease
+  pull_request:
+    types: [closed]
 
-    #   - name: Check Output Parameters
-    #     run: |
-    #       echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-    #       echo "Got release version ${{ steps.release.outputs.version }}"
+jobs:
+
+  debug:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+
+  release-on-push:
+    if: github.event.pull_request.merged
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Retrieve last tag on branch
+        run: |
+          echo "::set-output name=TAG_NAME::$(git describe --tags --abbrev=0 | cut -c 2-)"
+        id: last_tag
+
+      - name: Debug last tag
+        run: |
+          echo last tag ${{ steps.last_tag.outputs.TAG_NAME }}
+
+      - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: '${{ steps.last_tag.outputs.TAG_NAME }}'
+          separator: '.'
+          maxsplit: 3
+
+      - name: Calculate new versions
+        env:
+          MAJOR: ${{ steps.split.outputs._0 }}
+          MINOR: ${{ steps.split.outputs._1 }}
+          PATCH: ${{ steps.split.outputs._2 }}
+        run: |
+          echo "::set-output name=NEW_MAJOR::$(echo $((MAJOR+1)).0.0)"
+          echo "::set-output name=NEW_MINOR::$(echo $MAJOR.$((MINOR+1)).0)"
+          echo "::set-output name=NEW_PATCH::$(echo $MAJOR.$MINOR.$((PATCH+1)))"
+        id: versions
+
+      - name: New possible releases
+        run: |
+          echo new major ${{ steps.versions.outputs.NEW_MAJOR }}
+          echo new minor ${{ steps.versions.outputs.NEW_MINOR }}
+          echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "::set-output name=BRANCH::$(echo ${GITHUB_REF#refs/heads/})"
+        id: branch
+
+      - name: Debug branch name
+        run: |
+          echo current branch ${{ steps.branch.outputs.BRANCH }}
+
+      - name: Exit on bad tag
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'release:major') && !contains(steps.branch.outputs.BRANCH, 'master') }}
+        run: |
+          echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
+          exit 1
+
+      - name: Exit on bad branch
+        if: ${{ !contains(fromJson('["master", "1.x"]'), steps.branch.outputs.BRANCH) }}
+        run: |
+          echo Can't create a release on branch ${{ steps.branch.outputs.BRANCH }}
+          exit 1
+
+      - name: Create major release
+        if: contains(github.event.pull_request.labels.*.name, 'release:major')
+        uses: ncipollo/release-action@v1
+        with:
+          name: 'Release ${{ steps.versions.outputs.NEW_MAJOR }}'
+          tag: 'v${{ steps.versions.outputs.NEW_MAJOR }}'
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
+
+      - name: Create minor release
+        if: contains(github.event.pull_request.labels.*.name, 'release:minor')
+        uses: ncipollo/release-action@v1
+        with:
+          name: 'Release ${{ steps.versions.outputs.NEW_MINOR }}'
+          tag: 'v${{ steps.versions.outputs.NEW_MINOR }}'
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
+
+      - name: Create patch release
+        if: contains(github.event.pull_request.labels.*.name, 'release:patch')
+        uses: ncipollo/release-action@v1
+        with:
+          name: 'Release ${{ steps.versions.outputs.NEW_PATCH }}'
+          tag: 'v${{ steps.versions.outputs.NEW_PATCH }}'
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
