@@ -10,7 +10,6 @@ on:
 jobs:
   release-on-push:
     runs-on: 'ubuntu-latest'
-    #if: ${{ (needs.rules.outputs.branch_name != 'production') && (needs.rules.outputs.branch_name != 'staging') }}
     #if: contains(github.event.pull_request.labels.*.name, 'release:minor')
     steps:
       - name: Checkout Code
