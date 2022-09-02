@@ -2,15 +2,14 @@ name: Release
 
 on:
   push:
-    # branches:
-    #   - master
-    #   - 1.x
-    paths:
-      - '.github/workflows/release.yml'
+    branches:
+      - master
+      - 1.x
+
 jobs:
   release-on-push:
     runs-on: 'ubuntu-latest'
-    #if: contains(github.event.pull_request.labels.*.name, 'release:minor')
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'release:major') || contains(github.event.pull_request.labels.*.name, 'release:minor') || ${{ contains(github.event.pull_request.labels.*.name, 'release:patch') }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -41,17 +40,17 @@ jobs:
         id: versions
 
       - name: New major release
-        if: contains(github.event.head_commit.message, 'major')
+        if: contains(github.event.pull_request.labels.*.name, 'release:major')
         run: |
           echo new major ${{ steps.versions.outputs.NEW_MAJOR }}
 
       - name: New minor release
-        if: contains(github.event.head_commit.message, 'minor')
+        if: contains(github.event.pull_request.labels.*.name, 'release:minor')
         run: |
           echo new minor ${{ steps.versions.outputs.NEW_MINOR }}
 
       - name: New patch release
-        if: contains(github.event.head_commit.message, 'patch')
+        if: contains(github.event.pull_request.labels.*.name, 'release:patch')
         run: |
           echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
 
@@ -66,26 +65,26 @@ jobs:
           echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
 
-    #  - name: Create major release
-    #    if: contains(github.event.head_commit.message, 'major')
-    #    uses: ncipollo/release-action@v1
-    #    with:
-    #     tag: ${{ steps.versions.outputs.NEW_MAJOR }}
-    #     commit: ${{ steps.branch.outputs.BRANCH }}
-    #     generateReleaseNotes: true
+      - name: Create major release
+        if: contains(github.event.head_commit.message, 'major')
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.versions.outputs.NEW_MAJOR }}
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
 
-    #  - name: Create minor release
-    #    if: contains(github.event.head_commit.message, 'minor')
-    #    uses: ncipollo/release-action@v1
-    #    with:
-    #     tag: ${{ steps.versions.outputs.NEW_MINOR }}
-    #     commit: ${{ steps.branch.outputs.BRANCH }}
-    #     generateReleaseNotes: true
+      - name: Create minor release
+        if: contains(github.event.head_commit.message, 'minor')
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.versions.outputs.NEW_MINOR }}
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
 
-    #  - name: Create patch release
-    #    if: contains(github.event.head_commit.message, 'patch')
-    #    uses: ncipollo/release-action@v1
-    #    with:
-    #     tag: ${{ steps.versions.outputs.NEW_PATCH }}
-    #     commit: ${{ steps.branch.outputs.BRANCH }}
-    #     generateReleaseNotes: true
+      - name: Create patch release
+        if: contains(github.event.head_commit.message, 'patch')
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.versions.outputs.NEW_PATCH }}
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
