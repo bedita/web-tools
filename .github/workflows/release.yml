@@ -6,7 +6,11 @@ on:
 
 jobs:
   call:
-    uses: bedita/github-workflows/.github/workflows/release.yml@main
+    uses: bedita/github-workflows/.github/workflows/release.yml@feat/version.ini
     with:
       main_branch: 'master'
       dist_branches: '["master", "1.x"]'
+      version_ini_path: config/version.ini
+      version_ini_prefix: |
+        [WebTools]
+        version=
