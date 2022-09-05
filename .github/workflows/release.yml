@@ -5,7 +5,7 @@ on:
     types: [closed]
 
 jobs:
-  release:
+  release-job:
     uses: bedita/github-workflows/.github/workflows/release.yml@feat/version-ini
     with:
       main_branch: 'master'
