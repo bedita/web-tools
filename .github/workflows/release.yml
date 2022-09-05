@@ -10,7 +10,5 @@ jobs:
     with:
       main_branch: 'master'
       dist_branches: '["master", "1.x"]'
-      version_ini_path: config/version.ini
-      version_ini_prefix: |
-        [WebTools]
-        version=
+      version_ini_path: 'config/version.ini'
+      version_ini_prefix: "[WebTools]\nversion="
