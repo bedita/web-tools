@@ -12,3 +12,5 @@ jobs:
       dist_branches: '["master", "1.x"]'
       version_ini_path: config/version.ini
       version_ini_prefix: "[WebTools]\nversion="
+
+# test 1 - version ini from fork
