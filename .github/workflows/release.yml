@@ -14,4 +14,4 @@ jobs:
       # version_ini_path: config/version.ini
       # version_ini_prefix: "[WebTools]\nversion="
 
-# test 1 - version ini from fork
+# test 2 - use github-script
