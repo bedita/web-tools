@@ -3,6 +3,7 @@ name: Release
 on:
   pull_request:
     types: [closed]
+  pull_request_target:
 
 jobs:
   release-job:
