@@ -305,27 +305,73 @@ public function getAuthorizationService(ServerRequestInterface $request): Author
 }
 ```
 
+## OAuth2 setup
+
+Quick steps to use the `OAuth2` tools provided.
+
+1. Create a route to a path like `/ext/login/{provider}` to interact with the selected OAuth2 provider in `config/routes.php`. Each `{provider}` must match a provider configuration key, for instance `google` in the configuration example below, see [OAuth2 providers structure](###oauth2-providers-structure). An example here:
+
+```php
+        $builder->connect(
+            '/ext/login/{provider}',
+            ['controller' => 'ExternalLogin', 'action' => 'login'],
+            ['_name' => 'login:oauth2']
+        );
+```
+
+
+2. Define a controller for the above routing rule. A minimal version of the login action could include just a simple redirect like this example:
+
+```php
+    public function login(): ?Response
+    {
+        $result = $this->Authentication->getResult();
+        if (!empty($result) && $result->isValid()) {
+            $target = $this->Authentication->getLoginRedirect() ?? ['_name' => 'home'];
+
+            return $this->redirect($target);
+        }
+        // Handle authentication failure below with flash messages, logs, redirects...
+        // ....
+    }
+```
+
+3. Setup `OAuth2Authenticator` and `OAuth2Identifier` classes in your main `Application` class and create the corresponding `OAuth2Providers` configuration. See the paragraphs below for more details.
+
+4. Add the `OAuth2Middleware` in your middleware stack just after the `AuthenticationMiddleware` in `Application::middleware()`. like this:
+
+```php
+            ->add(new AuthenticationMiddleware($this))
+            ->add(new OAuth2Middleware())
+```
+
 ## OAuth2 providers
 
-If you are using the `OAuth2Authenticator` and `OAuth2Identifier` classes you must pass the supported OAuth2 providers configuration when you are loading this classes in the authentication service.
-Here a brief example:
+To use `OAuth2Authenticator` and `OAuth2Identifier` classes you must pass the supported OAuth2 providers configuration when loading this classes in the authentication service.
+Here a brief example of how to do this in `Application::getAuthenticationService()`:
 
 ```php
 
     $service = new AuthenticationService();
 
-    $providers = (array)Configure::read('OAuth2Providers');
-    $service->loadIdentifier('BEdita/WebTools.OAuth2', compact('providers') + [
-        'autoSignup' => true,
-        'signupRoles' => ['customer'],
-    ]);
-    $service->loadAuthenticator('BEdita/WebTools.OAuth2', compact('providers') + [
-        'redirect' => ['_name' => 'login:oauth2'],
-    ]);
+    $path = $request->getUri()->getPath();
+    if (strpos($path, '/ext/login') === 0) {
+        $providers = (array)Configure::read('OAuth2Providers');
+        $service->loadIdentifier('BEdita/WebTools.OAuth2', compact('providers') + [
+            'autoSignup' => true,
+            'signupRoles' => ['customer'],
+        ]);
+        $service->loadAuthenticator('BEdita/WebTools.OAuth2', compact('providers') + [
+            'redirect' => ['_name' => 'login:oauth2'],
+        ]);
+    }
+
 ```
 
+We are setting up the OAUth2 authenticator and identifier only when the request path matches our oauth2 login route as defined above.
+
 It is recommended to use a configuration key like `OAuth2Providers` to store the provider information, anyway you must pass providers settings array using the `providers` key.
-Other configuration are:
+Other possibile configuration are:
 
 * (`OAuth2Authenticator`) `'redirect'` - default `['_name' => 'login']`, redirect url route specified as named array
 * (`OAuth2Identifier`) `autoSignup` - default `false`, set to `true` if you want an automatic signup to be performed if login fails
