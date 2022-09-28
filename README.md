@@ -309,7 +309,7 @@ public function getAuthorizationService(ServerRequestInterface $request): Author
 
 Quick steps to use the `OAuth2` tools provided.
 
-1. Create a route to a path like `/ext/login/{provider}` to interact with the selected OAuth2 provider in `config/routes.php`. Each `{provider}` must match a provider configuration key, for instance `google` in the configuration example below, see [OAuth2 providers structure](###oauth2-providers-structure). An example here:
+1. Create a route to a path like `/ext/login/{provider}` to interact with the selected OAuth2 provider in `config/routes.php`. Each `{provider}` must match a provider configuration key, for instance `google` in the configuration example below, see [OAuth2 providers structure](#oauth2-providers-structure). An example here:
 
 ```php
         $builder->connect(
