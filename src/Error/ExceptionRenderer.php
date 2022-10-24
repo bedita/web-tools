@@ -48,7 +48,7 @@ class ExceptionRenderer extends WebExceptionRenderer
     protected function _getController(): Controller
     {
         $controller = parent::_getController();
-        if ($this->request->getHeaderLine('Accept') === 'application/json') {
+        if ($this->request && $this->request->getHeaderLine('Accept') === 'application/json') {
             $controller->viewBuilder()->setClassName('Json');
         }
 
