@@ -37,7 +37,7 @@ class AssetHelperTest extends TestCase
     {
         AssetsRevisions::setStrategy(new RevManifestStrategy());
         $Asset = new AssetHelper(new View());
-        $result = $Asset->get('script.js');
+        $result = $Asset->get('script.js'); /* @phpstan-ignore-line */
         static::assertEquals('script-622a2cc4f5.js', $result);
     }
 }
