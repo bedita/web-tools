@@ -16,7 +16,8 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Error;
 
 use BEdita\SDK\BEditaClientException;
-use Cake\Error\ExceptionRenderer as CakeExceptionRenderer;
+use Cake\Controller\Controller;
+use Cake\Error\Renderer\WebExceptionRenderer;
 use Cake\Http\Response;
 use Cake\Log\LogTrait;
 
@@ -24,7 +25,7 @@ use Cake\Log\LogTrait;
  * Custom exception renderer class.
  * Handle with templates 500 and 400 (for status code < 500).
  */
-class ExceptionRenderer extends CakeExceptionRenderer
+class ExceptionRenderer extends WebExceptionRenderer
 {
     use LogTrait;
 
@@ -39,6 +40,19 @@ class ExceptionRenderer extends CakeExceptionRenderer
         }
 
         return $this->template = $template;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _getController(): Controller
+    {
+        $controller = parent::_getController();
+        if ($this->request->getHeaderLine('Accept') === 'application/json') {
+            $controller->viewBuilder()->setClassName('Json');
+        }
+
+        return $controller;
     }
 
     /**
