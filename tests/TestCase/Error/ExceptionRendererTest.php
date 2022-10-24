@@ -21,6 +21,7 @@ use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use TestApp\Controller\TestController;
@@ -35,11 +36,13 @@ class ExceptionRendererTest extends TestCase
     /**
      * Get Extension class with utility methods use in tests
      *
+     * @param \Throwable $exception Exception.
+     * @param \Cake\Http\ServerRequest|null $request The request if this is set it will be used
      * @return ExceptionRenderer
      */
-    protected function extensionClass(Throwable $error)
+    protected function extensionClass(Throwable $error, ?ServerRequest $request = null)
     {
-        return new class ($error) extends ExceptionRenderer
+        return new class ($error, $request) extends ExceptionRenderer
         {
             public function getTemplate()
             {
@@ -181,5 +184,30 @@ class ExceptionRendererTest extends TestCase
 
         $body = (string)$response->getBody();
         static::assertStringContainsString($expected, $body);
+    }
+
+    /**
+     * Test `_getController` method with `application/json` Accept header
+     *
+     * @return void
+     * @covers ::_getController()
+     */
+    public function testControllerJsonResponse(): void
+    {
+        $request = (new ServerRequest())->withHeader('Accept', 'application/json');
+        $renderer = $this->extensionClass(new NotFoundException(), $request);
+        $response = $renderer->render();
+
+        $body = (string)$response->getBody();
+        $error = json_decode($body, true);
+        $jsonErr = json_last_error();
+        static::assertEquals(JSON_ERROR_NONE, $jsonErr);
+        unset($error['file'], $error['line']);
+        $expected = [
+            'message' => 'Not Found',
+            'url' => '/',
+            'code' => 404,
+        ];
+        static::assertEquals($expected, $error);
     }
 }
