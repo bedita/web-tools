@@ -125,7 +125,10 @@ class ApiFormatterComponent extends Component
         $data = (array)Hash::get($response, 'data');
 
         if (!Hash::numeric(array_keys($data))) {
-            $response['data']['attributes'] = array_merge($response['data']['attributes'], $this->extractTranslatedFields($data, $lang));
+            $response['data']['attributes'] = array_merge(
+                $response['data']['attributes'],
+                $this->extractTranslatedFields($data, $lang)
+            );
 
             return $response;
         }
