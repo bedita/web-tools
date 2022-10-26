@@ -357,7 +357,7 @@ class ApiFormatterComponentTest extends TestCase
                 ],
                 'it',
             ],
-            'multiple objects with translation' => [
+            'multiple objects and request the object main lang' => [
                 [
                     'data' => [
                         [
