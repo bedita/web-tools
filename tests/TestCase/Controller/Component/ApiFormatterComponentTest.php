@@ -222,4 +222,404 @@ class ApiFormatterComponentTest extends TestCase
         $actual = $this->ApiFormatter->embedIncluded($response);
         static::assertEquals($expected, $actual);
     }
+
+    /**
+     * Data provider for `testReplaceWithTranslation()`.
+     *
+     * @return array
+     */
+    public function replaceWithTranslationProvider(): array
+    {
+        return [
+            'single object with translation' => [
+                [
+                    'data' => [
+                        'id' => 1,
+                        'type' => 'documents',
+                        'attributes' => [
+                            'lang' => 'it',
+                            'title' => 'Ciao',
+                            'description' => 'Mondo',
+                        ],
+                        'relationships' => [
+                            'translations' => [
+                                'links' => [],
+                                'data' => [
+                                    [
+                                        'id' => 10,
+                                        'type' => 'translations',
+                                        'attributes' => [
+                                            'lang' => 'en',
+                                            'object_id' => 1,
+                                            'translated_fields' => [
+                                                'title' => 'Hello',
+                                                'description' => 'World',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'data' => [
+                        'id' => 1,
+                        'type' => 'documents',
+                        'attributes' => [
+                            'lang' => 'it',
+                            'title' => 'Hello',
+                            'description' => 'World',
+                        ],
+                        'relationships' => [
+                            'translations' => [
+                                'links' => [],
+                                'data' => [
+                                    [
+                                        'id' => 10,
+                                        'type' => 'translations',
+                                        'attributes' => [
+                                            'lang' => 'en',
+                                            'object_id' => 1,
+                                            'translated_fields' => [
+                                                'title' => 'Hello',
+                                                'description' => 'World',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'en',
+            ],
+            'single object and request the object main lang' => [
+                [
+                    'data' => [
+                        'id' => 1,
+                        'type' => 'documents',
+                        'attributes' => [
+                            'lang' => 'it',
+                            'title' => 'Ciao',
+                            'description' => 'Mondo',
+                        ],
+                        'relationships' => [
+                            'translations' => [
+                                'links' => [],
+                                'data' => [
+                                    [
+                                        'id' => 10,
+                                        'type' => 'translations',
+                                        'attributes' => [
+                                            'lang' => 'en',
+                                            'object_id' => 1,
+                                            'translated_fields' => [
+                                                'title' => 'Hello',
+                                                'description' => 'World',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'data' => [
+                        'id' => 1,
+                        'type' => 'documents',
+                        'attributes' => [
+                            'lang' => 'it',
+                            'title' => 'Ciao',
+                            'description' => 'Mondo',
+                        ],
+                        'relationships' => [
+                            'translations' => [
+                                'links' => [],
+                                'data' => [
+                                    [
+                                        'id' => 10,
+                                        'type' => 'translations',
+                                        'attributes' => [
+                                            'lang' => 'en',
+                                            'object_id' => 1,
+                                            'translated_fields' => [
+                                                'title' => 'Hello',
+                                                'description' => 'World',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'it',
+            ],
+            'multiple objects and request the object main lang' => [
+                [
+                    'data' => [
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Ciao',
+                                'description' => 'Mondo',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'Hello',
+                                                    'description' => 'World',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Questo è il titolo',
+                                'description' => 'La descrizione',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'This is the title',
+                                                    'description' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'data' => [
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Hello',
+                                'description' => 'World',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'Hello',
+                                                    'description' => 'World',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'This is the title',
+                                'description' => 'La descrizione',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'This is the title',
+                                                    'description' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'en',
+            ],
+            'multiple objects with translation' => [
+                [
+                    'data' => [
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Ciao',
+                                'description' => 'Mondo',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'Hello',
+                                                    'description' => 'World',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Questo è il titolo',
+                                'description' => 'La descrizione',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'This is the title',
+                                                    'description' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'data' => [
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Ciao',
+                                'description' => 'Mondo',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'Hello',
+                                                    'description' => 'World',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Questo è il titolo',
+                                'description' => 'La descrizione',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'This is the title',
+                                                    'description' => '',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'it',
+            ],
+        ];
+    }
+
+    /**
+     * Test `replaceWithTranslation()` method.
+     *
+     * @param array $response The response data
+     * @param array $expected The expected data
+     * @param string $lang The lang requested
+     * @return void
+     * @covers ::testReplaceWithTranslation()
+     * @covers ::extractTranslatedFields()
+     * @dataProvider replaceWithTranslationProvider()
+     */
+    public function testReplaceWithTranslation(array $response, array $expected, string $lang): void
+    {
+        $actual = $this->ApiFormatter->replaceWithTranslation($response, $lang);
+        static::assertEquals($expected, $actual);
+    }
 }

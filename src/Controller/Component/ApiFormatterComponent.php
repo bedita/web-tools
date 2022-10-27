@@ -107,4 +107,53 @@ class ApiFormatterComponent extends Component
 
         return $relationshipData;
     }
+
+    /**
+     * Replace a translation in main objects.
+     * It must be used after `included` data have been embedded using `self::embedIncluded()`.
+     *
+     * @param array $response The response API array
+     * @param string $lang The lang to search in translations
+     * @return array
+     */
+    public function replaceWithTranslation(array $response, string $lang): array
+    {
+        if (empty($response['data'])) {
+            return $response;
+        }
+
+        $data = (array)Hash::get($response, 'data');
+
+        if (!Hash::numeric(array_keys($data))) {
+            $response['data']['attributes'] = array_merge(
+                $response['data']['attributes'],
+                $this->extractTranslatedFields($data, $lang)
+            );
+
+            return $response;
+        }
+
+        foreach ($response['data'] as &$d) {
+            $d['attributes'] = array_merge($d['attributes'], $this->extractTranslatedFields($d, $lang));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Extract translated fields for a language.
+     *
+     * @param array $data The object data
+     * @param string $lang The lang to extract
+     * @return array
+     */
+    protected function extractTranslatedFields(array $data, string $lang): array
+    {
+        $path = sprintf('relationships.translations.data.{n}.attributes[lang=%s].translated_fields', $lang);
+        if ($lang === Hash::get($data, 'attributes.lang')) {
+            return [];
+        }
+
+        return array_filter(current(Hash::extract($data, $path)));
+    }
 }
