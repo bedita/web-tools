@@ -14,7 +14,6 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Identifier;
 
-use ArrayObject;
 use Authentication\Identifier\AbstractIdentifier;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
@@ -74,27 +73,27 @@ class OAuth2Identifier extends AbstractIdentifier
      * Perform external login via `/auth`.
      *
      * @param array $credentials Identifier credentials
-     * @return \ArrayObject
+     * @return array
      */
-    protected function externalAuth(array $credentials): ArrayObject
+    protected function externalAuth(array $credentials): array
     {
         $apiClient = ApiClientProvider::getApiClient();
         $result = $apiClient->post('/auth', json_encode($credentials), ['Content-Type' => 'application/json']);
         $tokens = $result['meta'];
         $result = $apiClient->get('/auth/user', null, ['Authorization' => sprintf('Bearer %s', $tokens['jwt'])]);
 
-        return new ArrayObject($result['data']
-            + compact('tokens')
-            + Hash::combine($result, 'included.{n}.attributes.name', 'included.{n}.id', 'included.{n}.type'));
+        $roles = Hash::extract($result, 'included.{n}.attributes.name');
+
+        return $result['data'] + compact('tokens') + compact('roles');
     }
 
     /**
      * Perform OAuth2 signup and login after signup.
      *
      * @param array $credentials Identifier credentials
-     * @return \ArrayObject|null;
+     * @return array|null;
      */
-    protected function signup(array $credentials): ?ArrayObject
+    protected function signup(array $credentials): ?array
     {
         $data = $this->signupData($credentials);
         try {
