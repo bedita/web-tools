@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\Test\TestCase\Identifier;
 
-use ArrayObject;
 use BEdita\SDK\BEditaClient;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
@@ -141,12 +140,13 @@ class OAuth2IdentifierTest extends TestCase
         ApiClientProvider::setApiClient($apiClientMock);
 
         $identity = $identifier->identify(['auth_provider' => 'gustavo']);
-        $expected = new ArrayObject([
+        $expected = [
             'id' => 1,
             'tokens' => [
                 'jwt' => 'gustavo',
             ],
-        ]);
+            'roles' => [],
+        ];
         static::assertEquals($expected, $identity);
     }
 
