@@ -74,18 +74,18 @@ class OAuth2Identifier extends AbstractIdentifier
      * Perform external login via `/auth`.
      *
      * @param array $credentials Identifier credentials
-     * @return \ArrayObject
+     * @return array
      */
-    protected function externalAuth(array $credentials): ArrayObject
+    protected function externalAuth(array $credentials): array
     {
         $apiClient = ApiClientProvider::getApiClient();
         $result = $apiClient->post('/auth', json_encode($credentials), ['Content-Type' => 'application/json']);
         $tokens = $result['meta'];
         $result = $apiClient->get('/auth/user', null, ['Authorization' => sprintf('Bearer %s', $tokens['jwt'])]);
 
-        return new ArrayObject($result['data']
-            + compact('tokens')
-            + Hash::combine($result, 'included.{n}.attributes.name', 'included.{n}.id', 'included.{n}.type'));
+        $roles = Hash::extract($result, 'included.{n}.attributes.name');
+
+        return $result['data'] + compact('tokens') + compact('roles');
     }
 
     /**

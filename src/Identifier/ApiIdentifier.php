@@ -76,9 +76,8 @@ class ApiIdentifier extends AbstractIdentifier
         }
 
         $roles = Hash::extract($result, 'included.{n}.attributes.name');
-        $identity = $result['data'] + compact('tokens') + compact('roles');
 
-        return $identity;
+        return $result['data'] + compact('tokens') + compact('roles');
     }
 
     /**
