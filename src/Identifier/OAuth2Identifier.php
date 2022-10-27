@@ -14,7 +14,6 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Identifier;
 
-use ArrayObject;
 use Authentication\Identifier\AbstractIdentifier;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
