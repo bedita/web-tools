@@ -56,18 +56,24 @@ class OAuth2IdentifierTest extends TestCase
         ]);
         $apiClientMock->method('get')->willReturn([
             'data' => ['id' => 1],
+            'included' => [
+                [
+                    'attributes' => ['name' => 'support'],
+                ],
+            ],
         ]);
 
         $identifier = new OAuth2Identifier();
         ApiClientProvider::setApiClient($apiClientMock);
 
         $identity = $identifier->identify([]);
-        $expected = new ArrayObject([
+        $expected = [
             'id' => 1,
             'tokens' => [
                 'jwt' => 'gustavo',
             ],
-        ]);
+            'roles' => ['support'],
+        ];
         static::assertEquals($expected, $identity);
     }
 
