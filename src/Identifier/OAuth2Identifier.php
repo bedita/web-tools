@@ -92,9 +92,9 @@ class OAuth2Identifier extends AbstractIdentifier
      * Perform OAuth2 signup and login after signup.
      *
      * @param array $credentials Identifier credentials
-     * @return \ArrayObject|null;
+     * @return array|null;
      */
-    protected function signup(array $credentials): ?ArrayObject
+    protected function signup(array $credentials): ?array
     {
         $data = $this->signupData($credentials);
         try {
