@@ -231,7 +231,7 @@ class ApiFormatterComponentTest extends TestCase
     public function replaceWithTranslationProvider(): array
     {
         return [
-            'single object with translation' => [
+            'single object without translation' => [
                 [
                     'data' => [
                         'id' => 1,
@@ -240,6 +240,33 @@ class ApiFormatterComponentTest extends TestCase
                             'lang' => 'it',
                             'title' => 'Ciao',
                             'description' => 'Mondo',
+                        ],
+                        'relationships' => [],
+                    ],
+                ],
+                [
+                    'data' => [
+                        'id' => 1,
+                        'type' => 'documents',
+                        'attributes' => [
+                            'lang' => 'it',
+                            'title' => 'Ciao',
+                            'description' => 'Mondo',
+                        ],
+                        'relationships' => [],
+                    ],
+                ],
+                'en',
+            ],
+            'single object with translation' => [
+                [
+                    'data' => [
+                        'id' => 1,
+                        'type' => 'documents',
+                        'attributes' => [
+                            'lang' => 'it',
+                            'title' => 'Hello',
+                            'description' => 'World',
                         ],
                         'relationships' => [
                             'translations' => [
@@ -268,8 +295,8 @@ class ApiFormatterComponentTest extends TestCase
                         'type' => 'documents',
                         'attributes' => [
                             'lang' => 'it',
-                            'title' => 'Hello',
-                            'description' => 'World',
+                            'title' => 'Ciao',
+                            'description' => 'Mondo',
                         ],
                         'relationships' => [
                             'translations' => [
@@ -365,8 +392,8 @@ class ApiFormatterComponentTest extends TestCase
                             'type' => 'documents',
                             'attributes' => [
                                 'lang' => 'it',
-                                'title' => 'Ciao',
-                                'description' => 'Mondo',
+                                'title' => 'Hello',
+                                'description' => 'World',
                             ],
                             'relationships' => [
                                 'translations' => [
@@ -393,7 +420,7 @@ class ApiFormatterComponentTest extends TestCase
                             'type' => 'documents',
                             'attributes' => [
                                 'lang' => 'it',
-                                'title' => 'Questo è il titolo',
+                                'title' => 'This is the title',
                                 'description' => 'La descrizione',
                             ],
                             'relationships' => [
@@ -425,8 +452,8 @@ class ApiFormatterComponentTest extends TestCase
                             'type' => 'documents',
                             'attributes' => [
                                 'lang' => 'it',
-                                'title' => 'Hello',
-                                'description' => 'World',
+                                'title' => 'Ciao',
+                                'description' => 'Mondo',
                             ],
                             'relationships' => [
                                 'translations' => [
@@ -453,7 +480,7 @@ class ApiFormatterComponentTest extends TestCase
                             'type' => 'documents',
                             'attributes' => [
                                 'lang' => 'it',
-                                'title' => 'This is the title',
+                                'title' => 'Questo è il titolo',
                                 'description' => 'La descrizione',
                             ],
                             'relationships' => [
@@ -603,21 +630,108 @@ class ApiFormatterComponentTest extends TestCase
                 ],
                 'it',
             ],
+            'multiple objects with and without translation' => [
+                [
+                    'data' => [
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Hello',
+                                'description' => 'World',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'Hello',
+                                                    'description' => 'World',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Questo è il titolo',
+                                'description' => 'La descrizione',
+                            ],
+                            'relationships' => [],
+                        ],
+                    ],
+                ],
+                [
+                    'data' => [
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Ciao',
+                                'description' => 'Mondo',
+                            ],
+                            'relationships' => [
+                                'translations' => [
+                                    'links' => [],
+                                    'data' => [
+                                        [
+                                            'id' => 10,
+                                            'type' => 'translations',
+                                            'attributes' => [
+                                                'lang' => 'en',
+                                                'object_id' => 1,
+                                                'translated_fields' => [
+                                                    'title' => 'Hello',
+                                                    'description' => 'World',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 1,
+                            'type' => 'documents',
+                            'attributes' => [
+                                'lang' => 'it',
+                                'title' => 'Questo è il titolo',
+                                'description' => 'La descrizione',
+                            ],
+                            'relationships' => [],
+                        ],
+                    ],
+                ],
+                'en',
+            ],
         ];
     }
 
     /**
      * Test `replaceWithTranslation()` method.
      *
-     * @param array $response The response data
      * @param array $expected The expected data
+     * @param array $response The response data
      * @param string $lang The lang requested
      * @return void
      * @covers ::testReplaceWithTranslation()
      * @covers ::extractTranslatedFields()
      * @dataProvider replaceWithTranslationProvider()
      */
-    public function testReplaceWithTranslation(array $response, array $expected, string $lang): void
+    public function testReplaceWithTranslation(array $expected, array $response, string $lang): void
     {
         $actual = $this->ApiFormatter->replaceWithTranslation($response, $lang);
         static::assertEquals($expected, $actual);
