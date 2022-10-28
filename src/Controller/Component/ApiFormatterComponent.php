@@ -154,6 +154,8 @@ class ApiFormatterComponent extends Component
             return [];
         }
 
-        return array_filter(current(Hash::extract($data, $path)));
+        $translatedFields = (array)Hash::extract($data, $path);
+
+        return array_filter((array)array_shift($translatedFields));
     }
 }
