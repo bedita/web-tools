@@ -16,7 +16,7 @@ namespace BEdita\WebTools\Utility;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\Http\Exception\BadRequestException;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Trait for share Csv stuff.
@@ -35,7 +35,7 @@ trait CsvTrait
     {
         $fh = fopen($path, 'rb');
         if (!$fh) {
-            throw new FileNotFoundException(sprintf('Unable to open file in read mode: %s', $path));
+            throw new NotFoundException(sprintf('Unable to open file in read mode: %s', $path));
         }
         $options = $this->getConfig('csv');
         $delimiter = $options['delimiter'];
