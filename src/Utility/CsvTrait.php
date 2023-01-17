@@ -14,7 +14,6 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Utility;
 
-
 use Cake\Core\InstanceConfigTrait;
 use Cake\Http\Exception\BadRequestException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
