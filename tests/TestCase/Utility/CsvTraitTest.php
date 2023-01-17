@@ -16,7 +16,6 @@ namespace BEdita\WebTools\Test\TestCase\Utility;
 
 use BEdita\WebTools\Utility\CsvTrait;
 use Cake\Http\Exception\BadRequestException;
-use Cake\Http\Exception\NotFoundException;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -27,22 +26,6 @@ use Cake\TestSuite\TestCase;
 class CsvTraitTest extends TestCase
 {
     use CsvTrait;
-
-    /**
-     * Test `read` method, NotFoundException
-     *
-     * @return void
-     * @covers ::read()
-     */
-    public function testReadFileNotFound(): void
-    {
-        $path = './file-that-does-not-exist.csv';
-        $expected = new NotFoundException(sprintf('Unable to open file in read mode: %s', $path));
-        $this->expectException(get_class($expected));
-        $this->expectExceptionCode($expected->getCode());
-        $this->expectExceptionMessage($expected->getMessage());
-        $this->read($path);
-    }
 
     /**
      * Test `read` method, BadRequestException
