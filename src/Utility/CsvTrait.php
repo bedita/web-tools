@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Utility;
 
 use Cake\Core\InstanceConfigTrait;
-use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Trait for share Csv stuff.
@@ -30,18 +30,19 @@ trait CsvTrait
      * @param string $path Path to CSV file.
      * @return \Generator<array<string, string>>
      */
-    public function read($path): \Generator
+    public function readCsv($path): \Generator
     {
-        $fh = fopen($path, 'rb');
+        try {
+            $fh = fopen($path, 'rb');
+        } catch (\Exception $e) {
+            throw new NotFoundException(sprintf('File not found: %s', $path));
+        }
         $options = $this->getConfig('csv');
         $delimiter = $options['delimiter'];
         $enclosure = $options['enclosure'];
         $escape = $options['escape'];
         flock($fh, LOCK_SH);
         $header = fgetcsv($fh, null, $delimiter, $enclosure, $escape);
-        if ($header === false) {
-            throw new BadRequestException(sprintf('Unable to get csv data for file: %s', $path));
-        }
         $i = 0;
         while (($row = fgetcsv($fh, null, $delimiter, $enclosure, $escape)) !== false) {
             yield array_combine($header, $row);

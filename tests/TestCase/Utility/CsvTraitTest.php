@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Test\TestCase\Utility;
 
 use BEdita\WebTools\Utility\CsvTrait;
-use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -28,28 +28,43 @@ class CsvTraitTest extends TestCase
     use CsvTrait;
 
     /**
-     * Test `read` method, BadRequestException
+     * @inheritDoc
+     */
+    protected $_defaultConfig = [
+        'csv' => [
+            'delimiter' => ',',
+            'enclosure' => '"',
+            'escape' => '"',
+        ],
+    ];
+
+    /**
+     * Test `readCsv` method, NotFoundException
      *
      * @return void
-     * @covers ::read()
+     * @covers ::readCsv()
      */
-    public function testReadBadRequest(): void
+    public function testReadNotFound(): void
     {
-        $path = sprintf('%s/tests/files/bad-file.csv', getcwd());
-        $expected = new BadRequestException(sprintf('Unable to get csv data for file: %s', $path));
+        $path = sprintf('%s/tests/files/not-found.csv', getcwd());
+        $expected = new NotFoundException(sprintf('File not found: %s', $path));
         $this->expectException(get_class($expected));
         $this->expectExceptionCode($expected->getCode());
         $this->expectExceptionMessage($expected->getMessage());
-        $this->read($path);
+        $actual = [];
+        foreach ($this->readCsv($path) as $row) {
+            $actual[] = $row;
+        }
+        static::assertSame('Generator', get_class($actual[0]));
     }
 
     /**
-     * Test `read` method
+     * Test `readCsv` method
      *
      * @return void
-     * @covers ::read()
+     * @covers ::readCsv()
      */
-    public function testRead(): void
+    public function testReadCsv(): void
     {
         $path = sprintf('%s/tests/files/test.csv', getcwd());
         $expected = [
@@ -59,7 +74,7 @@ class CsvTraitTest extends TestCase
             ['title' => 'Hearth of Darkness', 'author' => 'Joseph Conrad'],
         ];
         $actual = [];
-        foreach ($this->read($path) as $row) {
+        foreach ($this->readCsv($path) as $row) {
             $actual[] = $row;
         }
         static::assertSame($expected, $actual);
