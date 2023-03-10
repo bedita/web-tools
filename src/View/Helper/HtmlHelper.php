@@ -120,7 +120,7 @@ class HtmlHelper extends CakeHtmlHelper
         if (empty($otherdata)) {
             return $html;
         }
-        foreach ($otherdata as $attribute) {
+        foreach ($otherdata as $attribute => $val) {
             if (!empty($otherdata[$attribute])) {
                 $html .= $this->meta([
                     'name' => $attribute,
@@ -140,15 +140,7 @@ class HtmlHelper extends CakeHtmlHelper
      */
     public function metaDescription(?string $description): string
     {
-        if (empty($description)) {
-            return '';
-        }
-        $html = $this->meta('description', h(strip_tags($description)));
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
+        return empty($description) ? '' : (string)$this->meta('description', h(strip_tags($description)));
     }
 
     /**
