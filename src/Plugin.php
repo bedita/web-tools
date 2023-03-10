@@ -37,7 +37,7 @@ class Plugin extends BasePlugin
      * @param \Cake\Console\CommandCollection $commands Console commands.
      * @return \Cake\Console\CommandCollection
      */
-    public function console(CommandCollection $commands): CommandCollection
+    public function console($commands): CommandCollection
     {
         parent::console($commands);
         $commands->remove('cache clear_all');

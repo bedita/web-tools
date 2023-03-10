@@ -727,7 +727,7 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data
      * @param string $lang The lang requested
      * @return void
-     * @covers ::testReplaceWithTranslation()
+     * @covers ::replaceWithTranslation()
      * @covers ::extractTranslatedFields()
      * @dataProvider replaceWithTranslationProvider()
      */

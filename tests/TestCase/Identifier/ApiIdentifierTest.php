@@ -133,6 +133,7 @@ class ApiIdentifierTest extends TestCase
         $this->user = $this->apiClient->save('users', [
             'username' => $username,
             'password' => 'xyz',
+            'status' => 'on',
         ]);
         $this->role = $this->apiClient->save('roles', ['name' => $role]);
         $this->apiClient->addRelated(
