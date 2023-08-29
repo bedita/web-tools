@@ -191,9 +191,10 @@ trait ApiProxyTrait
         ];
         $headers = array_filter(
             $this->request->getHeaders(),
-            function ($item) {
-                return in_array($item, $this->allowedHeaders);
-            }
+            function ($key) {
+                return in_array($key, $this->allowedHeaders);
+            },
+            ARRAY_FILTER_USE_KEY
         );
         if (!empty($headers)) {
             $options['headers'] = $headers;
