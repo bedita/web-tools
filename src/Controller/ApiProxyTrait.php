@@ -204,8 +204,11 @@ trait ApiProxyTrait
             'path' => '',
             'query' => null,
             'body' => null,
-            'headers' => null,
         ];
+
+        if (empty($options['headers'])) {
+            $options['headers'] = null;
+        }
 
         if (empty($options['body'])) {
             $options['body'] = null;
