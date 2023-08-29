@@ -41,6 +41,13 @@ trait ApiProxyTrait
     use ViewVarsTrait;
 
     /**
+     * Default allowed headers on proxied requests.
+     *
+     * @var array
+     */
+    protected $allowedHeaders = ['Content-Type'];
+
+    /**
      * An instance of a \Cake\Http\ServerRequest object that contains information about the current request.
      *
      * @var \Cake\Http\ServerRequest
@@ -55,7 +62,7 @@ trait ApiProxyTrait
     protected $response;
 
     /**
-     * BEdita API client
+     * BEdita4 API client
      *
      * @var \BEdita\SDK\BEditaClient
      */
@@ -101,87 +108,63 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for GET requests to BEdita API
+     * Proxy for GET requests to BEdita4 API
      *
      * @param string $path The path for API request
-     * @param array $options The request options
      * @return void
      */
-    public function get($path = '', array $options = []): void
+    public function get($path = ''): void
     {
-        $this->apiRequest(
-            array_merge(
-                $options,
-                [
-                    'method' => 'get',
-                    'path' => $path,
-                    'query' => $this->request->getQueryParams(),
-                ]
-            )
-        );
+        $this->apiRequest([
+            'method' => 'get',
+            'path' => $path,
+            'query' => $this->request->getQueryParams(),
+        ]);
     }
 
     /**
-     * Proxy for POST requests to BEdita API
+     * Proxy for POST requests to BEdita4 API
      *
      * @param string $path The path for API request
-     * @param array $options The request options
      * @return void
      */
-    public function post($path = '', array $options = []): void
+    public function post($path = ''): void
     {
-        $this->apiRequest(
-            array_merge(
-                $options,
-                [
-                    'method' => 'post',
-                    'path' => $path,
-                    'body' => $this->request->getData(),
-                ]
-            )
-        );
+        $this->apiRequest([
+            'method' => 'post',
+            'path' => $path,
+            'body' => $this->request->getData(),
+        ]);
     }
 
     /**
-     * Proxy for PATCH requests to BEdita API
+     * Proxy for PATCH requests to BEdita4 API
      *
      * @param string $path The path for API request
-     * @param array $options The request options
      * @return void
      */
-    public function patch($path = '', array $options = []): void
+    public function patch($path = ''): void
     {
-        $this->apiRequest(
-            array_merge(
-                $options,
-                [
-                    'method' => 'patch',
-                    'path' => $path,
-                    'body' => $this->request->getData(),
-                ]
-            )
-        );
+        $this->apiRequest([
+            'method' => 'patch',
+            'path' => $path,
+            'body' => $this->request->getData(),
+        ]);
     }
 
     /**
-     * Proxy for DELETE requests to BEdita API
+     * Proxy for DELETE requests to BEdita4 API
      *
      * @param string $path The path for API request
-     * @param array $options The request options
      * @return void
      */
-    public function delete($path = '', array $options = []): void
+    public function delete($path = ''): void
     {
-        $this->apiRequest(
-            array_merge(
-                $options,
-                [
-                    'method' => 'delete',
-                    'path' => $path,
-                    'body' => $this->request->getData(),
-                ]
-            )
-        );
+        $this->apiRequest([
+            'method' => 'delete',
+            'path' => $path,
+            'body' => $this->request->getData(),
+        ]);
     }
 
     /**
@@ -204,10 +187,16 @@ trait ApiProxyTrait
             'path' => '',
             'query' => null,
             'body' => null,
+            'headers' => null,
         ];
-
-        if (empty($options['headers'])) {
-            $options['headers'] = null;
+        $headers = array_filter(
+            $this->request->getHeaders(),
+            function ($item) {
+                return in_array($item, $this->allowedHeaders);
+            }
+        );
+        if (!empty($headers)) {
+            $options['headers'] = $headers;
         }
 
         if (empty($options['body'])) {
