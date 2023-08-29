@@ -55,7 +55,7 @@ trait ApiProxyTrait
     protected $response;
 
     /**
-     * BEdita4 API client
+     * BEdita API client
      *
      * @var \BEdita\SDK\BEditaClient
      */
@@ -101,63 +101,87 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for GET requests to BEdita4 API
+     * Proxy for GET requests to BEdita API
      *
      * @param string $path The path for API request
+     * @param array $options The request options
      * @return void
      */
-    public function get($path = ''): void
+    public function get($path = '', array $options = []): void
     {
-        $this->apiRequest([
-            'method' => 'get',
-            'path' => $path,
-            'query' => $this->request->getQueryParams(),
-        ]);
+        $this->apiRequest(
+            array_merge(
+                $options,
+                [
+                    'method' => 'get',
+                    'path' => $path,
+                    'query' => $this->request->getQueryParams(),
+                ]
+            )
+        );
     }
 
     /**
-     * Proxy for POST requests to BEdita4 API
+     * Proxy for POST requests to BEdita API
      *
      * @param string $path The path for API request
+     * @param array $options The request options
      * @return void
      */
-    public function post($path = ''): void
+    public function post($path = '', array $options = []): void
     {
-        $this->apiRequest([
-            'method' => 'post',
-            'path' => $path,
-            'body' => $this->request->getData(),
-        ]);
+        $this->apiRequest(
+            array_merge(
+                $options,
+                [
+                    'method' => 'post',
+                    'path' => $path,
+                    'body' => $this->request->getData(),
+                ]
+            )
+        );
     }
 
     /**
-     * Proxy for PATCH requests to BEdita4 API
+     * Proxy for PATCH requests to BEdita API
      *
      * @param string $path The path for API request
+     * @param array $options The request options
      * @return void
      */
-    public function patch($path = ''): void
+    public function patch($path = '', array $options = []): void
     {
-        $this->apiRequest([
-            'method' => 'patch',
-            'path' => $path,
-            'body' => $this->request->getData(),
-        ]);
+        $this->apiRequest(
+            array_merge(
+                $options,
+                [
+                    'method' => 'patch',
+                    'path' => $path,
+                    'body' => $this->request->getData(),
+                ]
+            )
+        );
     }
 
     /**
-     * Proxy for DELETE requests to BEdita4 API
+     * Proxy for DELETE requests to BEdita API
      *
      * @param string $path The path for API request
+     * @param array $options The request options
      * @return void
      */
-    public function delete($path = ''): void
+    public function delete($path = '', array $options = []): void
     {
-        $this->apiRequest([
-            'method' => 'delete',
-            'path' => $path,
-            'body' => $this->request->getData(),
-        ]);
+        $this->apiRequest(
+            array_merge(
+                $options,
+                [
+                    'method' => 'delete',
+                    'path' => $path,
+                    'body' => $this->request->getData(),
+                ]
+            )
+        );
     }
 
     /**
