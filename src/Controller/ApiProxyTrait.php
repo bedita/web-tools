@@ -193,9 +193,7 @@ trait ApiProxyTrait
             if (empty($this->request->getHeader($headerName))) {
                 continue;
             }
-            if ($options['headers'] === null) {
-                $options['headers'] = [];
-            }
+            $options['headers'] = $options['headers'] ?? [];
             $options['headers'][$headerName] = $this->request->getHeader($headerName);
         }
 

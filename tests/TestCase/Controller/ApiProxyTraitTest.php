@@ -126,7 +126,7 @@ class ApiProxyTraitTest extends TestCase
      * Test get() method
      *
      * @return void
-     * @covers ::get()
+     * @covers ::apiRequest()
      */
     public function testGetWithHeaders(): void
     {
