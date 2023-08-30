@@ -189,15 +189,14 @@ trait ApiProxyTrait
             'body' => null,
             'headers' => null,
         ];
-        $headers = array_filter(
-            $this->request->getHeaders(),
-            function ($key) {
-                return in_array($key, $this->allowedHeaders);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-        if (!empty($headers)) {
-            $options['headers'] = $headers;
+        foreach ($this->allowedHeaders as $headerName) {
+            if (empty($this->request->getHeader($headerName))) {
+                continue;
+            }
+            if ($options['headers'] === null) {
+                $options['headers'] = [];
+            }
+            $options['headers'][$headerName] = $this->request->getHeader($headerName);
         }
 
         if (empty($options['body'])) {
