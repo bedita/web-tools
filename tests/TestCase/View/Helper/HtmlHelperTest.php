@@ -143,11 +143,11 @@ class HtmlHelperTest extends TestCase
             ],
             'dummy description' => [
                 'dummy',
-                '<meta name="description" content="dummy"/>',
+                '<meta name="description" content="dummy">',
             ],
             'description with special chars and tags' => [
                 'dummy <> & dummy',
-                '<meta name="description" content="dummy  &amp;amp; dummy"/>',
+                '<meta name="description" content="dummy  &amp;amp; dummy">',
             ],
         ];
     }
@@ -185,11 +185,11 @@ class HtmlHelperTest extends TestCase
             ],
             'dummy creator' => [
                 'dummy',
-                '<meta name="author" content="dummy"/>',
+                '<meta name="author" content="dummy">',
             ],
             'creator with special chars and tags' => [
                 'dummy <> & dummy',
-                '<meta name="author" content="dummy &amp;lt;&amp;gt; &amp;amp; dummy"/>',
+                '<meta name="author" content="dummy &amp;lt;&amp;gt; &amp;amp; dummy">',
             ],
         ];
     }
@@ -219,7 +219,7 @@ class HtmlHelperTest extends TestCase
         return [
             'empty docType' => [
                 '',
-                '<meta http-equiv="Content-Style-Type" content="text/css"/>',
+                '<meta http-equiv="Content-Style-Type" content="text/css">',
             ],
             'html5 docType' => [
                 'html5',
@@ -266,14 +266,14 @@ class HtmlHelperTest extends TestCase
                 [
                     'name' => 'Dummy',
                 ],
-                '<meta name="generator" content="Dummy"/>',
+                '<meta name="generator" content="Dummy">',
             ],
             'project and version' => [
                 [
                     'name' => 'Dummy',
                     'version' => '1.0',
                 ],
-                '<meta name="generator" content="Dummy 1.0"/>',
+                '<meta name="generator" content="Dummy 1.0">',
             ],
         ];
     }
@@ -303,7 +303,7 @@ class HtmlHelperTest extends TestCase
         return [
             'empty data' => [
                 [],
-                '<meta http-equiv="Content-Style-Type" content="text/css"/>',
+                '<meta http-equiv="Content-Style-Type" content="text/css">',
             ],
             'full data' => [
                 [
@@ -317,7 +317,7 @@ class HtmlHelperTest extends TestCase
                         'version' => '2.0',
                     ],
                 ],
-                '<meta name="description" content="dummy description"/><meta name="author" content="gustavo"/><meta http-equiv="Content-Style-Type" content="text/css"/><meta name="generator" content="my dummy project 2.0"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="msapplication-TileColor" content="#009cc7"/><meta name="theme-color" content="#ABC000"/>',
+                '<meta name="description" content="dummy description"><meta name="author" content="gustavo"><meta http-equiv="Content-Style-Type" content="text/css"><meta name="generator" content="my dummy project 2.0"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="msapplication-TileColor" content="#009cc7"><meta name="theme-color" content="#ABC000">',
             ],
         ];
     }
@@ -356,7 +356,7 @@ class HtmlHelperTest extends TestCase
                     'description' => 'a dummy data for test',
                     'image' => 'an image',
                 ],
-                '<meta property="og:url" content="https://example.com"/><meta property="og:title" content="dummy"/><meta property="og:description" content="a dummy data for test"/><meta property="og:image" content="an image"/>',
+                '<meta property="og:url" content="https://example.com"><meta property="og:title" content="dummy"><meta property="og:description" content="a dummy data for test"><meta property="og:image" content="an image">',
             ],
         ];
     }
@@ -397,7 +397,7 @@ class HtmlHelperTest extends TestCase
                     'description' => 'a dummy data for test',
                     'image' => 'an image',
                 ],
-                '<meta property="twitter:card" content="whatever"/><meta property="twitter:site" content="example.com"/><meta property="twitter:creator" content="gustavo"/><meta property="twitter:title" content="dummy"/><meta property="twitter:description" content="a dummy data for test"/><meta property="twitter:image" content="an image"/>',
+                '<meta property="twitter:card" content="whatever"><meta property="twitter:site" content="example.com"><meta property="twitter:creator" content="gustavo"><meta property="twitter:title" content="dummy"><meta property="twitter:description" content="a dummy data for test"><meta property="twitter:image" content="an image">',
             ],
         ];
     }
