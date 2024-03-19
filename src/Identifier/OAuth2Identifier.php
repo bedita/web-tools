@@ -77,6 +77,7 @@ class OAuth2Identifier extends AbstractIdentifier
      */
     protected function externalAuth(array $credentials): array
     {
+        $this->log('[OAuth2Identifier] Signing in with credentials: ' . json_encode($credentials), 'info');
         $apiClient = ApiClientProvider::getApiClient();
         $result = $apiClient->post('/auth', json_encode($credentials), ['Content-Type' => 'application/json']);
         $tokens = $result['meta'];
@@ -95,10 +96,12 @@ class OAuth2Identifier extends AbstractIdentifier
      */
     protected function signup(array $credentials): ?array
     {
+        $this->log('[OAuth2Identifier] Signin up with credentials: ' . json_encode($credentials), 'info');
         $data = $this->signupData($credentials);
         try {
             $apiClient = ApiClientProvider::getApiClient();
             $apiClient->setupTokens([]);
+            $this->log('[OAuth2Identifier] BEdita Signup data: ' . json_encode($data), 'info');
             $apiClient->post('/signup', json_encode($data), ['Content-Type' => 'application/json']);
             // login after signup
             $user = $this->externalAuth($credentials);

@@ -22,6 +22,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Log\LogTrait;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
+use Firebase\JWT\JWT;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -85,6 +86,12 @@ class OAuth2Authenticator extends AbstractAuthenticator
     {
         // extract provider from request
         $provider = basename($request->getUri()->getPath());
+        $this->log('[OAuth2Authenticator] provider: ' . $provider, 'info');
+        // leeway is needed for clock skew
+        $leeway = (int)$this->getConfig(sprintf('providers.%s.clientOptions.jwtLeeway', $provider), 0);
+        if ($leeway) {
+            JWT::$leeway = $leeway;
+        }
 
         $connect = $this->providerConnect($provider, $request);
         if (!empty($connect[static::AUTH_URL_KEY])) {
@@ -97,7 +104,9 @@ class OAuth2Authenticator extends AbstractAuthenticator
             'provider_username' => Hash::get($connect, sprintf('user.%s', $usernameField)),
             'access_token' => Hash::get($connect, 'token.access_token'),
             'provider_userdata' => (array)Hash::get($connect, 'user'),
+            'id_token' => Hash::get($connect, 'token.id_token'),
         ];
+        $this->log('[OAuth2Authenticator] identify user with: ' . json_encode($data), 'info');
         $user = $this->_identifier->identify($data);
 
         if (empty($user)) {
@@ -119,7 +128,12 @@ class OAuth2Authenticator extends AbstractAuthenticator
     {
         $this->initProvider($provider, $request);
 
-        $query = $request->getQueryParams();
+        if ($request->getMethod() === 'GET') {
+            $query = $request->getQueryParams();
+        } else {
+            $query = $request->getParsedBody();
+        }
+        $this->log('[OAuth2Authenticator] Provider connect query: ' . json_encode($query), 'info');
         $sessionKey = $this->getConfig('sessionKey');
         /** @var \Cake\Http\Session $session */
         $session = $request->getAttribute('session');
@@ -127,14 +141,22 @@ class OAuth2Authenticator extends AbstractAuthenticator
         if (!isset($query['code'])) {
             // If we don't have an authorization code then get one
             $options = (array)$this->getConfig(sprintf('providers.%s.options', $provider));
+            $this->log('[OAuth2Authenticator] Provider options: ' . json_encode($options), 'info');
             $authUrl = $this->provider->getAuthorizationUrl($options);
+            $this->log('[OAuth2Authenticator] State: ' . $this->provider->getState(), 'info');
+            $this->log('[OAuth2Authenticator] Session id: ' . $session->id(), 'info');
             $session->write($sessionKey, $this->provider->getState());
+            $this->log('[OAuth2Authenticator] Authorization URL: ' . $authUrl, 'info');
 
             return [static::AUTH_URL_KEY => $authUrl];
         }
 
         // Check given state against previously stored one to mitigate CSRF attack
-        if (empty($query['state']) || ($query['state'] !== $session->read($sessionKey))) {
+        $this->log('[OAuth2Authenticator] Session id: ' . $session->id(), 'info');
+        if (
+            (empty($query['state']) || $query['state'] !== $session->read($sessionKey))
+            && $request->getMethod() === 'GET'
+        ) {
             $session->delete($sessionKey);
             throw new BadRequestException('Invalid state');
         }
@@ -142,8 +164,10 @@ class OAuth2Authenticator extends AbstractAuthenticator
         // Try to get an access token (using the authorization code grant)
         /** @var \League\OAuth2\Client\Token\AccessToken $token */
         $token = $this->provider->getAccessToken('authorization_code', ['code' => $query['code']]);
+        $this->log('[OAuth2Authenticator] Access token via auth code: ' . json_encode($token->jsonSerialize()), 'info');
         // We got an access token, let's now get the user's details
         $user = $this->provider->getResourceOwner($token)->toArray();
+        $this->log('[OAuth2Authenticator] User: ' . json_encode($user), 'info');
         $token = $token->jsonSerialize();
 
         return compact('token', 'user');
