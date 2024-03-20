@@ -23,6 +23,7 @@ use Cake\Http\ServerRequest;
 use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use Firebase\JWT\JWT;
 
 /**
  * {@see \BEdita\WebTools\Authenticator\OAuth2Authenticator} Test Case
@@ -50,6 +51,7 @@ class OAuth2AuthenticatorTest extends TestCase
                     'status' => Result::SUCCESS,
                 ],
                 [
+                    'environment' => ['REQUEST_METHOD' => 'POST'],
                     'url' => '/ext/login/gustavo',
                 ],
                 [
@@ -185,5 +187,53 @@ class OAuth2AuthenticatorTest extends TestCase
 
         static::assertNotNull($result);
         static::assertEquals($expected['status'], $result->getStatus());
+    }
+
+    /**
+     * Test JWT leeway config in `authenticate` method
+     *
+     * @return void
+     * @covers ::authenticate()
+     */
+    public function testAuthenticateLeeway(): void
+    {
+        $identifier = new class () implements IdentifierInterface {
+            public function identify(array $credentials)
+            {
+                return $credentials;
+            }
+
+            public function getErrors(): array
+            {
+                return [];
+            }
+        };
+        $reqConfig = [
+            'url' => '/ext/login/gustavo',
+        ];
+        $request = new ServerRequest($reqConfig);
+        $session = new Session();
+        $session->write(Hash::get($reqConfig, 'data'));
+        $request = $request->withAttribute('session', $session);
+
+        $authenticator = new OAuth2Authenticator($identifier, [
+            'urlResolver' => fn () => '',
+            'providers' => [
+                'gustavo' => [
+                    'class' => TestProvider::class,
+                    'setup' => [
+                        'clientId' => '',
+                    ],
+                    'clientOptions' => [
+                        'jwtLeeway' => 10,
+                    ],
+                ],
+            ],
+        ]);
+        $result = $authenticator->authenticate($request);
+
+        static::assertNotNull($result);
+        static::assertEquals(Result::SUCCESS, $result->getStatus());
+        static::assertEquals(JWT::$leeway, 10);
     }
 }
