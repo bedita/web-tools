@@ -22,6 +22,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Log\LogTrait;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
+use Firebase\JWT\JWT;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -85,6 +86,11 @@ class OAuth2Authenticator extends AbstractAuthenticator
     {
         // extract provider from request
         $provider = basename($request->getUri()->getPath());
+        // leeway is needed for clock skew
+        $leeway = (int)$this->getConfig(sprintf('providers.%s.clientOptions.jwtLeeway', $provider), 0);
+        if ($leeway) {
+            JWT::$leeway = $leeway;
+        }
 
         $connect = $this->providerConnect($provider, $request);
         if (!empty($connect[static::AUTH_URL_KEY])) {
@@ -97,6 +103,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
             'provider_username' => Hash::get($connect, sprintf('user.%s', $usernameField)),
             'access_token' => Hash::get($connect, 'token.access_token'),
             'provider_userdata' => (array)Hash::get($connect, 'user'),
+            'id_token' => Hash::get($connect, 'token.id_token'),
         ];
         $user = $this->_identifier->identify($data);
 
@@ -119,7 +126,11 @@ class OAuth2Authenticator extends AbstractAuthenticator
     {
         $this->initProvider($provider, $request);
 
-        $query = $request->getQueryParams();
+        if ($request->getMethod() === 'GET') {
+            $query = $request->getQueryParams();
+        } else {
+            $query = $request->getParsedBody();
+        }
         $sessionKey = $this->getConfig('sessionKey');
         /** @var \Cake\Http\Session $session */
         $session = $request->getAttribute('session');
@@ -134,7 +145,10 @@ class OAuth2Authenticator extends AbstractAuthenticator
         }
 
         // Check given state against previously stored one to mitigate CSRF attack
-        if (empty($query['state']) || ($query['state'] !== $session->read($sessionKey))) {
+        if (
+            (empty($query['state']) || $query['state'] !== $session->read($sessionKey))
+            && $request->getMethod() === 'GET'
+        ) {
             $session->delete($sessionKey);
             throw new BadRequestException('Invalid state');
         }
