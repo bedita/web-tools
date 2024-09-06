@@ -88,7 +88,7 @@ class ApiProxyTraitTest extends TestCase
                 apiRequest as public;
             }
         };
-        $t->apiRequest(['method' => 'PPOOSSTT']);
+        $t->apiRequest(['method' => 'PPOOSSTT', 'path' => '/']);
         $error = $t->viewBuilder()->getVar('error');
         static::assertTrue(in_array($error['status'], ['405', '500']));
         static::assertEquals('Method Not Allowed', $error['title']);
