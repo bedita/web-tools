@@ -18,14 +18,14 @@ use BEdita\SDK\BEditaClient;
 use Cake\Core\Configure;
 
 /**
- * BEdita4 API client provider singleton class.
+ * BEdita API client provider singleton class.
  */
 class ApiClientProvider
 {
     use SingletonTrait;
 
     /**
-     * BEdita4 API client
+     * BEdita API client
      *
      * @var \BEdita\SDK\BEditaClient
      */

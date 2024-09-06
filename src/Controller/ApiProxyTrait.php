@@ -55,7 +55,7 @@ trait ApiProxyTrait
     protected $response;
 
     /**
-     * BEdita4 API client
+     * BEdita API client
      *
      * @var \BEdita\SDK\BEditaClient
      */
@@ -101,7 +101,7 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for GET requests to BEdita4 API
+     * Proxy for GET requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
@@ -116,7 +116,7 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for POST requests to BEdita4 API
+     * Proxy for POST requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
@@ -131,7 +131,7 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for PATCH requests to BEdita4 API
+     * Proxy for PATCH requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
@@ -146,7 +146,7 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for DELETE requests to BEdita4 API
+     * Proxy for DELETE requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void

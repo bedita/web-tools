@@ -1,6 +1,6 @@
 {
     "name": "bedita/web-tools",
-    "description": "Tools for CakePHP apps that use BEdita 4 API",
+    "description": "Tools for CakePHP apps that use BEdita API",
     "type": "cakephp-plugin",
     "license": "LGPL-3.0-or-later",
     "support": {
