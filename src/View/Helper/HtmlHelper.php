@@ -157,15 +157,11 @@ class HtmlHelper extends CakeHtmlHelper
                 return '';
             }
         }
-        $html = $this->meta([
+
+        return (string)$this->meta([
             'name' => 'author',
             'content' => h($creator),
         ]);
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
     }
 
     /**
@@ -182,15 +178,11 @@ class HtmlHelper extends CakeHtmlHelper
                 return '';
             }
         }
-        $html = $this->meta([
+
+        return (string)$this->meta([
             'http-equiv' => 'Content-Style-Type',
             'content' => 'text/css',
         ]);
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
     }
 
     /**
@@ -211,15 +203,11 @@ class HtmlHelper extends CakeHtmlHelper
         if (!empty($project['version'])) {
             $version = $project['version'];
         }
-        $html = $this->meta([
+
+        return (string)$this->meta([
             'name' => 'generator',
             'content' => trim(sprintf('%s %s', $project['name'], $version)),
         ]);
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
     }
 
     /**
