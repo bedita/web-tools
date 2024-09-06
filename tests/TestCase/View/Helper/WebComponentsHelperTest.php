@@ -207,4 +207,17 @@ class WebComponentsHelperTest extends TestCase
         $result = $this->WebComponents->element($properties[0], $properties[1]);
         static::assertEquals($expected, $result);
     }
+
+    /**
+     * Test `element` method with script path
+     *
+     * @return void
+     * @covers ::element()
+     */
+    public function testElementWithScript(): void
+    {
+        $actual = $this->WebComponents->element('bedita-input', ['value' => '2'], 'path/to/script.js');
+        $expected = '<bedita-input data-wc="0" value="2"></bedita-input>';
+        static::assertEquals($expected, $actual);
+    }
 }
