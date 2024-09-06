@@ -371,12 +371,10 @@ class HtmlHelper extends CakeHtmlHelper
      */
     public function assets($name, array $options = []): ?string
     {
-        $cssOutput = $this->css($name, $options);
-        $jsOutput = $this->script($name, $options);
-        if (empty($cssOutput)) {
-            return $jsOutput;
-        }
-
-        return $cssOutput . (string)$jsOutput;
+        return sprintf(
+            '%s%s',
+            (string)$this->css($name, $options),
+            (string)$this->script($name, $options)
+        );
     }
 }
