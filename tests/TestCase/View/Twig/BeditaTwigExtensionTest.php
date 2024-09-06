@@ -48,8 +48,13 @@ class BeditaTwigExtensionTest extends TestCase
         $this->assertCount(2, $functions);
         $this->assertInstanceOf(\Twig\TwigFunction::class, $functions[0]);
         $this->assertEquals('config', $functions[0]->getName());
+        $debug = \Cake\Core\Configure::read('debug');
+        $this->assertEquals($debug, $functions[0]->getCallable()('debug'));
         $this->assertInstanceOf(\Twig\TwigFunction::class, $functions[1]);
         $this->assertEquals('write_config', $functions[1]->getName());
+        $this->assertNull($functions[1]->getCallable()('debug', true));
+        $this->assertEquals(true, $functions[0]->getCallable()('debug'));
+        \Cake\Core\Configure::write('debug', $debug);
     }
 
     /**
@@ -65,6 +70,9 @@ class BeditaTwigExtensionTest extends TestCase
         $this->assertCount(3, $filters);
         $this->assertInstanceOf(\Twig\TwigFilter::class, $filters[0]);
         $this->assertEquals('shuffle', $filters[0]->getName());
+        $actual = $filters[0]->getCallable()([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        $this->assertCount(10, $actual);
+        $this->assertNotEquals([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], $actual);
         $this->assertInstanceOf(\Twig\TwigFilter::class, $filters[1]);
         $this->assertEquals('ksort', $filters[1]->getName());
         $actual = $filters[1]->getCallable()(['c' => 2, 'a' => 0, 'b' => 1]);
