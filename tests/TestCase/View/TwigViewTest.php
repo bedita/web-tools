@@ -29,6 +29,7 @@ class TwigViewTest extends TestCase
      *
      * @return void
      * @covers ::initialize()
+     * @covers ::initializeExtensions()
      */
     public function testInitialize(): void
     {
