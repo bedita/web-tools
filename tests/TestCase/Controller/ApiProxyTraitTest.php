@@ -76,6 +76,25 @@ class ApiProxyTraitTest extends TestCase
     }
 
     /**
+     * Test that a request with a wrong method raises MethodNotAllowedException.
+     *
+     * @return void
+     * @covers ::apiRequest()
+     */
+    public function testMethodNotAllowedException(): void
+    {
+        $t = new class (new ServerRequest()) extends Controller {
+            use ApiProxyTrait {
+                apiRequest as public;
+            }
+        };
+        $t->apiRequest(['method' => 'PPOOSSTT']);
+        $error = $t->viewBuilder()->getVar('error');
+        static::assertEquals('405', $error['status']);
+        static::assertEquals('Method Not Allowed', $error['title']);
+    }
+
+    /**
      * Test get() method
      *
      * @return void

@@ -28,15 +28,13 @@ class TwigViewTest extends TestCase
      * Test `initialize` method
      *
      * @return void
-     * @covers ::initialize()
-     * @covers ::initializeExtensions()
      */
     public function testInitialize(): void
     {
-        $View = new TwigView();
-        $extensions = $View->getTwig()->getExtensions();
+        $view = new TwigView();
+        $extensions = $view->getTwig()->getExtensions();
         static::assertNotEmpty($extensions);
         static::assertArrayHasKey('BEdita\WebTools\View\Twig\BeditaTwigExtension', $extensions);
-        static::assertFalse($View->getConfig('environment.strict_variables'));
+        static::assertFalse($view->getConfig('environment.strict_variables'));
     }
 }

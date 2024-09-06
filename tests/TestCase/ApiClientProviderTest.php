@@ -33,30 +33,12 @@ class ApiClientProviderTest extends TestCase
     {
         ApiClientProvider::setApiClient(null);
         // test create
-        $client = ApiClientProvider::getApiClient();
-        static::assertNotEmpty($client);
-        // test use created
-        $client = ApiClientProvider::getApiClient();
-        static::assertNotEmpty($client);
-    }
-
-    /**
-     * Test log configuration
-     *
-     * @return void
-     * @covers ::getApiClient()
-     * @covers ::createClient()
-     */
-    public function testLogConfig(): void
-    {
-        $options = [
-            'Log' => [
-                'log_file' => 'my.log',
-            ],
-        ];
-        $client = ApiClientProvider::getApiClient($options);
+        $client = ApiClientProvider::getApiClient(['Log' => ['log_file' => 'my.log']]);
         static::assertNotEmpty($client);
         static::assertNotEmpty($client->getLogger());
+        // test use created
+        $client = ApiClientProvider::getApiClient(['Log' => ['log_file' => 'my.log']]);
+        static::assertNotEmpty($client);
     }
 
     /**
