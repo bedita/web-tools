@@ -154,6 +154,19 @@ class WebComponentsHelperTest extends TestCase
     }
 
     /**
+     * Test `is` method with script path
+     *
+     * @return void
+     * @covers ::is()
+     */
+    public function testIsWithScript(): void
+    {
+        $actual = $this->WebComponents->is('bedita-input', ['value' => '2'], 'path/to/script.js');
+        $expected = 'is="bedita-input" data-wc="0" value="2"';
+        static::assertEquals($expected, $actual);
+    }
+
+    /**
      * Data provider for `testElement` test case.
      *
      * @return array
