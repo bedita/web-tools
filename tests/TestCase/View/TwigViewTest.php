@@ -18,7 +18,7 @@ use BEdita\WebTools\View\TwigView;
 use Cake\TestSuite\TestCase;
 
 /**
- * {@see \BEdita\WebTools\View\AppView} Test Case
+ * {@see \BEdita\WebTools\View\TwigView} Test Case
  *
  * @coversDefaultClass \BEdita\WebTools\View\TwigView
  */
