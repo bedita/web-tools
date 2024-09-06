@@ -283,6 +283,7 @@ class ApiCacheComponentTest extends TestCase
      * @return void
      * @covers ::updateCacheIndex()
      * @covers ::readIndex()
+     * @covers ::get()
      */
     public function testIndex(): void
     {

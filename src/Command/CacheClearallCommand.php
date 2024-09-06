@@ -31,12 +31,14 @@ class CacheClearallCommand extends BaseCommand
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
-        $twigCachePath = CACHE . 'twig_view';
-        $folder = new Folder($twigCachePath); /* @phpstan-ignore-line */
-        if (file_exists($twigCachePath) && !$folder->delete()) {
-            $io->error("Error removing Twig cache files in {$twigCachePath}");
-            $this->abort();
+        $path = CACHE . 'twig_view';
+        if (!file_exists($path)) {
+            $io->out("<warning>Twig cache path not found: {$path}</warning>");
+
+            return parent::execute($args, $io);
         }
+        $folder = new Folder($path); /* @phpstan-ignore-line */
+        $folder->delete();
         $io->out('<success>Cleared twig cache</success>');
 
         return parent::execute($args, $io);
