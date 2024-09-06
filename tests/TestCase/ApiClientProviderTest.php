@@ -44,6 +44,8 @@ class ApiClientProviderTest extends TestCase
      * Test log configuration
      *
      * @return void
+     * @covers ::getApiClient()
+     * @covers ::createClient()
      */
     public function testLogConfig(): void
     {
