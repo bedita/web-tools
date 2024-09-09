@@ -231,6 +231,11 @@ class ApiFormatterComponentTest extends TestCase
     public function replaceWithTranslationProvider(): array
     {
         return [
+            'empty response data' => [
+                [],
+                [],
+                'en',
+            ],
             'single object without translation' => [
                 [
                     'data' => [

@@ -1,4 +1,4 @@
-# BEdita/WebTools plugin for CakePHP web apps using BEdita 4 API
+# BEdita/WebTools plugin for CakePHP web apps using BEdita API
 
 [![Github Actions](https://github.com/bedita/web-tools/workflows/php/badge.svg)](https://github.com/bedita/web-tools/actions?query=workflow%3Aphp)
 [![codecov](https://codecov.io/gh/bedita/web-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/bedita/web-tools)

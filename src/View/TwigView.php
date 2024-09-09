@@ -35,13 +35,13 @@ class TwigView extends BaseTwigView
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @codeCoverageIgnore
      */
     public function initializeExtensions(): void
     {
         parent::initializeExtensions();
-
-        $this->getTwig()
-            ->addExtension(new BeditaTwigExtension());
+        $this->getTwig()->addExtension(new BeditaTwigExtension());
     }
 }

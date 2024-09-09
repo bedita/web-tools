@@ -76,6 +76,25 @@ class ApiProxyTraitTest extends TestCase
     }
 
     /**
+     * Test that a request with a wrong method raises MethodNotAllowedException.
+     *
+     * @return void
+     * @covers ::apiRequest()
+     */
+    public function testMethodNotAllowedException(): void
+    {
+        $t = new class (new ServerRequest()) extends Controller {
+            use ApiProxyTrait {
+                apiRequest as public;
+            }
+        };
+        $t->apiRequest(['method' => 'PPOOSSTT', 'path' => '/']);
+        $error = $t->viewBuilder()->getVar('error');
+        static::assertTrue(in_array($error['status'], ['405', '500']));
+        static::assertEquals('Method Not Allowed', $error['title']);
+    }
+
+    /**
      * Test get() method
      *
      * @return void
@@ -418,5 +437,58 @@ class ApiProxyTraitTest extends TestCase
         $this->assertResponseOk();
         $response = json_decode((string)$this->_response, true);
         static::assertEmpty($response);
+    }
+
+    /**
+     * Test that create a new object, modify it and delete it.
+     *
+     * @return void
+     * @covers ::post()
+     * @covers ::patch()
+     * @covers ::delete()
+     * @covers ::apiRequest()
+     * @covers ::get()
+     */
+    public function testMulti(): void
+    {
+        $this->post('/api/documents', ['data' => [
+            'type' => 'documents',
+            'attributes' => [
+                'title' => 'new doc',
+            ],
+        ]]);
+        $this->assertResponseOk();
+
+        Router::resetRoutes();
+
+        $response = json_decode((string)$this->_response, true);
+        $id = Hash::get($response, 'data.id');
+        $this->patch('/api/documents/' . $id, ['data' => [
+            'type' => 'documents',
+            'id' => $id,
+            'attributes' => [
+                'title' => 'new doc title',
+            ],
+        ]]);
+        $this->assertResponseOk();
+
+        Router::resetRoutes();
+
+        $this->get('/api/documents/' . $id);
+        $response = json_decode((string)$this->_response, true);
+        $this->assertEquals('new doc title', (string)Hash::get($response, 'data.attributes.title'));
+        $this->assertResponseOk();
+
+        Router::resetRoutes();
+
+        $this->delete('/api/documents/' . $id);
+        $this->assertResponseOk();
+        $response = json_decode((string)$this->_response, true);
+        $this->assertEmpty($response);
+
+        Router::resetRoutes();
+
+        $this->get('/api/documents/' . $id);
+        $this->assertResponseError();
     }
 }

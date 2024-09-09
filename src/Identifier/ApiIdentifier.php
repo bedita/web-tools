@@ -23,7 +23,7 @@ use Cake\Utility\Hash;
 use Psr\Log\LogLevel;
 
 /**
- * Identifier for authentication using BEdita 4 API /auth endpoint.
+ * Identifier for authentication using BEdita API /auth endpoint.
  */
 class ApiIdentifier extends AbstractIdentifier
 {

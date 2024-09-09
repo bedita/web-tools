@@ -41,4 +41,18 @@ class PluginTest extends TestCase
         static::assertNotEmpty($cacheClearAll);
         static::assertEquals(CacheClearallCommand::class, $cacheClearAll);
     }
+
+    /**
+     * Test `bootstrap` method
+     *
+     * @return void
+     * @covers ::bootstrap
+     */
+    public function testBootstrap(): void
+    {
+        $app = new Application(CONFIG);
+        $app->pluginBootstrap();
+        $plugins = $app->getPlugins();
+        static::assertNotEmpty($plugins);
+    }
 }
