@@ -29,13 +29,13 @@
     "require-dev": {
         "cakephp/authentication": "^2.9",
         "cakephp/authorization": "^2.2",
-        "cakephp/cakephp-codesniffer": "~4.5.1",
+        "cakephp/cakephp-codesniffer": "^4.7",
         "league/oauth2-client": "^2.6",
         "josegonzalez/dotenv": "^3.2",
-        "phpstan/phpstan": "^1.8",
-        "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpunit/phpunit": "^9.5"
+        "phpstan/phpstan": "^1.10",
+        "phpstan/extension-installer": "^1.2",
+        "phpstan/phpstan-deprecation-rules": "^1.2",
+        "phpunit/phpunit": "^9.6"
     },
     "suggest": {
         "cakephp/authentication": "^2.9 To use \"ApiIdentifier\", \"Identity\", \"IdentityHelper\" and other authentication features",
