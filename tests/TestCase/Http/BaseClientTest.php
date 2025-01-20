@@ -188,13 +188,34 @@ class BaseClientTest extends TestCase
     }
 
     /**
-     * Test `get` method.
+     * Data provider for `testGetPostPatchPutDelete` test case.
+     *
+     * @return array
+     */
+    public function getPostPatchPutDeleteProvider(): array
+    {
+        return [
+            'get call' => ['get'],
+            'post call' => ['post'],
+            'patch call' => ['patch'],
+            'put call' => ['put'],
+            'delete call' => ['delete'],
+        ];
+    }
+
+    /**
+     * Test `get`, `post`, `patch`, `put`, `delete` methods.
      *
      * @return void
      * @covers ::get()
+     * @covers ::post()
+     * @covers ::patch()
+     * @covers ::put()
+     * @covers ::delete()
      * @covers ::logCall()
+     * @dataProvider getPostPatchPutDeleteProvider
      */
-    public function testGet(): void
+    public function testGetPostPatchPutDelete(string $method): void
     {
         $config = [
             'auth' => [
@@ -224,6 +245,46 @@ class BaseClientTest extends TestCase
 
                         return $response->withStatus(200)->withBody($stream);
                     }
+
+                    public function post(string $url, $data = [], array $options = []): Response
+                    {
+                        $response = new Response();
+                        $stream = new Stream('php://memory', 'wb+');
+                        $stream->write('this is a response body');
+                        $stream->rewind();
+
+                        return $response->withStatus(200)->withBody($stream);
+                    }
+
+                    public function patch(string $url, $data = [], array $options = []): Response
+                    {
+                        $response = new Response();
+                        $stream = new Stream('php://memory', 'wb+');
+                        $stream->write('this is a response body');
+                        $stream->rewind();
+
+                        return $response->withStatus(200)->withBody($stream);
+                    }
+
+                    public function put(string $url, $data = [], array $options = []): Response
+                    {
+                        $response = new Response();
+                        $stream = new Stream('php://memory', 'wb+');
+                        $stream->write('this is a response body');
+                        $stream->rewind();
+
+                        return $response->withStatus(200)->withBody($stream);
+                    }
+
+                    public function delete(string $url, $data = [], array $options = []): Response
+                    {
+                        $response = new Response();
+                        $stream = new Stream('php://memory', 'wb+');
+                        $stream->write('this is a response body');
+                        $stream->rewind();
+
+                        return $response->withStatus(200)->withBody($stream);
+                    }
                 };
             }
 
@@ -234,9 +295,10 @@ class BaseClientTest extends TestCase
                 return $this->lastLog;
             }
         };
-        $response = $client->get('/whatever', ['data' => 'test']);
+        $response = $client->$method('/whatever', ['data' => 'test']);
         static::assertInstanceOf(Response::class, $response);
         static::assertSame(200, $response->getStatusCode());
-        static::assertSame('[OK] API BaseClientTest.php: | /GET api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', $client->lastLog);
+        $expected = sprintf('[OK] API BaseClientTest.php: | /%s api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', strtoupper($method));
+        static::assertSame($expected, $client->lastLog);
     }
 }
