@@ -130,7 +130,7 @@ abstract class BaseClient
      * @param string $url The relative url
      * @return string
      */
-    protected function getUrl($url): string
+    protected function getUrl(string $url): string
     {
         if (strpos($url, 'https://') === 0) {
             return $url;
@@ -146,31 +146,30 @@ abstract class BaseClient
      *
      * @param \Cake\Http\Client\Response $response The API response
      * @param string $payload The json payload
-     * @return void
+     * @return ?string
      */
-    protected function logCall(Response $response, string $payload = ''): void
+    protected function logCall(Response $response, string $payload = ''): ?string
     {
         $level = $this->getConfig('logLevel') ?? 'error';
         if (!in_array($level, ['error', 'debug', 'verbose'])) {
-            return;
+            return null;
         }
         $result = $response->isOk() ? '' : 'error';
         if ($level === 'error' && empty($result)) {
-            return;
+            return null;
         }
         $level = $result === 'error' ? 'error' : $level;
-
-        $this->log(
-            sprintf(
-                '%s API %s with status %s: %s - Payload: %s',
-                $result,
-                $this->defaultConfigName(),
-                $response->getStatusCode(),
-                (string)$response->getBody(),
-                $payload
-            ),
-            $level
+        $message = sprintf(
+            '%s API %s with status %s: %s - Payload: %s',
+            $result,
+            $this->defaultConfigName(),
+            $response->getStatusCode(),
+            (string)$response->getBody(),
+            $payload
         );
+        $this->log($message, $level);
+
+        return $message;
     }
 
     /**
