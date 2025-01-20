@@ -21,6 +21,7 @@ use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Validation\Validator;
+use Laminas\Diactoros\Stream;
 
 /**
  * {@see \BEdita\WebTools\Http\BaseClient} Test Case
@@ -130,40 +131,112 @@ class BaseClientTest extends TestCase
             'url' => 'https://example.com/api/v2',
         ];
         $client = new class ($config) extends BaseClient {
-            public function logCall(Response $response, string $payload = ''): ?string
+            public function logCall(string $call, string $url, string $payload, Response $response): ?string
             {
-                return parent::logCall($response, $payload);
+                return parent::logCall($call, $url, $payload, $response);
             }
         };
         $response = new Response();
         $payload = '{"data": "test"}';
-        $log = $client->logCall($response, $payload);
+        $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
         static::assertNull($log);
 
         // log level error, response
         $config['logLevel'] = 'error';
         $client = new class ($config) extends BaseClient {
-            public function logCall(Response $response, string $payload = ''): ?string
+            public function logCall(string $call, string $url, string $payload, Response $response): ?string
             {
-                return parent::logCall($response, $payload);
+                return parent::logCall($call, $url, $payload, $response);
             }
         };
         $response = $response->withStatus(200);
         $payload = '{"data": "test"}';
-        $log = $client->logCall($response, $payload);
+        $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
         static::assertNull($log);
 
-        // log level verbose, response with error
-        $config['logLevel'] = 'verbose';
+        // log level debug, response ok
+        $config['logLevel'] = 'debug';
         $client = new class ($config) extends BaseClient {
-            public function logCall(Response $response, string $payload = ''): ?string
+            public function logCall(string $call, string $url, string $payload, Response $response): ?string
             {
-                return parent::logCall($response, $payload);
+                return parent::logCall($call, $url, $payload, $response);
             }
         };
-        $response = $response->withStatus(400);
+        $stream = new Stream('php://memory', 'wb+');
+        $stream->write('this is a response body');
+        $stream->rewind();
+        $response = $response->withStatus(200)->withBody($stream);
         $payload = '{"data": "test"}';
-        $log = $client->logCall($response, $payload);
-        static::assertEquals('error API BaseClientTest.php: with status 400:  - Payload: {"data": "test"}', $log);
+        $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
+        static::assertEquals('[OK] API BaseClientTest.php: | /GET https://example.com | with status 200: this is a response body - Payload: {"data": "test"}', $log);
+
+        // log level debug, response with error
+        $config['logLevel'] = 'debug';
+        $client = new class ($config) extends BaseClient {
+            public function logCall(string $call, string $url, string $payload, Response $response): ?string
+            {
+                return parent::logCall($call, $url, $payload, $response);
+            }
+        };
+        $stream = new Stream('php://memory', 'wb+');
+        $stream->write('this is a response body for error');
+        $stream->rewind();
+        $response = $response->withStatus(400)->withBody($stream);
+        $payload = '{"data": "test"}';
+        $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
+        static::assertEquals('[ERROR] API BaseClientTest.php: | /GET https://example.com | with status 400: this is a response body for error - Payload: {"data": "test"}', $log);
+    }
+
+    /**
+     * Test `get` method.
+     *
+     * @return void
+     * @covers ::get()
+     * @covers ::logCall()
+     */
+    public function testGet(): void
+    {
+        $config = [
+            'auth' => [
+                'type' => 'BearerAccessToken',
+            ],
+            'logLevel' => 'debug',
+            'url' => 'https://example.com/api/v2',
+        ];
+        $client = new class ($config) extends BaseClient {
+            public string $lastLog = '';
+
+            public function createClient(): void
+            {
+                $options = [
+                    'host' => 'example.com',
+                    'scheme' => 'https',
+                    'port' => 443,
+                    'path' => '/api/v2',
+                ];
+                $this->client = new class ($options) extends Client {
+                    public function get(string $url, $data = [], array $options = []): Response
+                    {
+                        $response = new Response();
+                        $stream = new Stream('php://memory', 'wb+');
+                        $stream->write('this is a response body');
+                        $stream->rewind();
+
+                        return $response->withStatus(200)->withBody($stream);
+                    }
+                };
+            }
+
+            public function logCall(string $call, string $url, string $payload, Response $response): ?string
+            {
+                $this->lastLog = parent::logCall($call, $url, $payload, $response);
+
+                return $this->lastLog;
+            }
+        };
+        $response = $client->get('/whatever', ['data' => 'test']);
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('[OK] API BaseClientTest.php: | /GET api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', $client->lastLog);
     }
 }

@@ -144,14 +144,16 @@ abstract class BaseClient
     /**
      * Log API call.
      *
-     * @param \Cake\Http\Client\Response $response The API response
+     * @param string $call The API call
+     * @param string $url The API url
      * @param string $payload The json payload
+     * @param \Cake\Http\Client\Response $response The API response
      * @return ?string
      */
-    protected function logCall(Response $response, string $payload = ''): ?string
+    protected function logCall(string $call, string $url, string $payload, Response $response): ?string
     {
         $level = $this->getConfig('logLevel') ?? 'error';
-        if (!in_array($level, ['error', 'debug', 'verbose'])) {
+        if (!in_array($level, ['error', 'debug'])) {
             return null;
         }
         $result = $response->isOk() ? '' : 'error';
@@ -160,13 +162,16 @@ abstract class BaseClient
         }
         $level = $result === 'error' ? 'error' : $level;
         $message = sprintf(
-            '%s API %s with status %s: %s - Payload: %s',
-            $result,
+            '%s API %s | %s %s | with status %s: %s - Payload: %s',
+            $response->isOk() ? '[OK]' : '[ERROR]',
             $this->defaultConfigName(),
+            $call,
+            $url,
             $response->getStatusCode(),
             (string)$response->getBody(),
             $payload
         );
+        $message = trim($message);
         $this->log($message, $level);
 
         return $message;
@@ -192,8 +197,9 @@ abstract class BaseClient
      */
     public function get(string $url, array $data = [], array $options = []): Response
     {
-        $response = $this->client->get($this->getUrl($url), $data, $options);
-        $this->logCall($response, json_encode($data));
+        $apiUrl = $this->getUrl($url);
+        $response = $this->client->get($apiUrl, $data, $options);
+        $this->logCall('/GET', $apiUrl, json_encode($data), $response);
 
         return $response;
     }
@@ -209,8 +215,9 @@ abstract class BaseClient
     public function post(string $url, array $data = [], array $options = []): Response
     {
         $data = json_encode($data);
-        $response = $this->client->post($this->getUrl($url), $data, $options);
-        $this->logCall($response, $data);
+        $apiUrl = $this->getUrl($url);
+        $response = $this->client->post($apiUrl, $data, $options);
+        $this->logCall('/POST', $apiUrl, $data, $response);
 
         return $response;
     }
@@ -225,9 +232,10 @@ abstract class BaseClient
      */
     public function patch(string $url, array $data = [], array $options = []): Response
     {
+        $apiUrl = $this->getUrl($url);
         $data = json_encode($data);
-        $response = $this->client->patch($this->getUrl($url), $data, $options);
-        $this->logCall($response, $data);
+        $response = $this->client->patch($apiUrl, $data, $options);
+        $this->logCall('/PATCH', $apiUrl, $data, $response);
 
         return $response;
     }
@@ -242,9 +250,10 @@ abstract class BaseClient
      */
     public function put(string $url, array $data = [], array $options = []): Response
     {
+        $apiUrl = $this->getUrl($url);
         $data = json_encode($data);
         $response = $this->client->put($this->getUrl($url), $data, $options);
-        $this->logCall($response, $data);
+        $this->logCall('/PUT', $apiUrl, $data, $response);
 
         return $response;
     }
@@ -259,9 +268,10 @@ abstract class BaseClient
      */
     public function delete(string $url, array $data = [], array $options = []): Response
     {
+        $apiUrl = $this->getUrl($url);
         $data = json_encode($data);
         $response = $this->client->delete($this->getUrl($url), $data, $options);
-        $this->logCall($response, $data);
+        $this->logCall('/DELETE', $apiUrl, $data, $response);
 
         return $response;
     }
