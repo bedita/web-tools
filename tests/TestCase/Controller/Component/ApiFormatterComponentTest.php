@@ -741,4 +741,101 @@ class ApiFormatterComponentTest extends TestCase
         $actual = $this->ApiFormatter->replaceWithTranslation($response, $lang);
         static::assertEquals($expected, $actual);
     }
+
+    /**
+     * Test `cleanResponse()` method.
+     *
+     * @return void
+     * @covers ::cleanResponse()
+     */
+    public function testCleanResponse(): void
+    {
+        $response = [
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'uname' => 'gustavo',
+                        'title' => 'gustavo supporto',
+                        'name' => 'gustavo',
+                        'surname' => 'supporto',
+                    ],
+                    'links' => [
+                        'self' => 'https://api.example.org/users/1',
+                    ],
+                    'relationships' => [
+                        'roles' => [
+                            'links' => [
+                                'self' => 'https://api.example.org/users/1/relationships/roles',
+                                'related' => 'https://api.example.org/users/1/roles',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'meta' => [
+                'pagination' => [
+                    'page' => 1,
+                    'page_count' => 1,
+                    'page_items' => 1,
+                    'page_size' => 20,
+                    'count' => 1,
+                ],
+                'schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'id' => [
+                            'type' => 'integer',
+                        ],
+                        'type' => [
+                            'type' => 'string',
+                        ],
+                        'attributes' => [
+                            'type' => 'object',
+                        ],
+                        'links' => [
+                            'type' => 'object',
+                        ],
+                        'relationships' => [
+                            'type' => 'object',
+                        ],
+                    ],
+                    'required' => ['id', 'type', 'attributes'],
+                ],
+            ],
+            'included' => [
+                [
+                    'id' => 1,
+                    'type' => 'roles',
+                    'attributes' => [
+                        'name' => 'admin',
+                    ],
+                ],
+            ],
+        ];
+        $actual = $this->ApiFormatter->cleanResponse($response);
+        $expected = [
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'uname' => 'gustavo',
+                        'title' => 'gustavo supporto',
+                        'name' => 'gustavo',
+                        'surname' => 'supporto',
+                    ],
+                ],
+            ],
+            'meta' => [
+                'pagination' => [
+                    'page' => 1,
+                    'page_count' => 1,
+                    'page_items' => 1,
+                    'page_size' => 20,
+                    'count' => 1,
+                ],
+            ],
+        ];
+        static::assertEquals($expected, $actual);
+    }
 }
