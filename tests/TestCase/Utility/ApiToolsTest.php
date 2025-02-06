@@ -99,6 +99,11 @@ class ApiToolsTest extends TestCase
                     ],
                 ],
             ],
+            'links' => [
+                'self' => 'https://api.example.org/users',
+                'first' => 'https://api.example.org/users?page=1',
+                'last' => 'https://api.example.org/users?page=1',
+            ],
         ];
         $actual = ApiTools::cleanResponse($response);
         $expected = [

@@ -41,6 +41,8 @@ class ApiTools
      */
     public static function removeLinks(array $response): array
     {
+        $response = (array)Hash::remove($response, 'links');
+
         return self::recursiveRemoveKey($response, 'links');
     }
 
