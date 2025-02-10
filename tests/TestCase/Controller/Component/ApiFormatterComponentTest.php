@@ -759,6 +759,7 @@ class ApiFormatterComponentTest extends TestCase
                         'title' => 'gustavo supporto',
                         'name' => 'gustavo',
                         'surname' => 'supporto',
+                        'extra' => ['some' => 'thing'],
                     ],
                     'links' => [
                         'self' => 'https://api.example.org/users/1',
@@ -809,6 +810,7 @@ class ApiFormatterComponentTest extends TestCase
                     'type' => 'roles',
                     'attributes' => [
                         'name' => 'admin',
+                        'extra' => ['any' => 'thing'],
                     ],
                 ],
             ],
@@ -828,6 +830,7 @@ class ApiFormatterComponentTest extends TestCase
                         'title' => 'gustavo supporto',
                         'name' => 'gustavo',
                         'surname' => 'supporto',
+                        'extra' => ['some' => 'thing'],
                     ],
                 ],
             ],
