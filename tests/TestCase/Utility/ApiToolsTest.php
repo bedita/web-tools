@@ -30,6 +30,7 @@ class ApiToolsTest extends TestCase
      * @return void
      * @covers ::cleanResponse()
      * @covers ::recursiveRemoveKey()
+     * @covers ::removeAttributes()
      * @covers ::removeIncluded()
      * @covers ::removeLinks()
      * @covers ::removeRelationships()
@@ -46,6 +47,7 @@ class ApiToolsTest extends TestCase
                         'title' => 'gustavo supporto',
                         'name' => 'gustavo',
                         'surname' => 'supporto',
+                        'extra' => ['some' => 'thing'],
                     ],
                     'links' => [
                         'self' => 'https://api.example.org/users/1',
@@ -96,6 +98,7 @@ class ApiToolsTest extends TestCase
                     'type' => 'roles',
                     'attributes' => [
                         'name' => 'admin',
+                        'extra' => ['any' => 'thing'],
                     ],
                 ],
             ],

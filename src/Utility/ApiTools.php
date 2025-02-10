@@ -23,6 +23,47 @@ use Cake\Utility\Hash;
 class ApiTools
 {
     /**
+     * Remove attributes from response.
+     *
+     * @param array $response The response from api client
+     * @param array $keysToRemove The keys to remove
+     * @return array
+     */
+    public static function removeAttributes(array $response, array $keysToRemove): array
+    {
+        // response.data is an array representing a single entity
+        if (isset($response['data']['attributes'])) {
+            $response['data']['attributes'] = array_diff_key($response['data']['attributes'], array_flip($keysToRemove));
+
+            // remove attributes from included entities
+            if (isset($response['included'])) {
+                foreach ($response['included'] as $key => $entity) {
+                    $response['included'][$key]['attributes'] = array_diff_key($entity['attributes'], array_flip($keysToRemove));
+                }
+            }
+
+            return $response;
+        }
+        // response.data is a list of entities
+        if (isset($response['data'])) {
+            foreach ($response['data'] as $key => $entity) {
+                $response['data'][$key]['attributes'] = array_diff_key($entity['attributes'], array_flip($keysToRemove));
+            }
+
+            // remove attributes from included entities
+            if (isset($response['included'])) {
+                foreach ($response['included'] as $key => $entity) {
+                    $response['included'][$key]['attributes'] = array_diff_key($entity['attributes'], array_flip($keysToRemove));
+                }
+            }
+
+            return $response;
+        }
+
+        return $response;
+    }
+
+    /**
      * Remove included from response.
      *
      * @param array $response The response from api client
@@ -101,9 +142,14 @@ class ApiTools
      */
     public static function cleanResponse(
         array $response,
-        array $options = ['included', 'links', 'schema', 'relationships']
+        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => ['extra']]
     ): array {
-        foreach ($options as $option) {
+        foreach ($options as $key => $option) {
+            if (is_string($key) && is_array($option)) {
+                $method = 'remove' . ucfirst($key);
+                $response = self::$method($response, $option);
+                continue;
+            }
             $method = 'remove' . ucfirst($option);
             $response = self::$method($response);
         }
