@@ -830,6 +830,7 @@ class ApiFormatterComponentTest extends TestCase
                         'title' => 'gustavo supporto',
                         'name' => 'gustavo',
                         'surname' => 'supporto',
+                        'extra' => ['some' => 'thing'],
                     ],
                 ],
             ],

@@ -142,7 +142,7 @@ class ApiTools
      */
     public static function cleanResponse(
         array $response,
-        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => ['extra']]
+        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []]
     ): array {
         foreach ($options as $key => $option) {
             if (is_string($key) && is_array($option)) {

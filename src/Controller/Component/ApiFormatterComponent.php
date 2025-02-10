@@ -169,7 +169,7 @@ class ApiFormatterComponent extends Component
      */
     public function cleanResponse(
         array $response,
-        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => ['extra']]
+        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []]
     ): array {
         return ApiTools::cleanResponse($response, $options);
     }
