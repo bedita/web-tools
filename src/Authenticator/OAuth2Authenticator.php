@@ -100,7 +100,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
         $usernameField = (string)$this->getConfig(sprintf('providers.%s.map.provider_username', $provider));
         $data = [
             'auth_provider' => $provider,
-            'provider_username' => Hash::get($connect, sprintf('user.%s', $usernameField)),
+            'provider_username' => (string)Hash::get($connect, sprintf('user.%s', $usernameField)),
             'access_token' => Hash::get($connect, 'token.access_token'),
             'provider_userdata' => (array)Hash::get($connect, 'user'),
             'id_token' => Hash::get($connect, 'token.id_token'),
