@@ -27,9 +27,9 @@ class ApiClientProvider
     /**
      * BEdita API client
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    private BEditaClient $apiClient = null;
+    private ?BEditaClient $apiClient = null;
 
     /**
      * Read singleton API client data.
