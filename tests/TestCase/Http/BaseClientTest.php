@@ -194,7 +194,7 @@ class BaseClientTest extends TestCase
      *
      * @return array
      */
-    public function getPostPatchPutDeleteProvider(): array
+    public static function getPostPatchPutDeleteProvider(): array
     {
         return [
             'get call' => ['get'],

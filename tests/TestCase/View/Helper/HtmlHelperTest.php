@@ -65,7 +65,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function titleProvider(): array
+    public static function titleProvider(): array
     {
         return [
             'empty string' => [
@@ -131,7 +131,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaDescriptionProvider(): array
+    public static function metaDescriptionProvider(): array
     {
         return [
             'null description' => [
@@ -173,7 +173,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaAuthorProvider(): array
+    public static function metaAuthorProvider(): array
     {
         return [
             'null creator' => [
@@ -215,7 +215,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaCssProvider(): array
+    public static function metaCssProvider(): array
     {
         return [
             'empty docType' => [
@@ -249,7 +249,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaGeneratorProvider(): array
+    public static function metaGeneratorProvider(): array
     {
         return [
             'empty project and version 1' => [
@@ -299,7 +299,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaAllProvider(): array
+    public static function metaAllProvider(): array
     {
         return [
             'empty data' => [
@@ -343,7 +343,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaOpenGraphProvider(): array
+    public static function metaOpenGraphProvider(): array
     {
         return [
             'empty data' => [
@@ -382,7 +382,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function metaTwitterProvider(): array
+    public static function metaTwitterProvider(): array
     {
         return [
             'empty data' => [
@@ -423,7 +423,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function getMetaProvider(): array
+    public static function getMetaProvider(): array
     {
         return [
             // string
@@ -498,7 +498,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function scriptProvider(): array
+    public static function scriptProvider(): array
     {
         return [
             'simple' => [
@@ -558,7 +558,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function cssProvider(): array
+    public static function cssProvider(): array
     {
         return [
             'simple' => [
@@ -634,7 +634,7 @@ class HtmlHelperTest extends TestCase
      *
      * @return array
      */
-    public function assetsProvider(): array
+    public static function assetsProvider(): array
     {
         return [
             'css found and js fallback' => [

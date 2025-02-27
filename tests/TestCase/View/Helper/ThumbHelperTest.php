@@ -173,7 +173,7 @@ class ThumbHelperTest extends TestCase
      *
      * @return array
      */
-    public function urlProvider(): array
+    public static function urlProvider(): array
     {
         return [
             'basic thumb default preset' => [

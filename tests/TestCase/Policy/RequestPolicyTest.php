@@ -41,7 +41,7 @@ class RequestPolicyTest extends TestCase
      *
      * @return array
      */
-    public function canAccessProvider(): array
+    public static function canAccessProvider(): array
     {
         return [
             'missing rule' => [

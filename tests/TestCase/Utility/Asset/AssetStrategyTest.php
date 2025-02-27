@@ -46,7 +46,7 @@ class AssetStrategyTest extends TestCase
      *
      * @return array
      */
-    public function manifestPathProvider(): array
+    public static function manifestPathProvider(): array
     {
         return [
             'default' => [

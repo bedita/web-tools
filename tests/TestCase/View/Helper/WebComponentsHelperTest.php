@@ -59,7 +59,7 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return array
      */
-    public function propsProvider(): array
+    public static function propsProvider(): array
     {
         return [
             'empty' => [
@@ -117,7 +117,7 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return array
      */
-    public function isProvider(): array
+    public static function isProvider(): array
     {
         return [
             'simple' => [
@@ -172,7 +172,7 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return array
      */
-    public function elementProvider(): array
+    public static function elementProvider(): array
     {
         return [
             'simple' => [

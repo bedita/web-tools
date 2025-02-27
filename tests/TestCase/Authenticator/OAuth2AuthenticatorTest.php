@@ -40,7 +40,7 @@ class OAuth2AuthenticatorTest extends TestCase
      *
      * @return array
      */
-    public function authenticateProvider(): array
+    public static function authenticateProvider(): array
     {
         return [
             'bad provider' => [

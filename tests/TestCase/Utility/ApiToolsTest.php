@@ -141,7 +141,7 @@ class ApiToolsTest extends TestCase
      *
      * @return array
      */
-    public function cleanResponseAttributesProvider(): array
+    public static function cleanResponseAttributesProvider(): array
     {
         return [
             'remove extra, single entity with included' => [

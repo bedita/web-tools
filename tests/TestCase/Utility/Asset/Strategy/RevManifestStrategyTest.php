@@ -30,7 +30,7 @@ class RevManifestStrategyTest extends TestCase
      *
      * @return array
      */
-    public function getProvider(): array
+    public static function getProvider(): array
     {
         return [
             'name' => [

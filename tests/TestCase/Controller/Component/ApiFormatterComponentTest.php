@@ -229,7 +229,7 @@ class ApiFormatterComponentTest extends TestCase
      *
      * @return array
      */
-    public function replaceWithTranslationProvider(): array
+    public static function replaceWithTranslationProvider(): array
     {
         return [
             'empty response data' => [
