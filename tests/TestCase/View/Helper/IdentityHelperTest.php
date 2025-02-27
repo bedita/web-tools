@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase;
 
+use BadMethodCallException;
 use BEdita\WebTools\Identity;
 use BEdita\WebTools\View\Helper\IdentityHelper;
 use Cake\Http\ServerRequest;
@@ -83,7 +84,7 @@ class IdentityHelperTest extends TestCase
      */
     public function testDelegateNoIdentity(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot call `hasRole` on stored identity since it is not an object.');
 
         $request = (new ServerRequest())->withAttribute('identity', null);
@@ -100,7 +101,7 @@ class IdentityHelperTest extends TestCase
      */
     public function testDelegateBadDelegateMethod(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot call `fakeMethod`. Make sure to add it to `delegateMethods`.');
 
         $request = (new ServerRequest())->withAttribute('identity', $this->identity);

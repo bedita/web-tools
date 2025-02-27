@@ -33,7 +33,7 @@ class AssetStrategyTest extends TestCase
     protected function getInstance(array $config = []): AssetStrategy
     {
         return new class ($config) extends AssetStrategy {
-            public function get(string $name, ?string $extension = null)
+            public function get(string $name, ?string $extension = null): string|array
             {
                 return $this->assets;
             }

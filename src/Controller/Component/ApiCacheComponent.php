@@ -31,7 +31,7 @@ class ApiCacheComponent extends Component
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'cache' => '_apicache_',
     ];
 
@@ -40,7 +40,7 @@ class ApiCacheComponent extends Component
      *
      * @var array
      */
-    protected $cacheIndex = [];
+    protected array $cacheIndex = [];
 
     /**
      * Use 'default' as fallback if no cache configuration is found.

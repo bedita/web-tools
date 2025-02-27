@@ -50,14 +50,14 @@ class EntrypointsStrategy extends AssetStrategy
     /**
      * @inheritDoc
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'manifestPath' => WWW_ROOT . 'build' . DS . 'entrypoints.json',
     ];
 
     /**
      * @inheritDoc
      */
-    public function get(string $name, ?string $extension = null)
+    public function get(string $name, ?string $extension = null): array|string
     {
         $path = sprintf('entrypoints.%s', $name);
         if (!empty($extension)) {

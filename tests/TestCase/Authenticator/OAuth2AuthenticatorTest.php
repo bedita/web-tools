@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\Test\TestCase\Authenticator;
 
+use ArrayAccess;
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierInterface;
 use BEdita\WebTools\Authenticator\OAuth2Authenticator;
@@ -23,6 +24,7 @@ use Cake\Http\ServerRequest;
 use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use Exception;
 use Firebase\JWT\JWT;
 
 /**
@@ -154,7 +156,7 @@ class OAuth2AuthenticatorTest extends TestCase
         array $authConfig = [],
         array $identity = ['id' => 1]
     ): void {
-        if ($expected instanceof \Exception) {
+        if ($expected instanceof Exception) {
             $this->expectException(get_class($expected));
             $this->expectExceptionCode($expected->getCode());
             $this->expectExceptionMessage($expected->getMessage());
@@ -168,7 +170,7 @@ class OAuth2AuthenticatorTest extends TestCase
                 $this->identity = $identity;
             }
 
-            public function identify(array $credentials)
+            public function identify(array $credentials): ArrayAccess|array|null
             {
                 return $this->identity;
             }
@@ -198,7 +200,7 @@ class OAuth2AuthenticatorTest extends TestCase
     public function testAuthenticateLeeway(): void
     {
         $identifier = new class () implements IdentifierInterface {
-            public function identify(array $credentials)
+            public function identify(array $credentials): ArrayAccess|array|null
             {
                 return $credentials;
             }

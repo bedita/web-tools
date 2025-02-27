@@ -14,7 +14,11 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase\View\Twig;
 
+use BEdita\WebTools\View\Twig\BeditaTwigExtension;
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * {@see \BEdita\WebTools\View\Twig\BeditaTwigExtension} Test Case
@@ -31,7 +35,7 @@ class BeditaTwigExtensionTest extends TestCase
      */
     public function testGetName(): void
     {
-        $twigExtension = new \BEdita\WebTools\View\Twig\BeditaTwigExtension();
+        $twigExtension = new BeditaTwigExtension();
         $this->assertEquals('bedita', $twigExtension->getName());
     }
 
@@ -43,18 +47,18 @@ class BeditaTwigExtensionTest extends TestCase
      */
     public function testGetFunctions(): void
     {
-        $twigExtension = new \BEdita\WebTools\View\Twig\BeditaTwigExtension();
+        $twigExtension = new BeditaTwigExtension();
         $functions = $twigExtension->getFunctions();
         $this->assertCount(2, $functions);
-        $this->assertInstanceOf(\Twig\TwigFunction::class, $functions[0]);
+        $this->assertInstanceOf(TwigFunction::class, $functions[0]);
         $this->assertEquals('config', $functions[0]->getName());
-        $debug = \Cake\Core\Configure::read('debug');
+        $debug = Configure::read('debug');
         $this->assertEquals($debug, $functions[0]->getCallable()('debug'));
-        $this->assertInstanceOf(\Twig\TwigFunction::class, $functions[1]);
+        $this->assertInstanceOf(TwigFunction::class, $functions[1]);
         $this->assertEquals('write_config', $functions[1]->getName());
         $this->assertNull($functions[1]->getCallable()('debug', true));
         $this->assertEquals(true, $functions[0]->getCallable()('debug'));
-        \Cake\Core\Configure::write('debug', $debug);
+        Configure::write('debug', $debug);
     }
 
     /**
@@ -65,20 +69,20 @@ class BeditaTwigExtensionTest extends TestCase
      */
     public function testGetFilters(): void
     {
-        $twigExtension = new \BEdita\WebTools\View\Twig\BeditaTwigExtension();
+        $twigExtension = new BeditaTwigExtension();
         $filters = $twigExtension->getFilters();
         $this->assertCount(3, $filters);
-        $this->assertInstanceOf(\Twig\TwigFilter::class, $filters[0]);
+        $this->assertInstanceOf(TwigFilter::class, $filters[0]);
         $this->assertEquals('shuffle', $filters[0]->getName());
         $actual = $filters[0]->getCallable()([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         $this->assertCount(10, $actual);
         $this->assertNotEquals([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], $actual);
-        $this->assertInstanceOf(\Twig\TwigFilter::class, $filters[1]);
+        $this->assertInstanceOf(TwigFilter::class, $filters[1]);
         $this->assertEquals('ksort', $filters[1]->getName());
         $actual = $filters[1]->getCallable()(['c' => 2, 'a' => 0, 'b' => 1]);
         $expected = ['a' => 0, 'b' => 1, 'c' => 2];
         $this->assertEquals($expected, $actual);
-        $this->assertInstanceOf(\Twig\TwigFilter::class, $filters[2]);
+        $this->assertInstanceOf(TwigFilter::class, $filters[2]);
         $this->assertEquals('krsort', $filters[2]->getName());
         $actual = $filters[2]->getCallable()(['c' => 2, 'a' => 0, 'b' => 1]);
         $expected = ['c' => 2, 'b' => 1, 'a' => 0];

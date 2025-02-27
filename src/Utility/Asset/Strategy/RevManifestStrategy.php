@@ -32,14 +32,14 @@ class RevManifestStrategy extends AssetStrategy
     /**
      * @inheritDoc
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'manifestPath' => WWW_ROOT . 'rev-manifest.json',
     ];
 
     /**
      * @inheritDoc
      */
-    public function get(string $name, ?string $extension = null)
+    public function get(string $name, ?string $extension = null): array|string
     {
         if (!empty($extension)) {
             $name .= sprintf('.%s', $extension);

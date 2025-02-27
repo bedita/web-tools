@@ -18,10 +18,12 @@ use Authorization\IdentityInterface;
 use Authorization\Policy\Exception\MissingMethodException;
 use Authorization\Policy\RequestPolicyInterface;
 use Authorization\Policy\Result;
+use Authorization\Policy\ResultInterface;
 use Cake\Core\App;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Http\ServerRequest;
 use Cake\Utility\Hash;
+use LogicException;
 
 /**
  * RequestPolicy class.
@@ -68,7 +70,7 @@ class RequestPolicy implements RequestPolicyInterface
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'rules' => [],
         'ruleRequired' => false,
     ];
@@ -89,9 +91,9 @@ class RequestPolicy implements RequestPolicyInterface
      *
      * @param \Authorization\IdentityInterface|null $identity Identity
      * @param \Cake\Http\ServerRequest $request Server Request
-     * @return bool|\Authorization\Policy\ResultInterface
+     * @return \Authorization\Policy\ResultInterface|bool
      */
-    public function canAccess(?IdentityInterface $identity, ServerRequest $request)
+    public function canAccess(?IdentityInterface $identity, ServerRequest $request): bool|ResultInterface
     {
         $rule = $this->getRule($request);
         if (empty($rule)) {
@@ -115,7 +117,7 @@ class RequestPolicy implements RequestPolicyInterface
         }
 
         if (!is_string($rule)) {
-            throw new \LogicException(sprintf(
+            throw new LogicException(sprintf(
                 'Invalid rule for %s::%s() in RequestPolicy',
                 $request->getParam('controller'),
                 $request->getParam('action')
@@ -174,7 +176,7 @@ class RequestPolicy implements RequestPolicyInterface
      * @param \Cake\Http\ServerRequest $request Server Request
      * @return mixed
      */
-    protected function getRule(ServerRequest $request)
+    protected function getRule(ServerRequest $request): mixed
     {
         $controller = $request->getParam('controller');
         $rule = $this->getConfig(sprintf('rules.%s', $controller));
@@ -187,7 +189,7 @@ class RequestPolicy implements RequestPolicyInterface
         }
 
         if (!is_array($rule)) {
-            throw new \LogicException(sprintf('Invalid Rule for %s in RequestPolicy', $controller));
+            throw new LogicException(sprintf('Invalid Rule for %s in RequestPolicy', $controller));
         }
 
         $action = $request->getParam('action');

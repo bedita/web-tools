@@ -23,6 +23,7 @@ use Cake\Log\LogTrait;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Firebase\JWT\JWT;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -39,7 +40,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
      *
      * @var \League\OAuth2\Client\Provider\AbstractProvider
      */
-    protected $provider = null;
+    protected AbstractProvider $provider = null;
 
     /**
      * Authentication URL key
@@ -59,7 +60,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'sessionKey' => 'oauth2state',
         'redirect' => ['_name' => 'login'],
         'providers' => [],

@@ -24,6 +24,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use Exception;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
 use Throwable;
@@ -98,10 +99,10 @@ class ExceptionRendererTest extends TestCase
      * @covers ::_template()
      * @covers ::getHttpCode()
      */
-    public function testTemplate(\Exception $exception, $expected)
+    public function testTemplate(Exception $exception, $expected)
     {
         $renderer = $this->extensionClass($exception);
-        $renderer->setController(new ErrorController());
+        $renderer->setController(new ErrorController(new ServerRequest([])));
         $renderer->render();
         static::assertEquals($expected, $renderer->getTemplate());
     }
@@ -132,7 +133,7 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $renderer = $this->extensionClass(new NotFoundException('hello'));
-        $controller = new ErrorController();
+        $controller = new ErrorController(new ServerRequest([]));
         $customErrorMessage = 'Gustavo, take care of it.';
         $controller->set(compact('customErrorMessage'));
         $renderer->setController($controller);
@@ -164,7 +165,7 @@ class ExceptionRendererTest extends TestCase
             if ($trigger === 1) {
                 static::assertInstanceOf(AppView::class, $event->getSubject());
                 // throw a new exception
-                throw new \Exception('Oh my, another exception is here.');
+                throw new Exception('Oh my, another exception is here.');
             }
 
             // second time is the fallback then we can remove the listener
@@ -178,8 +179,8 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $expected = 'The original error is here';
-        $renderer = $this->extensionClass(new \Exception($expected));
-        $renderer->setController(new TestController());
+        $renderer = $this->extensionClass(new Exception($expected));
+        $renderer->setController(new TestController(new ServerRequest([])));
         $response = $renderer->render();
 
         $body = (string)$response->getBody();

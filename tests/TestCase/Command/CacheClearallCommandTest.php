@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -44,7 +43,6 @@ class CacheClearallCommandTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->useCommandRunner();
         $this->command = new CacheClearallCommand();
     }
 

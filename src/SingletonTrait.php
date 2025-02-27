@@ -60,7 +60,7 @@ trait SingletonTrait
      *
      * @return static|null
      */
-    final public static function getInstance()
+    final public static function getInstance(): ?static
     {
         if (self::$uniqueInstance === null) {
             self::$uniqueInstance = new static();

@@ -41,11 +41,9 @@ class BeditaTwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('config', [Configure::class, 'read']),
-            new TwigFunction('write_config', function ($key, $val) {
+            new TwigFunction('write_config', function ($key, $val): void {
                 // avoid unwanted return value display in templates
                 Configure::write($key, $val);
-
-                return;
             }),
         ];
     }

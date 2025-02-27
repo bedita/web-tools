@@ -23,6 +23,7 @@ use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use LogicException;
 
 /**
  * ApiProxyTraitTest class
@@ -246,7 +247,7 @@ class ApiProxyTraitTest extends TestCase
             ->onlyMethods(['get'])
             ->getMock();
 
-        $apiClientMock->method('get')->willThrowException(new \LogicException('Broken'));
+        $apiClientMock->method('get')->willThrowException(new LogicException('Broken'));
 
         $controller->setApiClient($apiClientMock);
         $controller->get('/gustavo');

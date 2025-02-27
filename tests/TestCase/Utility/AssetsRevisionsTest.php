@@ -18,6 +18,7 @@ use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\TestSuite\TestCase;
+use LogicException;
 
 /**
  * {@see \BEdita\WebTools\Utility\AssetsRevisions} Test Case
@@ -166,7 +167,7 @@ class AssetsRevisionsTest extends TestCase
      */
     public function testLoadManifestWithoutStrategy(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         AssetsRevisions::clearStrategy();
         AssetsRevisions::loadManifest();

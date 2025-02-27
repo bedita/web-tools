@@ -21,6 +21,7 @@ use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Validation\Validator;
+use InvalidArgumentException;
 use Laminas\Diactoros\Stream;
 
 /**
@@ -41,7 +42,7 @@ class BaseClientTest extends TestCase
      */
     public function testInvalidConfig(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('client config not valid: {"url":{"_empty":"This field cannot be left empty"}}');
         $config = [
             'auth' => [

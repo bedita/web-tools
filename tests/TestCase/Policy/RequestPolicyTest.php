@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase;
 
+use ArrayObject;
 use Authorization\AuthorizationService;
 use Authorization\IdentityDecorator;
 use Authorization\Policy\Exception\MissingMethodException;
@@ -21,7 +22,9 @@ use Authorization\Policy\Result;
 use BEdita\WebTools\Policy\RequestPolicy;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
+use Exception;
 use Laminas\Diactoros\Uri;
+use LogicException;
 use TestApp\Policy\CustomPolicy;
 use TestApp\Policy\InvokeCustomPolicy;
 
@@ -256,14 +259,14 @@ class RequestPolicyTest extends TestCase
                 ],
             ],
             'ko invalid policy instance' => [
-                new \LogicException('Invalid rule for Dashboard::profile() in RequestPolicy'),
+                new LogicException('Invalid rule for Dashboard::profile() in RequestPolicy'),
                 (new ServerRequest(['uri' => new Uri('/dashboard/profile')]))
                     ->withParam('controller', 'Dashboard')
                     ->withParam('action', 'profile'),
                 [
                     'rules' => [
                         'Dashboard' => [
-                            'profile' => new \ArrayObject(),
+                            'profile' => new ArrayObject(),
                         ],
                     ],
                 ],
@@ -273,13 +276,13 @@ class RequestPolicyTest extends TestCase
                 ],
             ],
             'ko invalid rule' => [
-                new \LogicException('Invalid Rule for Dashboard in RequestPolicy'),
+                new LogicException('Invalid Rule for Dashboard in RequestPolicy'),
                 (new ServerRequest(['uri' => new Uri('/dashboard/profile')]))
                     ->withParam('controller', 'Dashboard')
                     ->withParam('action', 'profile'),
                 [
                     'rules' => [
-                        'Dashboard' => new \ArrayObject(),
+                        'Dashboard' => new ArrayObject(),
                     ],
                 ],
                 [
@@ -302,7 +305,7 @@ class RequestPolicyTest extends TestCase
      */
     public function testCanAccess($expected, ServerRequest $request, array $policyConfig, ?array $identityData): void
     {
-        if ($expected instanceof \Exception) {
+        if ($expected instanceof Exception) {
             $this->expectException(get_class($expected));
             $this->expectExceptionMessage($expected->getMessage());
         }
