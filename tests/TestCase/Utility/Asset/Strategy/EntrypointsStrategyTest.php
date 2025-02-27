@@ -16,6 +16,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy} Test Case
@@ -65,9 +66,9 @@ class EntrypointsStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $name The configuration used
      * @return void
-     * @dataProvider getProvider()
      * @covers ::get()
      */
+    #[DataProvider('getProvider')]
     public function testGet(?array $expected, string $name, ?string $extension = null): void
     {
         $strategy = new EntrypointsStrategy(['manifestPath' => WWW_ROOT . 'entrypoints.json']);

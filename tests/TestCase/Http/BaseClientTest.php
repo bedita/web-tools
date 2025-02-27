@@ -23,6 +23,7 @@ use Cake\TestSuite\TestCase;
 use Cake\Validation\Validator;
 use InvalidArgumentException;
 use Laminas\Diactoros\Stream;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Http\BaseClient} Test Case
@@ -214,8 +215,8 @@ class BaseClientTest extends TestCase
      * @covers ::put()
      * @covers ::delete()
      * @covers ::logCall()
-     * @dataProvider getPostPatchPutDeleteProvider
      */
+    #[DataProvider('getPostPatchPutDeleteProvider')]
     public function testGetPostPatchPutDelete(string $method): void
     {
         $config = [

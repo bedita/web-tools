@@ -16,6 +16,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy} Test Case
@@ -58,9 +59,9 @@ class RevManifestStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $name The configuration used
      * @return void
-     * @dataProvider getProvider()
      * @covers ::get()
      */
+    #[DataProvider('getProvider')]
     public function testGet(?string $expected, string $name, ?string $extension = null): void
     {
         $strategy = new RevManifestStrategy();

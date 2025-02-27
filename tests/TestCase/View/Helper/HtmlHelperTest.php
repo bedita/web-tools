@@ -22,6 +22,7 @@ use BEdita\WebTools\View\Helper\HtmlHelper;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\HtmlHelper} Test Case
@@ -103,7 +104,6 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `title` method
      *
-     * @dataProvider titleProvider()
      * @covers ::title()
      * @param string|null $controllerName The controller name
      * @param string|null $actionName The action name
@@ -111,6 +111,7 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected title
      * @return void
      */
+    #[DataProvider('titleProvider')]
     public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected): void
     {
         $request = new ServerRequest([
@@ -155,12 +156,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaDescription` method
      *
-     * @dataProvider metaDescriptionProvider()
      * @covers ::metaDescription()
      * @param string|null $description The description
      * @param string $expected The expected meta description
      * @return void
      */
+    #[DataProvider('metaDescriptionProvider')]
     public function testMetaDescription(?string $description, string $expected): void
     {
         $actual = $this->Html->metaDescription($description);
@@ -197,12 +198,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaAuthor` method
      *
-     * @dataProvider metaAuthorProvider()
      * @covers ::metaAuthor()
      * @param string|null $creator The content creator
      * @param string $expected The expected meta content author
      * @return void
      */
+    #[DataProvider('metaAuthorProvider')]
     public function testMetaAuthor(?string $creator, string $expected): void
     {
         $actual = $this->Html->metaAuthor($creator);
@@ -231,12 +232,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaCss` method
      *
-     * @dataProvider metaCssProvider()
      * @covers ::metaCss()
      * @param string $docType The doc type
      * @param string $expected The expected meta content author
      * @return void
      */
+    #[DataProvider('metaCssProvider')]
     public function testMetaCss(string $docType, string $expected): void
     {
         $actual = $this->Html->metaCss($docType);
@@ -281,12 +282,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaGenerator` method
      *
-     * @dataProvider metaGeneratorProvider()
      * @covers ::metaGenerator()
      * @param array $project The project data ('name', 'version')
      * @param string $expected The expected meta content author
      * @return void
      */
+    #[DataProvider('metaGeneratorProvider')]
     public function testMetaGenerator(array $project, string $expected): void
     {
         $actual = $this->Html->metaGenerator($project);
@@ -325,12 +326,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaAll` method
      *
-     * @dataProvider metaAllProvider()
      * @covers ::metaAll()
      * @param array $data The data for meta
      * @param string $expected The expected meta html
      * @return void
      */
+    #[DataProvider('metaAllProvider')]
     public function testMetaAll(array $data, string $expected): void
     {
         $actual = $this->Html->metaAll($data);
@@ -364,12 +365,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaOpenGraph` method
      *
-     * @dataProvider metaOpenGraphProvider()
      * @covers ::metaOpenGraph()
      * @param array $data The data for meta
      * @param string $expected The expected meta html
      * @return void
      */
+    #[DataProvider('metaOpenGraphProvider')]
     public function testMetaOpenGraph(array $data, string $expected): void
     {
         $actual = $this->Html->metaOpenGraph($data);
@@ -405,12 +406,12 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaTwitter` method
      *
-     * @dataProvider metaTwitterProvider()
      * @covers ::metaTwitter()
      * @param array $data The data for meta
      * @param string $expected The expected meta html
      * @return void
      */
+    #[DataProvider('metaTwitterProvider')]
     public function testMetaTwitter(array $data, string $expected): void
     {
         $actual = $this->Html->metaTwitter($data);
@@ -475,7 +476,6 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `getMeta` method
      *
-     * @dataProvider getMetaProvider()
      * @covers ::getMeta()
      * @covers ::initialize()
      * @param array $config The configuration
@@ -485,6 +485,7 @@ class HtmlHelperTest extends TestCase
      * @param string|array|null $expected The expected meta
      * @return void
      */
+    #[DataProvider('getMetaProvider')]
     public function testGetMeta(array $config, array $data, string $field, $defaultVal = null, $expected = null): void
     {
         $this->Html = new HtmlHelper(new View(), $config);
@@ -542,9 +543,9 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     * @dataProvider scriptProvider()
      * @covers ::script()
      */
+    #[DataProvider('scriptProvider')]
     public function testScript($expected, $name, AssetStrategyInterface $strategy): void
     {
         AssetsRevisions::setStrategy($strategy);
@@ -618,9 +619,9 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     * @dataProvider cssProvider()
      * @covers ::css()
      */
+    #[DataProvider('cssProvider')]
     public function testCss($expected, $name, AssetStrategyInterface $strategy): void
     {
         AssetsRevisions::setStrategy($strategy);
@@ -672,9 +673,9 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     * @dataProvider assetsProvider()
      * @covers ::assets()
      */
+    #[DataProvider('assetsProvider')]
     public function testAssets($expected, $name, AssetStrategyInterface $strategy): void
     {
         AssetsRevisions::setStrategy($strategy);

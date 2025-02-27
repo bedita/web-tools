@@ -16,6 +16,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\AssetStrategy} Test Case
@@ -67,9 +68,9 @@ class AssetStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $config The configuration used
      * @return void
-     * @dataProvider manifestPathProvider()
      * @covers ::__construct()
      */
+    #[DataProvider('manifestPathProvider')]
     public function testManifestPath(string $expected, array $config): void
     {
         $strategy = $this->getInstance($config);

@@ -25,6 +25,7 @@ use Cake\TestSuite\TestCase;
 use Exception;
 use Laminas\Diactoros\Uri;
 use LogicException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Policy\CustomPolicy;
 use TestApp\Policy\InvokeCustomPolicy;
 
@@ -301,8 +302,8 @@ class RequestPolicyTest extends TestCase
      * @param array $policyConfig Policy configuration
      * @param array $identityData Identity data
      * @return void
-     * @dataProvider canAccessProvider()
      */
+    #[DataProvider('canAccessProvider')]
     public function testCanAccess($expected, ServerRequest $request, array $policyConfig, ?array $identityData): void
     {
         if ($expected instanceof Exception) {

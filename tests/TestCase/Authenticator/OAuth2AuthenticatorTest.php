@@ -26,6 +26,7 @@ use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Exception;
 use Firebase\JWT\JWT;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Authenticator\OAuth2Authenticator} Test Case
@@ -143,13 +144,13 @@ class OAuth2AuthenticatorTest extends TestCase
      * @param array $authConfig Authenticator configuration.
      * @param array $identity Identity data.
      * @return void
-     * @dataProvider authenticateProvider
      * @covers ::authenticate()
      * @covers ::providerConnect()
      * @covers ::initProvider()
      * @covers ::redirectUri()
      * @covers ::__construct()
      */
+    #[DataProvider('authenticateProvider')]
     public function testAuthenticate(
         $expected,
         array $reqConfig,

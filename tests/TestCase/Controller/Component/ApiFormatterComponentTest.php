@@ -6,6 +6,7 @@ namespace BEdita\WebTools\Test\TestCase\Controller\Component;
 use BEdita\WebTools\Controller\Component\ApiFormatterComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Controller\Component\ApiFormatterComponent} Test Case
@@ -215,8 +216,8 @@ class ApiFormatterComponentTest extends TestCase
      * @covers ::embedIncluded()
      * @covers ::addIncluded()
      * @covers ::extractFromIncluded()
-     * @dataProvider embedIncludedProvider()
      */
+    #[DataProvider('embedIncludedProvider')]
     public function testEmbedIncluded(array $response, array $expected): void
     {
         $actual = $this->ApiFormatter->embedIncluded($response);
@@ -734,8 +735,8 @@ class ApiFormatterComponentTest extends TestCase
      * @return void
      * @covers ::replaceWithTranslation()
      * @covers ::extractTranslatedFields()
-     * @dataProvider replaceWithTranslationProvider()
      */
+    #[DataProvider('replaceWithTranslationProvider')]
     public function testReplaceWithTranslation(array $expected, array $response, string $lang): void
     {
         $actual = $this->ApiFormatter->replaceWithTranslation($response, $lang);

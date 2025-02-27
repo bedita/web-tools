@@ -25,6 +25,7 @@ use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
 use Throwable;
@@ -95,10 +96,10 @@ class ExceptionRendererTest extends TestCase
      * @param \Exception $exception Expected error.
      * @param string $expected Template.
      * @return void
-     * @dataProvider templateProvider
      * @covers ::_template()
      * @covers ::getHttpCode()
      */
+    #[DataProvider('templateProvider')]
     public function testTemplate(Exception $exception, $expected)
     {
         $renderer = $this->extensionClass($exception);

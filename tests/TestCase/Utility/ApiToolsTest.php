@@ -16,6 +16,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility;
 
 use BEdita\WebTools\Utility\ApiTools;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\ApiTools} Test Case
@@ -422,10 +423,10 @@ class ApiToolsTest extends TestCase
      * @return array
      *
      * @return void
-     * @dataProvider cleanResponseAttributesProvider
      * @covers ::cleanResponse()
      * @covers ::removeAttributes()
      */
+    #[DataProvider('cleanResponseAttributesProvider')]
     public function testCleanResponseAttributes(array $response, array $options, array $expected): void
     {
         $actual = ApiTools::cleanResponse($response, $options);

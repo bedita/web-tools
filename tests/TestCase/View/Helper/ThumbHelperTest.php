@@ -22,6 +22,7 @@ use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\ThumbHelper} Test Case
@@ -195,13 +196,13 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `url()` method.
      *
-     * @dataProvider urlProvider()
      * @covers ::url()
      * @covers ::status()
      * @param array $input The input array.
      * @param bool $expected The expected boolean.
      * @return void
      */
+    #[DataProvider('urlProvider')]
     public function testUrl(array $input, $expected): void
     {
         $id = empty($input['id']) ? $this->_image() : $input['id'];
@@ -218,12 +219,12 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `status()` method.
      *
-     * @dataProvider urlProvider()
      * @covers ::status()
      * @param array $input The input array.
      * @param bool $expected The expected boolean.
      * @return void
      */
+    #[DataProvider('urlProvider')]
     public function testStatus(array $input, $expected): void
     {
         // case response with api call

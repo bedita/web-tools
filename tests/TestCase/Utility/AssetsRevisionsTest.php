@@ -19,6 +19,7 @@ use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\TestSuite\TestCase;
 use LogicException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\AssetsRevisions} Test Case
@@ -96,9 +97,9 @@ class AssetsRevisionsTest extends TestCase
      * @param string $name The asset name
      * @param string $extension The asset extension
      * @return void
-     * @dataProvider getProvider()
      * @covers ::get()
      */
+    #[DataProvider('getProvider')]
     public function testGet(string $expected, string $name, ?string $extension = null): void
     {
         $result = AssetsRevisions::get($name, $extension);

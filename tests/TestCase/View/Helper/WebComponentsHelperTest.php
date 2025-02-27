@@ -17,6 +17,7 @@ namespace BEdita\WebTools\Test\TestCase\View\Helper;
 use BEdita\WebTools\View\Helper\WebComponentsHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\WebComponentsHelper} Test Case
@@ -99,12 +100,12 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `props` method
      *
-     * @dataProvider propsProvider()
      * @covers ::props()
      * @param array $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[DataProvider('propsProvider')]
     public function testProps($expected, $properties): void
     {
         $result = $this->WebComponents->props($properties);
@@ -141,12 +142,12 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `is` method
      *
-     * @dataProvider isProvider()
      * @covers ::is()
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[DataProvider('isProvider')]
     public function testIs($expected, $properties): void
     {
         $result = $this->WebComponents->is($properties[0], $properties[1]);
@@ -196,12 +197,12 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `element` method
      *
-     * @dataProvider elementProvider()
      * @covers ::element()
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[DataProvider('elementProvider')]
     public function testElement($expected, $properties): void
     {
         $result = $this->WebComponents->element($properties[0], $properties[1]);
