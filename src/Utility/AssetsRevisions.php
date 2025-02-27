@@ -27,9 +27,9 @@ class AssetsRevisions
     /**
      * The asset strategy adopted.
      *
-     * @var \BEdita\WebTools\Utility\Asset\AssetStrategyInterface
+     * @var \BEdita\WebTools\Utility\Asset\AssetStrategyInterface|null
      */
-    protected static AssetStrategyInterface $strategy = null;
+    protected static ?AssetStrategyInterface $strategy = null;
 
     /**
      * Set an asset strategy to be used.

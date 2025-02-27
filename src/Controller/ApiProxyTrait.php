@@ -61,9 +61,9 @@ trait ApiProxyTrait
     /**
      * BEdita API client
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    protected BEditaClient $apiClient = null;
+    protected ?BEditaClient $apiClient = null;
 
     /**
      * Base URL used for mask links.

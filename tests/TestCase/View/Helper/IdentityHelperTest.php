@@ -31,9 +31,9 @@ class IdentityHelperTest extends TestCase
     /**
      * Keep Identity instance.
      *
-     * @var \BEdita\WebTools\Identity
+     * @var \BEdita\WebTools\Identity|null
      */
-    protected $identity = null;
+    protected ?Identity $identity = null;
 
     /**
      * @inheritDoc

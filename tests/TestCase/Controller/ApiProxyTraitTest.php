@@ -39,9 +39,9 @@ class ApiProxyTraitTest extends TestCase
     /**
      * Instance of BEditaClient
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    protected $apiClient = null;
+    protected ?BEditaClient $apiClient = null;
 
     /**
      * @inheritDoc

@@ -38,9 +38,9 @@ class OAuth2Authenticator extends AbstractAuthenticator
     /**
      * External Auth provider
      *
-     * @var \League\OAuth2\Client\Provider\AbstractProvider
+     * @var \League\OAuth2\Client\Provider\AbstractProvider|null
      */
-    protected AbstractProvider $provider = null;
+    protected ?AbstractProvider $provider = null;
 
     /**
      * Authentication URL key

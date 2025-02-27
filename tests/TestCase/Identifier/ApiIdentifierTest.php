@@ -41,30 +41,30 @@ class ApiIdentifierTest extends TestCase
     /**
      * The API client instance.
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    protected $apiClient = null;
+    protected ?BEditaClient $apiClient = null;
 
     /**
      * The created user data.
      *
-     * @var array
+     * @var array|null
      */
-    protected $user = null;
+    protected ?array $user = null;
 
     /**
      * The created role data.
      *
-     * @var array
+     * @var array|null
      */
-    protected $role = null;
+    protected ?array $role = null;
 
     /**
-     * Undocumented variable
+     * JWT tokens.
      *
-     * @var array
+     * @var array|null
      */
-    protected $jwtTokens = null;
+    protected ?array $jwtTokens = null;
 
     /**
      * @inheritDoc

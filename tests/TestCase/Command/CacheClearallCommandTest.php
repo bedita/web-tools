@@ -31,9 +31,9 @@ class CacheClearallCommandTest extends TestCase
     /**
      * The command used in test
      *
-     * @var \BEdita\WebTools\Command\CacheClearallCommand
+     * @var \BEdita\WebTools\Command\CacheClearallCommand|null
      */
-    protected $command = null;
+    protected ?CacheClearallCommand $command = null;
 
     /**
      * setUp method
