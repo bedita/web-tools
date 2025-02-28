@@ -50,7 +50,7 @@ class ApiFormatterComponentTest extends TestCase
      *
      * @return array
      */
-    public function embedIncludedProvider(): array
+    public static function embedIncludedProvider(): array
     {
         $gustavo = ['id' => 1, 'type' => 'persons', 'attributes' => ['name' => 'Gustavo'], 'relationships' => [['chief_of' => [['id' => 777, 'type' => 'universes']]]]];
         $tv = ['id' => 2, 'type' => 'things', 'attributes' => ['name' => 'Television'], 'relationships' => [['part_of' => [['id' => 888, 'type' => 'furnitures']]]]];
