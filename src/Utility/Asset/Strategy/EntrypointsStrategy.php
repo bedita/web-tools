@@ -58,11 +58,10 @@ class EntrypointsStrategy extends AssetStrategy
      */
     public function get(string $name, ?string $extension = null): array|string|null
     {
-        $path = sprintf('entrypoints.%s', $name);
         if (!empty($extension)) {
-            $path .= sprintf('.%s', $extension);
+            return $this->assets['entrypoints'][$name][$extension] ?? null;
         }
 
-        return $this->assets[$path] ?? null;
+        return $this->assets['entrypoints'][$name] ?? null;
     }
 }

@@ -65,15 +65,16 @@ class EntrypointsStrategyTest extends TestCase
     /**
      * Test that get asset name works as expected.
      *
-     * @param string $expected The expected path
-     * @param array $name The configuration used
+     * @param array|null $expected The expected path
+     * @param string $name The name
+     * @param string|null $extension The extension
      * @return void
      */
     #[DataProvider('getProvider')]
     public function testGet(?array $expected, string $name, ?string $extension = null): void
     {
         $strategy = new EntrypointsStrategy(['manifestPath' => WWW_ROOT . 'entrypoints.json']);
-
-        static::assertEquals($expected, $strategy->get($name, $extension));
+        $actual = $strategy->get($name, $extension);
+        static::assertEquals($expected, $actual);
     }
 }

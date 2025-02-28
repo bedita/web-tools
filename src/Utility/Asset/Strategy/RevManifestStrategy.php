@@ -42,7 +42,7 @@ class RevManifestStrategy extends AssetStrategy
     public function get(string $name, ?string $extension = null): array|string|null
     {
         if (!empty($extension)) {
-            $name .= sprintf('.%s', $extension);
+            return $this->assets[sprintf('%s.%s', $name, $extension)] ?? null;
         }
 
         return $this->assets[$name] ?? null;
