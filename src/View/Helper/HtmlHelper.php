@@ -321,9 +321,9 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $data The data
      * @param string $field The field
      * @param array|string|null $defaultVal The default val
-     * @return array|string
+     * @return array|string|null
      */
-    public function getMeta(array $data, string $field, array|string|null $defaultVal = null): array|string
+    public function getMeta(array $data, string $field, array|string|null $defaultVal = null): array|string|null
     {
         $meta = $data + $this->metadata;
 
