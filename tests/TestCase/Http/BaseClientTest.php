@@ -72,7 +72,8 @@ class BaseClientTest extends TestCase
      */
     public function testBase(): void
     {
-        Configure::write('BaseClientTest.php', ['url' => 'https://example.com']);
+        // note: key 'BaseClientTest.php:' with ':' because the class is anonymous
+        Configure::write('BaseClientTest.php:', ['url' => 'https://example.com']);
         $config = [
             'auth' => [
                 'type' => 'BearerAccessToken',
