@@ -33,41 +33,10 @@ if (!defined('ROOT')) {
 }
 
 /*
- * The actual directory name for the application directory. Normally
- * named 'src'.
- */
-define('APP_DIR', 'src');
-
-/*
- * Path to the application's directory.
- */
-if (!defined('APP')) {
-    define('APP', ROOT . DS . APP_DIR . DS);
-}
-
-/*
- * Path to the config directory.
- */
-if (!defined('CONFIG')) {
-    define('CONFIG', ROOT . DS . 'config' . DS);
-}
-
-/*
- * Path to the tests directory.
- */
-define('TESTS', ROOT . DS . 'tests' . DS);
-
-/*
  * Path to the temporary files directory.
  */
 if (!defined('TMP')) {
     define('TMP', ROOT . DS . 'tmp' . DS);
-}
-/*
- * Path to the logs directory.
- */
-if (!defined('LOGS')) {
-    define('LOGS', ROOT . DS . 'logs' . DS);
 }
 
 /*
@@ -76,11 +45,6 @@ if (!defined('LOGS')) {
 if (!defined('CACHE')) {
     define('CACHE', TMP . 'cache' . DS);
 }
-
-/*
- * Path to the resources directory.
- */
-define('RESOURCES', ROOT . DS . 'resources' . DS);
 
 /*
  * The absolute path to the "cake" directory, WITHOUT a trailing DS.

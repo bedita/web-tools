@@ -61,31 +61,8 @@ require $root . DS . 'config' . DS . 'bootstrap.php';
 
 chdir($root);
 
-if (!defined('ROOT')) {
-    define('ROOT', $root . DS . 'tests' . DS . 'test_app' . DS);
-}
-if (!defined('APP')) {
-    define('APP', ROOT . 'TestApp' . DS);
-}
-if (!defined('TMP')) {
-    define('TMP', sys_get_temp_dir() . DS);
-}
-if (!defined('LOGS')) {
-    define('LOGS', TMP . 'logs' . DS);
-}
-if (!defined('CACHE')) {
-    define('CACHE', TMP . 'cache' . DS);
-}
-if (!defined('CONFIG')) {
-    define('CONFIG', ROOT . DS . 'config' . DS);
-}
+define('APP', ROOT . 'TestApp' . DS);
 define('WWW_ROOT', $root . DS . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
-if (!defined('CAKE_CORE_INCLUDE_PATH')) {
-    define('CAKE_CORE_INCLUDE_PATH', ROOT);
-}
-if (!defined('CORE_PATH')) {
-    define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
-}
 Configure::write('debug', true);
 
 Configure::write('App', [

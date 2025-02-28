@@ -46,6 +46,6 @@ class RevManifestStrategy extends AssetStrategy
             $name .= sprintf('.%s', $extension);
         }
 
-        return Hash::get($this->assets, $name);
+        return $this->assets[$name] ?? null;
     }
 }

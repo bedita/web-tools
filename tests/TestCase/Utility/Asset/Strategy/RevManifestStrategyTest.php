@@ -59,14 +59,15 @@ class RevManifestStrategyTest extends TestCase
      * Test that get asset name works as expected.
      *
      * @param string $expected The expected path
-     * @param array $name The configuration used
+     * @param string $name The name
+     * @param string|null $extension The extension
      * @return void
      */
     #[DataProvider('getProvider')]
     public function testGet(?string $expected, string $name, ?string $extension = null): void
     {
         $strategy = new RevManifestStrategy();
-
-        static::assertEquals($expected, $strategy->get($name, $extension));
+        $actual = $strategy->get($name, $extension);
+        static::assertEquals($expected, $actual);
     }
 }

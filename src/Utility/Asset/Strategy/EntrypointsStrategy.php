@@ -64,6 +64,6 @@ class EntrypointsStrategy extends AssetStrategy
             $path .= sprintf('.%s', $extension);
         }
 
-        return Hash::get($this->assets, $path);
+        return $this->assets[$path] ?? null;
     }
 }
