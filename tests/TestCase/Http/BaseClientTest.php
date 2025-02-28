@@ -171,7 +171,7 @@ class BaseClientTest extends TestCase
         $response = $response->withStatus(200)->withBody($stream);
         $payload = '{"data": "test"}';
         $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
-        static::assertEquals('[OK] API BaseClientTest.php: | /GET https://example.com | with status 200: this is a response body - Payload: {"data": "test"}', $log);
+        static::assertEquals('[OK] API BaseClientTest.php:1 | /GET https://example.com | with status 200: this is a response body - Payload: {"data": "test"}', $log);
 
         // log level debug, response with error
         $config['logLevel'] = 'debug';
@@ -301,7 +301,7 @@ class BaseClientTest extends TestCase
         $response = $client->$method('/whatever', ['data' => 'test']);
         static::assertInstanceOf(Response::class, $response);
         static::assertSame(200, $response->getStatusCode());
-        $expected = sprintf('[OK] API BaseClientTest.php: | /%s api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', strtoupper($method));
+        $expected = sprintf('[OK] API BaseClientTest.php:2 | /%s api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', strtoupper($method));
         static::assertSame($expected, $client->lastLog);
     }
 }
