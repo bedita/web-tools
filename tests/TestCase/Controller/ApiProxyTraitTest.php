@@ -44,7 +44,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ApiProxyTrait::class, 'patch')]
 #[CoversMethod(ApiProxyTrait::class, 'post')]
 #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
-
 class ApiProxyTraitTest extends TestCase
 {
     use IntegrationTestTrait;
