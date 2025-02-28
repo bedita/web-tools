@@ -187,7 +187,7 @@ class BaseClientTest extends TestCase
         $response = $response->withStatus(400)->withBody($stream);
         $payload = '{"data": "test"}';
         $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
-        static::assertEquals('[ERROR] API BaseClientTest.php: | /GET https://example.com | with status 400: this is a response body for error - Payload: {"data": "test"}', $log);
+        static::assertEquals('[ERROR] API BaseClientTest.php:1 | /GET https://example.com | with status 400: this is a response body for error - Payload: {"data": "test"}', $log);
     }
 
     /**
