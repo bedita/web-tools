@@ -36,6 +36,10 @@ use Throwable;
  * @see \BEdita\WebTools\Error\ExceptionRenderer
  */
 #[CoversClass(ExceptionRenderer::class)]
+#[CoversMethod(ExceptionRenderer::class, '_getController')]
+#[CoversMethod(ExceptionRenderer::class, '_outputMessageSafe')]
+#[CoversMethod(ExceptionRenderer::class, '_template')]
+#[CoversMethod(ExceptionRenderer::class, 'getHttpCode')]
 class ExceptionRendererTest extends TestCase
 {
     /**
@@ -100,8 +104,6 @@ class ExceptionRendererTest extends TestCase
      * @param string $expected Template.
      * @return void
      */
-    #[CoversMethod(ExceptionRenderer::class, '_template')]
-    #[CoversMethod(ExceptionRenderer::class, 'getHttpCode')]
     #[DataProvider('templateProvider')]
     public function testTemplate(Exception $exception, $expected)
     {
@@ -120,7 +122,6 @@ class ExceptionRendererTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ExceptionRenderer::class, '_outputMessageSafe')]
     public function testOutputMessageSafe()
     {
         $trigger = 0;
@@ -155,7 +156,6 @@ class ExceptionRendererTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ExceptionRenderer::class, '_outputMessageSafe')]
     public function testOutputMessageSafeFallback()
     {
         $trigger = 0;
@@ -196,7 +196,6 @@ class ExceptionRendererTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ExceptionRenderer::class, '_getController')]
     public function testControllerJsonResponse(): void
     {
         $request = (new ServerRequest())->withHeader('Accept', 'application/json');

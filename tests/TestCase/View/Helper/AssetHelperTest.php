@@ -26,6 +26,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see \BEdita\WebTools\View\Helper\AssetHelper} Test Case
  */
 #[CoversClass(AssetHelper::class)]
+#[CoversMethod(AssetHelper::class, 'get')]
 class AssetHelperTest extends TestCase
 {
     /**
@@ -33,7 +34,6 @@ class AssetHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(AssetHelper::class, 'get')]
     public function testGet(): void
     {
         AssetsRevisions::setStrategy(new RevManifestStrategy());

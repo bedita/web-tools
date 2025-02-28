@@ -28,6 +28,7 @@ use Psr\Http\Message\UploadedFileInterface;
  * {@see \BEdita\WebTools\Media\UploadTrait} Test Case
  */
 #[CoversClass(UploadTrait::class)]
+#[CoversMethod(UploadTrait::class, 'uploadMedia')]
 class UploadTraitTest extends TestCase
 {
     use UploadTrait;
@@ -59,7 +60,6 @@ class UploadTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(UploadTrait::class, 'uploadMedia')]
     public function testUpload(): void
     {
         $path = sprintf('%s/tests/files/test.png', getcwd());
@@ -95,7 +95,6 @@ class UploadTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(UploadTrait::class, 'uploadMedia')]
     public function testFailUpload(): void
     {
         $path = sprintf('%s/tests/files/test.png', getcwd());

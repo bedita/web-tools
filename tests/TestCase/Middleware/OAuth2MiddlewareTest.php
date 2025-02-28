@@ -31,6 +31,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  * {@see BEdita\WebTools\Middleware\OAuth2Middleware} Test Case
  */
 #[CoversClass(OAuth2Middleware::class)]
+#[CoversMethod(OAuth2Middleware::class, 'process')]
 class OAuth2MiddlewareTest extends TestCase
 {
     /**
@@ -60,7 +61,6 @@ class OAuth2MiddlewareTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Middleware::class, 'process')]
     public function testNoResult(): void
     {
         $request = new ServerRequest();
@@ -76,7 +76,6 @@ class OAuth2MiddlewareTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Middleware::class, 'process')]
     public function testResultNoAuth(): void
     {
         $request = new ServerRequest();
@@ -95,7 +94,6 @@ class OAuth2MiddlewareTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Middleware::class, 'process')]
     public function testResultAuth(): void
     {
         $request = new ServerRequest();

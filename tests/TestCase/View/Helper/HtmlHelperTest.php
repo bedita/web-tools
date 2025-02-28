@@ -30,6 +30,19 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\View\Helper\HtmlHelper} Test Case
  */
 #[CoversClass(HtmlHelper::class)]
+#[CoversMethod(HtmlHelper::class, 'assets')]
+#[CoversMethod(HtmlHelper::class, 'css')]
+#[CoversMethod(HtmlHelper::class, 'getMeta')]
+#[CoversMethod(HtmlHelper::class, 'initialize')]
+#[CoversMethod(HtmlHelper::class, 'metaAll')]
+#[CoversMethod(HtmlHelper::class, 'metaAuthor')]
+#[CoversMethod(HtmlHelper::class, 'metaCss')]
+#[CoversMethod(HtmlHelper::class, 'metaDescription')]
+#[CoversMethod(HtmlHelper::class, 'metaGenerator')]
+#[CoversMethod(HtmlHelper::class, 'metaOpenGraph')]
+#[CoversMethod(HtmlHelper::class, 'metaTwitter')]
+#[CoversMethod(HtmlHelper::class, 'script')]
+#[CoversMethod(HtmlHelper::class, 'title')]
 class HtmlHelperTest extends TestCase
 {
     /**
@@ -111,7 +124,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected title
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'title')]
     #[DataProvider('titleProvider')]
     public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected): void
     {
@@ -161,7 +173,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta description
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaDescription')]
     #[DataProvider('metaDescriptionProvider')]
     public function testMetaDescription(?string $description, string $expected): void
     {
@@ -203,7 +214,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta content author
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaAuthor')]
     #[DataProvider('metaAuthorProvider')]
     public function testMetaAuthor(?string $creator, string $expected): void
     {
@@ -237,7 +247,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta content author
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaCss')]
     #[DataProvider('metaCssProvider')]
     public function testMetaCss(string $docType, string $expected): void
     {
@@ -287,7 +296,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta content author
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaGenerator')]
     #[DataProvider('metaGeneratorProvider')]
     public function testMetaGenerator(array $project, string $expected): void
     {
@@ -331,7 +339,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta html
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaAll')]
     #[DataProvider('metaAllProvider')]
     public function testMetaAll(array $data, string $expected): void
     {
@@ -370,7 +377,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta html
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaOpenGraph')]
     #[DataProvider('metaOpenGraphProvider')]
     public function testMetaOpenGraph(array $data, string $expected): void
     {
@@ -411,7 +417,6 @@ class HtmlHelperTest extends TestCase
      * @param string $expected The expected meta html
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'metaTwitter')]
     #[DataProvider('metaTwitterProvider')]
     public function testMetaTwitter(array $data, string $expected): void
     {
@@ -484,8 +489,6 @@ class HtmlHelperTest extends TestCase
      * @param string|array|null $expected The expected meta
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'getMeta')]
-    #[CoversMethod(HtmlHelper::class, 'initialize')]
     #[DataProvider('getMetaProvider')]
     public function testGetMeta(array $config, array $data, string $field, $defaultVal = null, $expected = null): void
     {
@@ -545,7 +548,6 @@ class HtmlHelperTest extends TestCase
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'script')]
     #[DataProvider('scriptProvider')]
     public function testScript($expected, $name, AssetStrategyInterface $strategy): void
     {
@@ -621,7 +623,6 @@ class HtmlHelperTest extends TestCase
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'css')]
     #[DataProvider('cssProvider')]
     public function testCss($expected, $name, AssetStrategyInterface $strategy): void
     {
@@ -675,7 +676,6 @@ class HtmlHelperTest extends TestCase
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
      */
-    #[CoversMethod(HtmlHelper::class, 'assets')]
     #[DataProvider('assetsProvider')]
     public function testAssets($expected, $name, AssetStrategyInterface $strategy): void
     {

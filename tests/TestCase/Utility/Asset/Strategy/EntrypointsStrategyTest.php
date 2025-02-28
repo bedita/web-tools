@@ -24,6 +24,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy} Test Case
  */
 #[CoversClass(EntrypointsStrategy::class)]
+#[CoversMethod(EntrypointsStrategy::class, 'get')]
 class EntrypointsStrategyTest extends TestCase
 {
     /**
@@ -68,7 +69,6 @@ class EntrypointsStrategyTest extends TestCase
      * @param array $name The configuration used
      * @return void
      */
-    #[CoversMethod(EntrypointsStrategy::class, 'get')]
     #[DataProvider('getProvider')]
     public function testGet(?array $expected, string $name, ?string $extension = null): void
     {

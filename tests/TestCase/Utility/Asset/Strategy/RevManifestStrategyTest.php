@@ -24,6 +24,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy} Test Case
  */
 #[CoversClass(RevManifestStrategy::class)]
+#[CoversMethod(RevManifestStrategy::class, 'get')]
 class RevManifestStrategyTest extends TestCase
 {
     /**
@@ -61,7 +62,6 @@ class RevManifestStrategyTest extends TestCase
      * @param array $name The configuration used
      * @return void
      */
-    #[CoversMethod(RevManifestStrategy::class, 'get')]
     #[DataProvider('getProvider')]
     public function testGet(?string $expected, string $name, ?string $extension = null): void
     {

@@ -30,6 +30,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\View\Helper\ThumbHelper} Test Case
  */
 #[CoversClass(ThumbHelper::class)]
+#[CoversMethod(ThumbHelper::class, 'getUrl')]
+#[CoversMethod(ThumbHelper::class, 'hasUrl')]
+#[CoversMethod(ThumbHelper::class, 'initialize')]
+#[CoversMethod(ThumbHelper::class, 'isAcceptable')]
+#[CoversMethod(ThumbHelper::class, 'isReady')]
+#[CoversMethod(ThumbHelper::class, 'status')]
+#[CoversMethod(ThumbHelper::class, 'url')]
 class ThumbHelperTest extends TestCase
 {
     /**
@@ -138,7 +145,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'initialize')]
     public function testInitialize(): void
     {
         $this->Thumb = new ThumbHelper(new View());
@@ -152,7 +158,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'initialize')]
     public function testInitializeCustomConfig(): void
     {
         $expected = 'dummy';
@@ -201,8 +206,6 @@ class ThumbHelperTest extends TestCase
      * @param bool $expected The expected boolean.
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'url')]
-    #[CoversMethod(ThumbHelper::class, 'status')]
     #[DataProvider('urlProvider')]
     public function testUrl(array $input, $expected): void
     {
@@ -224,7 +227,6 @@ class ThumbHelperTest extends TestCase
      * @param bool $expected The expected boolean.
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'status')]
     #[DataProvider('urlProvider')]
     public function testStatus(array $input, $expected): void
     {
@@ -258,8 +260,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'status')]
-    #[CoversMethod(ThumbHelper::class, 'isAcceptable')]
     public function testIsAcceptable(): void
     {
         // case thumb image is acceptable
@@ -314,8 +314,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'status')]
-    #[CoversMethod(ThumbHelper::class, 'isReady')]
     public function testIsReady(): void
     {
         // case thumb ready
@@ -368,8 +366,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'status')]
-    #[CoversMethod(ThumbHelper::class, 'hasUrl')]
     public function testHasUrl(): void
     {
         // case url not available
@@ -422,7 +418,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'status')]
     public function testStatusInput(): void
     {
         $status = $this->Thumb->status(null);
@@ -434,7 +429,6 @@ class ThumbHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ThumbHelper::class, 'getUrl')]
     public function testGetUrl(): void
     {
         //null and []

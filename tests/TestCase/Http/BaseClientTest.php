@@ -31,6 +31,19 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Http\BaseClient} Test Case
  */
 #[CoversClass(BaseClient::class)]
+#[CoversMethod(BaseClient::class, '__construct')]
+#[CoversMethod(BaseClient::class, 'createClient')]
+#[CoversMethod(BaseClient::class, 'defaultConfigName')]
+#[CoversMethod(BaseClient::class, 'delete')]
+#[CoversMethod(BaseClient::class, 'get')]
+#[CoversMethod(BaseClient::class, 'getHttpClient')]
+#[CoversMethod(BaseClient::class, 'getUrl')]
+#[CoversMethod(BaseClient::class, 'getValidator')]
+#[CoversMethod(BaseClient::class, 'logCall')]
+#[CoversMethod(BaseClient::class, 'patch')]
+#[CoversMethod(BaseClient::class, 'post')]
+#[CoversMethod(BaseClient::class, 'put')]
+#[CoversMethod(BaseClient::class, 'validateConf')]
 class BaseClientTest extends TestCase
 {
     /**
@@ -38,10 +51,6 @@ class BaseClientTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BaseClient::class, '__construct')]
-    #[CoversMethod(BaseClient::class, 'validateConf')]
-    #[CoversMethod(BaseClient::class, 'getValidator')]
-    #[CoversMethod(BaseClient::class, 'createClient')]
     public function testInvalidConfig(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -65,12 +74,6 @@ class BaseClientTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BaseClient::class, '__construct')]
-    #[CoversMethod(BaseClient::class, 'validateConf')]
-    #[CoversMethod(BaseClient::class, 'getValidator')]
-    #[CoversMethod(BaseClient::class, 'createClient')]
-    #[CoversMethod(BaseClient::class, 'defaultConfigName')]
-    #[CoversMethod(BaseClient::class, 'getHttpClient')]
     public function testBase(): void
     {
         // note: key 'BaseClientTest.php:' with ':' because the class is anonymous
@@ -97,7 +100,6 @@ class BaseClientTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BaseClient::class, 'getUrl')]
     public function testGetUrl(): void
     {
         $config = [
@@ -124,7 +126,6 @@ class BaseClientTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BaseClient::class, 'logCall')]
     public function testLogCall(): void
     {
         $config = [
@@ -212,12 +213,6 @@ class BaseClientTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BaseClient::class, 'get')]
-    #[CoversMethod(BaseClient::class, 'post')]
-    #[CoversMethod(BaseClient::class, 'patch')]
-    #[CoversMethod(BaseClient::class, 'put')]
-    #[CoversMethod(BaseClient::class, 'delete')]
-    #[CoversMethod(BaseClient::class, 'logCall')]
     #[DataProvider('getPostPatchPutDeleteProvider')]
     public function testGetPostPatchPutDelete(string $method): void
     {

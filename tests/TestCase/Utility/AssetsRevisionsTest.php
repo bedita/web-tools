@@ -27,6 +27,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Utility\AssetsRevisions} Test Case
  */
 #[CoversClass(AssetsRevisions::class)]
+#[CoversMethod(AssetsRevisions::class, 'clearStrategy')]
+#[CoversMethod(AssetsRevisions::class, 'get')]
+#[CoversMethod(AssetsRevisions::class, 'getMulti')]
+#[CoversMethod(AssetsRevisions::class, 'getStrategy')]
+#[CoversMethod(AssetsRevisions::class, 'loadManifest')]
+#[CoversMethod(AssetsRevisions::class, 'setStrategy')]
 class AssetsRevisionsTest extends TestCase
 {
     /**
@@ -35,6 +41,7 @@ class AssetsRevisionsTest extends TestCase
     public function setUp(): void
     {
         AssetsRevisions::setStrategy(new RevManifestStrategy());
+        parent::setUp();
     }
 
     /**
@@ -43,6 +50,7 @@ class AssetsRevisionsTest extends TestCase
     public function tearDown(): void
     {
         AssetsRevisions::clearStrategy();
+        parent::tearDown();
     }
 
     /**
@@ -50,9 +58,6 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(AssetsRevisions::class, 'setStrategy')]
-    #[CoversMethod(AssetsRevisions::class, 'getStrategy')]
-    #[CoversMethod(AssetsRevisions::class, 'clearStrategy')]
     public function testStrategy(): void
     {
         AssetsRevisions::setStrategy(new EntrypointsStrategy());
@@ -99,7 +104,6 @@ class AssetsRevisionsTest extends TestCase
      * @param string $extension The asset extension
      * @return void
      */
-    #[CoversMethod(AssetsRevisions::class, 'get')]
     #[DataProvider('getProvider')]
     public function testGet(string $expected, string $name, ?string $extension = null): void
     {
@@ -112,7 +116,6 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(AssetsRevisions::class, 'get')]
     public function testGetWithoutStrategy(): void
     {
         AssetsRevisions::clearStrategy();
@@ -125,7 +128,6 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(AssetsRevisions::class, 'getMulti')]
     public function testGetMulti(): void
     {
         $expected = [
@@ -142,7 +144,6 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(AssetsRevisions::class, 'loadManifest')]
     public function testLoadManifest(): void
     {
         // use different path
@@ -165,7 +166,6 @@ class AssetsRevisionsTest extends TestCase
      * @return void
      * @expectException \LogicException
      */
-    #[CoversMethod(AssetsRevisions::class, 'loadManifest')]
     public function testLoadManifestWithoutStrategy(): void
     {
         $this->expectException(LogicException::class);

@@ -26,6 +26,9 @@ use Twig\TwigFunction;
  * {@see \BEdita\WebTools\View\Twig\BeditaTwigExtension} Test Case
  */
 #[CoversClass(BeditaTwigExtension::class)]
+#[CoversMethod(BeditaTwigExtension::class, 'getFilters')]
+#[CoversMethod(BeditaTwigExtension::class, 'getFunctions')]
+#[CoversMethod(BeditaTwigExtension::class, 'getName')]
 class BeditaTwigExtensionTest extends TestCase
 {
     /**
@@ -33,7 +36,6 @@ class BeditaTwigExtensionTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BeditaTwigExtension::class, 'getName')]
     public function testGetName(): void
     {
         $twigExtension = new BeditaTwigExtension();
@@ -45,7 +47,6 @@ class BeditaTwigExtensionTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BeditaTwigExtension::class, 'getFunctions')]
     public function testGetFunctions(): void
     {
         $twigExtension = new BeditaTwigExtension();
@@ -67,7 +68,6 @@ class BeditaTwigExtensionTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(BeditaTwigExtension::class, 'getFilters')]
     public function testGetFilters(): void
     {
         $twigExtension = new BeditaTwigExtension();

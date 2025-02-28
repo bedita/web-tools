@@ -27,6 +27,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see BEdita\WebTools\View\Helper\IdentityHelper} Test Case
  */
 #[CoversClass(IdentityHelper::class)]
+#[CoversMethod(IdentityHelper::class, '__call')]
 class IdentityHelperTest extends TestCase
 {
     /**
@@ -66,7 +67,6 @@ class IdentityHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(IdentityHelper::class, '__call')]
     public function testDelgateOk(): void
     {
         $request = (new ServerRequest())->withAttribute('identity', $this->identity);
@@ -82,7 +82,6 @@ class IdentityHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(IdentityHelper::class, '__call')]
     public function testDelegateNoIdentity(): void
     {
         $this->expectException(BadMethodCallException::class);
@@ -99,7 +98,6 @@ class IdentityHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(IdentityHelper::class, '__call')]
     public function testDelegateBadDelegateMethod(): void
     {
         $this->expectException(BadMethodCallException::class);

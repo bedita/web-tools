@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see BEdita\WebTools\Command\CacheClearallCommand} Test Case
  */
 #[CoversClass(CacheClearallCommand::class)]
+#[CoversMethod(CacheClearallCommand::class, 'execute')]
 class CacheClearallCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
@@ -52,7 +53,6 @@ class CacheClearallCommandTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(CacheClearallCommand::class, 'execute')]
     public function testExecute(): void
     {
         $path = CACHE . 'twig_view';

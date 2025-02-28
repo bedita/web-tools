@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see BEdita\WebTools\Identity} Test Case
  */
 #[CoversClass(Identity::class)]
+#[CoversMethod(Identity::class, 'hasRole')]
 class IdentityTest extends TestCase
 {
     /**
@@ -32,7 +33,6 @@ class IdentityTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(Identity::class, 'hasRole')]
     public function testHasRole(): void
     {
         $data = [
@@ -54,7 +54,6 @@ class IdentityTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(Identity::class, 'hasRole')]
     public function testHasRoleWithoutRoleInEntity(): void
     {
         $identity = new Identity(['id' => 1]);

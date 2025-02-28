@@ -33,6 +33,18 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see \BEdita\WebTools\Controller\ApiProxyTrait} Test Case
  */
 #[CoversClass(ApiProxyTrait::class)]
+#[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
+#[CoversMethod(ApiProxyTrait::class, 'delete')]
+#[CoversMethod(ApiProxyTrait::class, 'get')]
+#[CoversMethod(ApiProxyTrait::class, 'handleError')]
+#[CoversMethod(ApiProxyTrait::class, 'initialize')]
+#[CoversMethod(ApiProxyTrait::class, 'maskLinks')]
+#[CoversMethod(ApiProxyTrait::class, 'maskMultiLinks')]
+#[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
+#[CoversMethod(ApiProxyTrait::class, 'patch')]
+#[CoversMethod(ApiProxyTrait::class, 'post')]
+#[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
+
 class ApiProxyTraitTest extends TestCase
 {
     use IntegrationTestTrait;
@@ -82,7 +94,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testMethodNotAllowedException(): void
     {
         $t = new class (new ServerRequest()) extends Controller {
@@ -101,13 +112,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'initialize')]
-    #[CoversMethod(ApiProxyTrait::class, 'get')]
-    #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
-    #[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
-    #[CoversMethod(ApiProxyTrait::class, 'maskMultiLinks')]
-    #[CoversMethod(ApiProxyTrait::class, 'maskLinks')]
     public function testGet(): void
     {
         $this->get('/api/users/1');
@@ -148,9 +152,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'get')]
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
-    #[CoversMethod(ApiProxyTrait::class, 'handleError')]
     public function testNotFoundError(): void
     {
         $this->get('/api/users/1000');
@@ -171,7 +172,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'maskLinks')]
     public function testMaskLinksString(): void
     {
         $this->get('/api/model/schema/users');
@@ -186,7 +186,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
     public function testMaskRelationshipsLinksGettingList(): void
     {
         $this->get('/api/users');
@@ -207,7 +206,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
     public function testMaskResourcesGettingHome(): void
     {
         $this->get('/api/home');
@@ -226,7 +224,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'handleError')]
     public function testNotBEditaClientException(): void
     {
         $controller = new class (new ServerRequest()) extends Controller {
@@ -266,7 +263,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testNullResponseFromBEditaClient(): void
     {
         $controller = new class (new ServerRequest()) extends Controller {
@@ -302,7 +298,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
     public function testErrorIfPathNotFound(): void
     {
         $controller = new class (new ServerRequest(['url' => '/api/users'])) extends Controller {
@@ -333,7 +328,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
     public function testMatchUrlEncodedPath(): void
     {
         $controller = new class (new ServerRequest(['url' => '/api/space%20here'])) extends Controller {
@@ -356,8 +350,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'post')]
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testPost(): void
     {
         $this->post('/api/documents', [
@@ -383,8 +375,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'patch')]
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testPatch(): void
     {
         $data = [
@@ -418,8 +408,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'delete')]
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testDelete(): void
     {
         $data = [
@@ -446,11 +434,6 @@ class ApiProxyTraitTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiProxyTrait::class, 'post')]
-    #[CoversMethod(ApiProxyTrait::class, 'patch')]
-    #[CoversMethod(ApiProxyTrait::class, 'delete')]
-    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
-    #[CoversMethod(ApiProxyTrait::class, 'get')]
     public function testMulti(): void
     {
         $this->post('/api/documents', ['data' => [

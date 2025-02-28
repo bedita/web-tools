@@ -28,6 +28,11 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see \BEdita\WebTools\Controller\Component\ApiCacheComponent} Test Case
  */
 #[CoversClass(ApiCacheComponent::class)]
+#[CoversMethod(ApiCacheComponent::class, 'cacheKey')]
+#[CoversMethod(ApiCacheComponent::class, 'get')]
+#[CoversMethod(ApiCacheComponent::class, 'initialize')]
+#[CoversMethod(ApiCacheComponent::class, 'readIndex')]
+#[CoversMethod(ApiCacheComponent::class, 'updateCacheIndex')]
 class ApiCacheComponentTest extends TestCase
 {
     /**
@@ -64,7 +69,6 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiCacheComponent::class, 'initialize')]
     public function testInitialize(): void
     {
         //default config
@@ -89,7 +93,6 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiCacheComponent::class, 'initialize')]
     public function testInitializeCustomConfig(): void
     {
          // custom config
@@ -252,10 +255,6 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiCacheComponent::class, 'cacheKey')]
-    #[CoversMethod(ApiCacheComponent::class, 'readIndex')]
-    #[CoversMethod(ApiCacheComponent::class, 'updateCacheIndex')]
-    #[CoversMethod(ApiCacheComponent::class, 'get')]
     public function testGet(): void
     {
         $path = '/users/1/roles';
@@ -283,9 +282,6 @@ class ApiCacheComponentTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiCacheComponent::class, 'updateCacheIndex')]
-    #[CoversMethod(ApiCacheComponent::class, 'readIndex')]
-    #[CoversMethod(ApiCacheComponent::class, 'get')]
     public function testIndex(): void
     {
         $path = '/users/1/roles';

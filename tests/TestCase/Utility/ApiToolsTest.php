@@ -24,6 +24,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Utility\ApiTools} Test Case
  */
 #[CoversClass(ApiTools::class)]
+#[CoversMethod(ApiTools::class, 'cleanResponse')]
+#[CoversMethod(ApiTools::class, 'recursiveRemoveKey')]
+#[CoversMethod(ApiTools::class, 'removeAttributes')]
+#[CoversMethod(ApiTools::class, 'removeIncluded')]
+#[CoversMethod(ApiTools::class, 'removeLinks')]
+#[CoversMethod(ApiTools::class, 'removeRelationships')]
+#[CoversMethod(ApiTools::class, 'removeSchema')]
 class ApiToolsTest extends TestCase
 {
     /**
@@ -31,13 +38,6 @@ class ApiToolsTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiTools::class, 'cleanResponse')]
-    #[CoversMethod(ApiTools::class, 'recursiveRemoveKey')]
-    #[CoversMethod(ApiTools::class, 'removeAttributes')]
-    #[CoversMethod(ApiTools::class, 'removeIncluded')]
-    #[CoversMethod(ApiTools::class, 'removeLinks')]
-    #[CoversMethod(ApiTools::class, 'removeRelationships')]
-    #[CoversMethod(ApiTools::class, 'removeSchema')]
     public function testCleanResponse(): void
     {
         $response = [
@@ -425,8 +425,6 @@ class ApiToolsTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiTools::class, 'cleanResponse')]
-    #[CoversMethod(ApiTools::class, 'removeAttributes')]
     #[DataProvider('cleanResponseAttributesProvider')]
     public function testCleanResponseAttributes(array $response, array $options, array $expected): void
     {

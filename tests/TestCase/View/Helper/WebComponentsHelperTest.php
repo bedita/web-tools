@@ -25,6 +25,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\View\Helper\WebComponentsHelper} Test Case
  */
 #[CoversClass(WebComponentsHelper::class)]
+#[CoversMethod(WebComponentsHelper::class, 'element')]
+#[CoversMethod(WebComponentsHelper::class, 'is')]
+#[CoversMethod(WebComponentsHelper::class, 'props')]
 class WebComponentsHelperTest extends TestCase
 {
     /**
@@ -105,7 +108,6 @@ class WebComponentsHelperTest extends TestCase
      * @param array $properties The element properties
      * @return void
      */
-    #[CoversMethod(WebComponentsHelper::class, 'props')]
     #[DataProvider('propsProvider')]
     public function testProps($expected, $properties): void
     {
@@ -147,7 +149,6 @@ class WebComponentsHelperTest extends TestCase
      * @param array $properties The element properties
      * @return void
      */
-    #[CoversMethod(WebComponentsHelper::class, 'is')]
     #[DataProvider('isProvider')]
     public function testIs($expected, $properties): void
     {
@@ -160,7 +161,6 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(WebComponentsHelper::class, 'is')]
     public function testIsWithScript(): void
     {
         $actual = $this->WebComponents->is('bedita-input', ['value' => '2'], 'path/to/script.js');
@@ -202,7 +202,6 @@ class WebComponentsHelperTest extends TestCase
      * @param array $properties The element properties
      * @return void
      */
-    #[CoversMethod(WebComponentsHelper::class, 'element')]
     #[DataProvider('elementProvider')]
     public function testElement($expected, $properties): void
     {
@@ -215,7 +214,6 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(WebComponentsHelper::class, 'element')]
     public function testElementWithScript(): void
     {
         $actual = $this->WebComponents->element('bedita-input', ['value' => '2'], 'path/to/script.js');

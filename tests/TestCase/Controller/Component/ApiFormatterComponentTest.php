@@ -14,6 +14,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Controller\Component\ApiFormatterComponent} Test Case
  */
 #[CoversClass(ApiFormatterComponent::class)]
+#[CoversMethod(ApiFormatterComponent::class, 'addIncluded')]
+#[CoversMethod(ApiFormatterComponent::class, 'cleanResponse')]
+#[CoversMethod(ApiFormatterComponent::class, 'embedIncluded')]
+#[CoversMethod(ApiFormatterComponent::class, 'extractFromIncluded')]
+#[CoversMethod(ApiFormatterComponent::class, 'extractTranslatedFields')]
+#[CoversMethod(ApiFormatterComponent::class, 'replaceWithTranslation')]
 class ApiFormatterComponentTest extends TestCase
 {
     /**
@@ -215,9 +221,6 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $expected The expected resulting data
      * @return void
      */
-    #[CoversMethod(ApiFormatterComponent::class, 'embedIncluded')]
-    #[CoversMethod(ApiFormatterComponent::class, 'addIncluded')]
-    #[CoversMethod(ApiFormatterComponent::class, 'extractFromIncluded')]
     #[DataProvider('embedIncludedProvider')]
     public function testEmbedIncluded(array $response, array $expected): void
     {
@@ -735,8 +738,6 @@ class ApiFormatterComponentTest extends TestCase
      * @param string $lang The lang requested
      * @return void
      */
-    #[CoversMethod(ApiFormatterComponent::class, 'replaceWithTranslation')]
-    #[CoversMethod(ApiFormatterComponent::class, 'extractTranslatedFields')]
     #[DataProvider('replaceWithTranslationProvider')]
     public function testReplaceWithTranslation(array $expected, array $response, string $lang): void
     {
@@ -749,7 +750,6 @@ class ApiFormatterComponentTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiFormatterComponent::class, 'cleanResponse')]
     public function testCleanResponse(): void
     {
         $response = [

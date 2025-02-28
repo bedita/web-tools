@@ -26,6 +26,8 @@ use TestApp\Application;
  * {@see BEdita\WebTools\Plugin} Test Case
  */
 #[CoversClass(Plugin::class)]
+#[CoversMethod(Plugin::class, 'bootstrap')]
+#[CoversMethod(Plugin::class, 'console')]
 class PluginTest extends TestCase
 {
     /**
@@ -33,7 +35,6 @@ class PluginTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(Plugin::class, 'console')]
     public function testConsole(): void
     {
         $app = new Application(CONFIG);
@@ -50,7 +51,6 @@ class PluginTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(Plugin::class, 'bootstrap')]
     public function testBootstrap(): void
     {
         $app = new Application(CONFIG);

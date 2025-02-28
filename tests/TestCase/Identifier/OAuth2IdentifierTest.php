@@ -27,6 +27,10 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see \BEdita\WebTools\Identifier\OAuth2Identifier} Test Case
  */
 #[CoversClass(OAuth2Identifier::class)]
+#[CoversMethod(OAuth2Identifier::class, 'externalAuth')]
+#[CoversMethod(OAuth2Identifier::class, 'identify')]
+#[CoversMethod(OAuth2Identifier::class, 'signup')]
+#[CoversMethod(OAuth2Identifier::class, 'signupData')]
 class OAuth2IdentifierTest extends TestCase
 {
     /**
@@ -43,8 +47,6 @@ class OAuth2IdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Identifier::class, 'identify')]
-    #[CoversMethod(OAuth2Identifier::class, 'externalAuth')]
     public function testIdentifyOk(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
@@ -82,8 +84,6 @@ class OAuth2IdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Identifier::class, 'identify')]
-    #[CoversMethod(OAuth2Identifier::class, 'externalAuth')]
     public function testNullIdentify(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
@@ -106,9 +106,6 @@ class OAuth2IdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Identifier::class, 'identify')]
-    #[CoversMethod(OAuth2Identifier::class, 'signup')]
-    #[CoversMethod(OAuth2Identifier::class, 'signupData')]
     public function testOkSignup(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
@@ -156,9 +153,6 @@ class OAuth2IdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Identifier::class, 'identify')]
-    #[CoversMethod(OAuth2Identifier::class, 'signup')]
-    #[CoversMethod(OAuth2Identifier::class, 'signupData')]
     public function testFailSignup(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)

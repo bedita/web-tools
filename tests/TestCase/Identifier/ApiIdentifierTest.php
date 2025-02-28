@@ -27,6 +27,8 @@ use PHPUnit\Framework\Attributes\CoversMethod;
  * {@see \BEdita\WebTools\Identifier\ApiIdentifier} Test Case
  */
 #[CoversClass(ApiIdentifier::class)]
+#[CoversMethod(ApiIdentifier::class, 'identify')]
+#[CoversMethod(ApiIdentifier::class, 'setError')]
 class ApiIdentifierTest extends TestCase
 {
     /**
@@ -157,7 +159,6 @@ class ApiIdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiIdentifier::class, 'identify')]
     public function testIdentifyMissingData(): void
     {
         $this->createUserAndRole(static::USER, static::ROLE);
@@ -172,8 +173,6 @@ class ApiIdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiIdentifier::class, 'identify')]
-    #[CoversMethod(ApiIdentifier::class, 'setError')]
     public function testIdentifyAuthenticationFails(): void
     {
         $this->createUserAndRole(static::USER, static::ROLE);
@@ -193,7 +192,6 @@ class ApiIdentifierTest extends TestCase
      *
      * @return {void}
      */
-    #[CoversMethod(ApiIdentifier::class, 'identify')]
     public function testIdentifyCorrect(): void
     {
         $this->createUserAndRole(static::USER, static::ROLE);
@@ -216,7 +214,6 @@ class ApiIdentifierTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(ApiIdentifier::class, 'identify')]
     public function testMissingMetaFromResponse(): void
     {
         $apiClient = new class ('mockUrl') extends BEditaClient {

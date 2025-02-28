@@ -24,6 +24,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Utility\Asset\AssetStrategy} Test Case
  */
 #[CoversClass(AssetStrategy::class)]
+#[CoversMethod(AssetStrategy::class, '__construct')]
+#[CoversMethod(AssetStrategy::class, 'loadAssets')]
 class AssetStrategyTest extends TestCase
 {
     /**
@@ -70,7 +72,6 @@ class AssetStrategyTest extends TestCase
      * @param array $config The configuration used
      * @return void
      */
-    #[CoversMethod(AssetStrategy::class, '__construct')]
     #[DataProvider('manifestPathProvider')]
     public function testManifestPath(string $expected, array $config): void
     {
@@ -84,7 +85,6 @@ class AssetStrategyTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(AssetStrategy::class, 'loadAssets')]
     public function testLoadAssets(): void
     {
         $path = WWW_ROOT . 'custom-manifest.json';

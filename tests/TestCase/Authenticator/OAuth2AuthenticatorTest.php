@@ -34,6 +34,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * {@see \BEdita\WebTools\Authenticator\OAuth2Authenticator} Test Case
  */
 #[CoversClass(OAuth2Authenticator::class)]
+#[CoversMethod(OAuth2Authenticator::class, '__construct')]
+#[CoversMethod(OAuth2Authenticator::class, 'authenticate')]
+#[CoversMethod(OAuth2Authenticator::class, 'initProvider')]
+#[CoversMethod(OAuth2Authenticator::class, 'providerConnect')]
+#[CoversMethod(OAuth2Authenticator::class, 'redirectUri')]
 class OAuth2AuthenticatorTest extends TestCase
 {
     /**
@@ -146,11 +151,6 @@ class OAuth2AuthenticatorTest extends TestCase
      * @param array $identity Identity data.
      * @return void
      */
-    #[CoversMethod(OAuth2Authenticator::class, 'authenticate')]
-    #[CoversMethod(OAuth2Authenticator::class, 'providerConnect')]
-    #[CoversMethod(OAuth2Authenticator::class, 'initProvider')]
-    #[CoversMethod(OAuth2Authenticator::class, 'redirectUri')]
-    #[CoversMethod(OAuth2Authenticator::class, '__construct')]
     #[DataProvider('authenticateProvider')]
     public function testAuthenticate(
         $expected,
@@ -198,7 +198,6 @@ class OAuth2AuthenticatorTest extends TestCase
      *
      * @return void
      */
-    #[CoversMethod(OAuth2Authenticator::class, 'authenticate')]
     public function testAuthenticateLeeway(): void
     {
         $identifier = new class () implements IdentifierInterface {
