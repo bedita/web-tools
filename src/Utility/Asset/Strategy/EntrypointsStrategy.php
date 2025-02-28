@@ -15,7 +15,6 @@ declare(strict_types=1);
  namespace BEdita\WebTools\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
-use Cake\Utility\Hash;
 
 /**
  * Entrypoints asset strategy.
