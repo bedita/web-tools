@@ -48,6 +48,5 @@ class RevManifestStrategy extends AssetStrategy
         $val = Hash::get($this->assets, $name);
 
         return is_string($val) ? $val : (array)$val;
-
     }
 }
