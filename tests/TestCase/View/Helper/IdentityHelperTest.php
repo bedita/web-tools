@@ -12,7 +12,7 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-namespace BEdita\WebTools\Test\TestCase;
+namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
 use BadMethodCallException;
 use BEdita\WebTools\Identity;

@@ -13,7 +13,7 @@ declare(strict_types=1);
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
 
-namespace BEdita\WebTools\Test\TestCase\Identifier;
+namespace BEdita\WebTools\Test\TestCase\Http;
 
 use BEdita\WebTools\Http\BaseClient;
 use Cake\Core\Configure;
