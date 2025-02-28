@@ -216,7 +216,9 @@ class OAuth2AuthenticatorTest extends TestCase
         ];
         $request = new ServerRequest($reqConfig);
         $session = new Session();
-        $session->write(Hash::get((array)$reqConfig, 'data'));
+        $val = Hash::get((array)$reqConfig, 'data');
+        $val = is_string($val) ? $val : (array)$val;
+        $session->write($val);
         $request = $request->withAttribute('session', $session);
 
         $authenticator = new OAuth2Authenticator($identifier, [
