@@ -79,7 +79,7 @@ if (!defined('CACHE')) {
 if (!defined('CONFIG')) {
     define('CONFIG', ROOT . DS . 'config' . DS);
 }
-define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
+define('WWW_ROOT', $root . DS . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
 if (!defined('CAKE_CORE_INCLUDE_PATH')) {
     define('CAKE_CORE_INCLUDE_PATH', ROOT);
 }
