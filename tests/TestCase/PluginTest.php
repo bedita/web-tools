@@ -19,6 +19,7 @@ use BEdita\WebTools\Plugin;
 use Cake\Console\CommandCollection;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use TestApp\Application;
 
 /**
@@ -31,8 +32,8 @@ class PluginTest extends TestCase
      * Test `console` method
      *
      * @return void
-     * @covers ::console
      */
+    #[CoversMethod(Plugin::class, 'console')]
     public function testConsole(): void
     {
         $app = new Application(CONFIG);
@@ -48,8 +49,8 @@ class PluginTest extends TestCase
      * Test `bootstrap` method
      *
      * @return void
-     * @covers ::bootstrap
      */
+    #[CoversMethod(Plugin::class, 'bootstrap')]
     public function testBootstrap(): void
     {
         $app = new Application(CONFIG);

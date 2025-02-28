@@ -17,6 +17,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset;
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -68,8 +69,8 @@ class AssetStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $config The configuration used
      * @return void
-     * @covers ::__construct()
      */
+    #[CoversMethod(AssetStrategy::class, '__construct')]
     #[DataProvider('manifestPathProvider')]
     public function testManifestPath(string $expected, array $config): void
     {
@@ -82,8 +83,8 @@ class AssetStrategyTest extends TestCase
      * Test `loadASsets()`
      *
      * @return void
-     * @covers ::loadAssets()
      */
+    #[CoversMethod(AssetStrategy::class, 'loadAssets')]
     public function testLoadAssets(): void
     {
         $path = WWW_ROOT . 'custom-manifest.json';

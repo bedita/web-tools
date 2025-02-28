@@ -23,6 +23,7 @@ use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -104,13 +105,13 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `title` method
      *
-     * @covers ::title()
      * @param string|null $controllerName The controller name
      * @param string|null $actionName The action name
      * @param string|null $viewVarTitle The title
      * @param string $expected The expected title
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'title')]
     #[DataProvider('titleProvider')]
     public function testTitle(?string $controllerName, ?string $actionName, ?string $viewVarTitle, string $expected): void
     {
@@ -156,11 +157,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaDescription` method
      *
-     * @covers ::metaDescription()
      * @param string|null $description The description
      * @param string $expected The expected meta description
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaDescription')]
     #[DataProvider('metaDescriptionProvider')]
     public function testMetaDescription(?string $description, string $expected): void
     {
@@ -198,11 +199,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaAuthor` method
      *
-     * @covers ::metaAuthor()
      * @param string|null $creator The content creator
      * @param string $expected The expected meta content author
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaAuthor')]
     #[DataProvider('metaAuthorProvider')]
     public function testMetaAuthor(?string $creator, string $expected): void
     {
@@ -232,11 +233,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaCss` method
      *
-     * @covers ::metaCss()
      * @param string $docType The doc type
      * @param string $expected The expected meta content author
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaCss')]
     #[DataProvider('metaCssProvider')]
     public function testMetaCss(string $docType, string $expected): void
     {
@@ -282,11 +283,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaGenerator` method
      *
-     * @covers ::metaGenerator()
      * @param array $project The project data ('name', 'version')
      * @param string $expected The expected meta content author
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaGenerator')]
     #[DataProvider('metaGeneratorProvider')]
     public function testMetaGenerator(array $project, string $expected): void
     {
@@ -326,11 +327,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaAll` method
      *
-     * @covers ::metaAll()
      * @param array $data The data for meta
      * @param string $expected The expected meta html
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaAll')]
     #[DataProvider('metaAllProvider')]
     public function testMetaAll(array $data, string $expected): void
     {
@@ -365,11 +366,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaOpenGraph` method
      *
-     * @covers ::metaOpenGraph()
      * @param array $data The data for meta
      * @param string $expected The expected meta html
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaOpenGraph')]
     #[DataProvider('metaOpenGraphProvider')]
     public function testMetaOpenGraph(array $data, string $expected): void
     {
@@ -406,11 +407,11 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `metaTwitter` method
      *
-     * @covers ::metaTwitter()
      * @param array $data The data for meta
      * @param string $expected The expected meta html
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'metaTwitter')]
     #[DataProvider('metaTwitterProvider')]
     public function testMetaTwitter(array $data, string $expected): void
     {
@@ -476,8 +477,6 @@ class HtmlHelperTest extends TestCase
     /**
      * Test `getMeta` method
      *
-     * @covers ::getMeta()
-     * @covers ::initialize()
      * @param array $config The configuration
      * @param array $data The data
      * @param array $string The field for data
@@ -485,6 +484,8 @@ class HtmlHelperTest extends TestCase
      * @param string|array|null $expected The expected meta
      * @return void
      */
+    #[CoversMethod(HtmlHelper::class, 'getMeta')]
+    #[CoversMethod(HtmlHelper::class, 'initialize')]
     #[DataProvider('getMetaProvider')]
     public function testGetMeta(array $config, array $data, string $field, $defaultVal = null, $expected = null): void
     {
@@ -543,8 +544,8 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     * @covers ::script()
      */
+    #[CoversMethod(HtmlHelper::class, 'script')]
     #[DataProvider('scriptProvider')]
     public function testScript($expected, $name, AssetStrategyInterface $strategy): void
     {
@@ -619,8 +620,8 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     * @covers ::css()
      */
+    #[CoversMethod(HtmlHelper::class, 'css')]
     #[DataProvider('cssProvider')]
     public function testCss($expected, $name, AssetStrategyInterface $strategy): void
     {
@@ -673,8 +674,8 @@ class HtmlHelperTest extends TestCase
      * @param string|string[] $name The asset name
      * @param \BEdita\WebTools\Utility\Asset\AssetStrategyInterface $strategy The asset strategy to adopt
      * @return void
-     * @covers ::assets()
      */
+    #[CoversMethod(HtmlHelper::class, 'assets')]
     #[DataProvider('assetsProvider')]
     public function testAssets($expected, $name, AssetStrategyInterface $strategy): void
     {

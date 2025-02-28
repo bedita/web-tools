@@ -18,6 +18,7 @@ use BEdita\WebTools\View\Twig\BeditaTwigExtension;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -31,8 +32,8 @@ class BeditaTwigExtensionTest extends TestCase
      * Test `getName` method
      *
      * @return void
-     * @covers ::getName()
      */
+    #[CoversMethod(BeditaTwigExtension::class, 'getName')]
     public function testGetName(): void
     {
         $twigExtension = new BeditaTwigExtension();
@@ -43,8 +44,8 @@ class BeditaTwigExtensionTest extends TestCase
      * Test `getFunctions` method
      *
      * @return void
-     * @covers ::getFunctions()
      */
+    #[CoversMethod(BeditaTwigExtension::class, 'getFunctions')]
     public function testGetFunctions(): void
     {
         $twigExtension = new BeditaTwigExtension();
@@ -65,8 +66,8 @@ class BeditaTwigExtensionTest extends TestCase
      * Test `getFilters` method
      *
      * @return void
-     * @covers ::getFilters()
      */
+    #[CoversMethod(BeditaTwigExtension::class, 'getFilters')]
     public function testGetFilters(): void
     {
         $twigExtension = new BeditaTwigExtension();

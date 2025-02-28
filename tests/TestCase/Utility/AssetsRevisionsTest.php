@@ -20,6 +20,7 @@ use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\TestSuite\TestCase;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -48,10 +49,10 @@ class AssetsRevisionsTest extends TestCase
      * Test set, get and reset strategy
      *
      * @return void
-     * @covers ::setStrategy()
-     * @covers ::getStrategy()
-     * @covers ::clearStrategy()
      */
+    #[CoversMethod(AssetsRevisions::class, 'setStrategy')]
+    #[CoversMethod(AssetsRevisions::class, 'getStrategy')]
+    #[CoversMethod(AssetsRevisions::class, 'clearStrategy')]
     public function testStrategy(): void
     {
         AssetsRevisions::setStrategy(new EntrypointsStrategy());
@@ -97,8 +98,8 @@ class AssetsRevisionsTest extends TestCase
      * @param string $name The asset name
      * @param string $extension The asset extension
      * @return void
-     * @covers ::get()
      */
+    #[CoversMethod(AssetsRevisions::class, 'get')]
     #[DataProvider('getProvider')]
     public function testGet(string $expected, string $name, ?string $extension = null): void
     {
@@ -110,8 +111,8 @@ class AssetsRevisionsTest extends TestCase
      * Test that `get()` method returns the passed asset name when no strategy was set.
      *
      * @return void
-     * @covers ::get()
      */
+    #[CoversMethod(AssetsRevisions::class, 'get')]
     public function testGetWithoutStrategy(): void
     {
         AssetsRevisions::clearStrategy();
@@ -123,8 +124,8 @@ class AssetsRevisionsTest extends TestCase
      * Test `getMulti` method
      *
      * @return void
-     * @covers ::getMulti()
      */
+    #[CoversMethod(AssetsRevisions::class, 'getMulti')]
     public function testGetMulti(): void
     {
         $expected = [
@@ -139,11 +140,10 @@ class AssetsRevisionsTest extends TestCase
     /**
      * Test `loadManifest`
      *
-     * @covers ::loadManifest()
      * @return void
-     * @covers ::loadManifest()
      */
-    public function testLoadManifest()
+    #[CoversMethod(AssetsRevisions::class, 'loadManifest')]
+    public function testLoadManifest(): void
     {
         // use different path
         $path = '/some/path/manifest.json';
@@ -164,8 +164,8 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      * @expectException \LogicException
-     * @covers ::loadManifest()
      */
+    #[CoversMethod(AssetsRevisions::class, 'loadManifest')]
     public function testLoadManifestWithoutStrategy(): void
     {
         $this->expectException(LogicException::class);

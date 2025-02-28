@@ -21,6 +21,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
 use Laminas\Diactoros\UploadedFile;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
@@ -57,8 +58,8 @@ class UploadTraitTest extends TestCase
      * Test `uploadMedia()` method
      *
      * @return void
-     * @covers ::uploadMedia()
      */
+    #[CoversMethod(UploadTrait::class, 'uploadMedia')]
     public function testUpload(): void
     {
         $path = sprintf('%s/tests/files/test.png', getcwd());
@@ -93,8 +94,8 @@ class UploadTraitTest extends TestCase
      * Test `uploadMedia()` failure
      *
      * @return void
-     * @covers ::uploadMedia()
      */
+    #[CoversMethod(UploadTrait::class, 'uploadMedia')]
     public function testFailUpload(): void
     {
         $path = sprintf('%s/tests/files/test.png', getcwd());

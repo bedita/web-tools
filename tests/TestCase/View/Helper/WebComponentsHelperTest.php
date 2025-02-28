@@ -18,6 +18,7 @@ use BEdita\WebTools\View\Helper\WebComponentsHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -100,11 +101,11 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `props` method
      *
-     * @covers ::props()
      * @param array $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[CoversMethod(WebComponentsHelper::class, 'props')]
     #[DataProvider('propsProvider')]
     public function testProps($expected, $properties): void
     {
@@ -142,11 +143,11 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `is` method
      *
-     * @covers ::is()
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[CoversMethod(WebComponentsHelper::class, 'is')]
     #[DataProvider('isProvider')]
     public function testIs($expected, $properties): void
     {
@@ -158,8 +159,8 @@ class WebComponentsHelperTest extends TestCase
      * Test `is` method with script path
      *
      * @return void
-     * @covers ::is()
      */
+    #[CoversMethod(WebComponentsHelper::class, 'is')]
     public function testIsWithScript(): void
     {
         $actual = $this->WebComponents->is('bedita-input', ['value' => '2'], 'path/to/script.js');
@@ -197,11 +198,11 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `element` method
      *
-     * @covers ::element()
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[CoversMethod(WebComponentsHelper::class, 'element')]
     #[DataProvider('elementProvider')]
     public function testElement($expected, $properties): void
     {
@@ -213,8 +214,8 @@ class WebComponentsHelperTest extends TestCase
      * Test `element` method with script path
      *
      * @return void
-     * @covers ::element()
      */
+    #[CoversMethod(WebComponentsHelper::class, 'element')]
     public function testElementWithScript(): void
     {
         $actual = $this->WebComponents->element('bedita-input', ['value' => '2'], 'path/to/script.js');

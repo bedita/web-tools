@@ -27,6 +27,7 @@ use Cake\Utility\Hash;
 use Exception;
 use Firebase\JWT\JWT;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -144,12 +145,12 @@ class OAuth2AuthenticatorTest extends TestCase
      * @param array $authConfig Authenticator configuration.
      * @param array $identity Identity data.
      * @return void
-     * @covers ::authenticate()
-     * @covers ::providerConnect()
-     * @covers ::initProvider()
-     * @covers ::redirectUri()
-     * @covers ::__construct()
      */
+    #[CoversMethod(OAuth2Authenticator::class, 'authenticate')]
+    #[CoversMethod(OAuth2Authenticator::class, 'providerConnect')]
+    #[CoversMethod(OAuth2Authenticator::class, 'initProvider')]
+    #[CoversMethod(OAuth2Authenticator::class, 'redirectUri')]
+    #[CoversMethod(OAuth2Authenticator::class, '__construct')]
     #[DataProvider('authenticateProvider')]
     public function testAuthenticate(
         $expected,
@@ -196,8 +197,8 @@ class OAuth2AuthenticatorTest extends TestCase
      * Test JWT leeway config in `authenticate` method
      *
      * @return void
-     * @covers ::authenticate()
      */
+    #[CoversMethod(OAuth2Authenticator::class, 'authenticate')]
     public function testAuthenticateLeeway(): void
     {
         $identifier = new class () implements IdentifierInterface {

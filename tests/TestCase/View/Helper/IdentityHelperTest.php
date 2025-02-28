@@ -21,6 +21,7 @@ use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see BEdita\WebTools\View\Helper\IdentityHelper} Test Case
@@ -64,8 +65,8 @@ class IdentityHelperTest extends TestCase
      * Test that delegating a configured method works as expected.
      *
      * @return void
-     * @covers ::__call()
      */
+    #[CoversMethod(IdentityHelper::class, '__call')]
     public function testDelgateOk(): void
     {
         $request = (new ServerRequest())->withAttribute('identity', $this->identity);
@@ -80,8 +81,8 @@ class IdentityHelperTest extends TestCase
      * Test that a `BadMethodCallException` is thrown calling method without identity.
      *
      * @return void
-     * @covers ::__call()
      */
+    #[CoversMethod(IdentityHelper::class, '__call')]
     public function testDelegateNoIdentity(): void
     {
         $this->expectException(BadMethodCallException::class);
@@ -97,8 +98,8 @@ class IdentityHelperTest extends TestCase
      * Test that a `BadMethodCallException` is thrown calling not delegated method.
      *
      * @return void
-     * @covers ::__call()
      */
+    #[CoversMethod(IdentityHelper::class, '__call')]
     public function testDelegateBadDelegateMethod(): void
     {
         $this->expectException(BadMethodCallException::class);

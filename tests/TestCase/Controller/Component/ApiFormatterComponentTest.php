@@ -7,6 +7,7 @@ use BEdita\WebTools\Controller\Component\ApiFormatterComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -213,10 +214,10 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data for test
      * @param array $expected The expected resulting data
      * @return void
-     * @covers ::embedIncluded()
-     * @covers ::addIncluded()
-     * @covers ::extractFromIncluded()
      */
+    #[CoversMethod(ApiFormatterComponent::class, 'embedIncluded')]
+    #[CoversMethod(ApiFormatterComponent::class, 'addIncluded')]
+    #[CoversMethod(ApiFormatterComponent::class, 'extractFromIncluded')]
     #[DataProvider('embedIncludedProvider')]
     public function testEmbedIncluded(array $response, array $expected): void
     {
@@ -733,9 +734,9 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data
      * @param string $lang The lang requested
      * @return void
-     * @covers ::replaceWithTranslation()
-     * @covers ::extractTranslatedFields()
      */
+    #[CoversMethod(ApiFormatterComponent::class, 'replaceWithTranslation')]
+    #[CoversMethod(ApiFormatterComponent::class, 'extractTranslatedFields')]
     #[DataProvider('replaceWithTranslationProvider')]
     public function testReplaceWithTranslation(array $expected, array $response, string $lang): void
     {
@@ -747,8 +748,8 @@ class ApiFormatterComponentTest extends TestCase
      * Test `cleanResponse()` method.
      *
      * @return void
-     * @covers ::cleanResponse()
      */
+    #[CoversMethod(ApiFormatterComponent::class, 'cleanResponse')]
     public function testCleanResponse(): void
     {
         $response = [

@@ -17,6 +17,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -59,8 +60,8 @@ class RevManifestStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $name The configuration used
      * @return void
-     * @covers ::get()
      */
+    #[CoversMethod(RevManifestStrategy::class, 'get')]
     #[DataProvider('getProvider')]
     public function testGet(?string $expected, string $name, ?string $extension = null): void
     {

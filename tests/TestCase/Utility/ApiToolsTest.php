@@ -17,6 +17,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility;
 use BEdita\WebTools\Utility\ApiTools;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -29,14 +30,14 @@ class ApiToolsTest extends TestCase
      * Test clean response
      *
      * @return void
-     * @covers ::cleanResponse()
-     * @covers ::recursiveRemoveKey()
-     * @covers ::removeAttributes()
-     * @covers ::removeIncluded()
-     * @covers ::removeLinks()
-     * @covers ::removeRelationships()
-     * @covers ::removeSchema()
      */
+    #[CoversMethod(ApiTools::class, 'cleanResponse')]
+    #[CoversMethod(ApiTools::class, 'recursiveRemoveKey')]
+    #[CoversMethod(ApiTools::class, 'removeAttributes')]
+    #[CoversMethod(ApiTools::class, 'removeIncluded')]
+    #[CoversMethod(ApiTools::class, 'removeLinks')]
+    #[CoversMethod(ApiTools::class, 'removeRelationships')]
+    #[CoversMethod(ApiTools::class, 'removeSchema')]
     public function testCleanResponse(): void
     {
         $response = [
@@ -423,9 +424,9 @@ class ApiToolsTest extends TestCase
      * @return array
      *
      * @return void
-     * @covers ::cleanResponse()
-     * @covers ::removeAttributes()
      */
+    #[CoversMethod(ApiTools::class, 'cleanResponse')]
+    #[CoversMethod(ApiTools::class, 'removeAttributes')]
     #[DataProvider('cleanResponseAttributesProvider')]
     public function testCleanResponseAttributes(array $response, array $options, array $expected): void
     {

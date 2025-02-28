@@ -25,6 +25,7 @@ use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * ApiProxyTraitTest class
@@ -80,8 +81,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that a request with a wrong method raises MethodNotAllowedException.
      *
      * @return void
-     * @covers ::apiRequest()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testMethodNotAllowedException(): void
     {
         $t = new class (new ServerRequest()) extends Controller {
@@ -99,14 +100,14 @@ class ApiProxyTraitTest extends TestCase
      * Test get() method
      *
      * @return void
-     * @covers ::initialize()
-     * @covers ::get()
-     * @covers ::setBaseUrl()
-     * @covers ::apiRequest()
-     * @covers ::maskResponseLinks()
-     * @covers ::maskMultiLinks()
-     * @covers ::maskLinks()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'initialize')]
+    #[CoversMethod(ApiProxyTrait::class, 'get')]
+    #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
+    #[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
+    #[CoversMethod(ApiProxyTrait::class, 'maskMultiLinks')]
+    #[CoversMethod(ApiProxyTrait::class, 'maskLinks')]
     public function testGet(): void
     {
         $this->get('/api/users/1');
@@ -146,10 +147,10 @@ class ApiProxyTraitTest extends TestCase
      * Test non found error proxied from API.
      *
      * @return void
-     * @covers ::get()
-     * @covers ::apiRequest()
-     * @covers ::handleError()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'get')]
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
+    #[CoversMethod(ApiProxyTrait::class, 'handleError')]
     public function testNotFoundError(): void
     {
         $this->get('/api/users/1000');
@@ -169,8 +170,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that masking links with value searched equal to string works.
      *
      * @return void
-     * @covers ::maskLinks()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'maskLinks')]
     public function testMaskLinksString(): void
     {
         $this->get('/api/model/schema/users');
@@ -184,8 +185,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that getting a list of objects the relationships links are masked.
      *
      * @return void
-     * @covers ::maskResponseLinks()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
     public function testMaskRelationshipsLinksGettingList(): void
     {
         $this->get('/api/users');
@@ -205,8 +206,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that getting /home the resources links are masked.
      *
      * @return void
-     * @covers ::maskResponseLinks()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
     public function testMaskResourcesGettingHome(): void
     {
         $this->get('/api/home');
@@ -224,8 +225,8 @@ class ApiProxyTraitTest extends TestCase
      * is correctly handled
      *
      * @return void
-     * @covers ::handleError()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'handleError')]
     public function testNotBEditaClientException(): void
     {
         $controller = new class (new ServerRequest()) extends Controller {
@@ -264,8 +265,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that if BEditaClient return null the response has empty body.
      *
      * @return void
-     * @covers ::apiRequest()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testNullResponseFromBEditaClient(): void
     {
         $controller = new class (new ServerRequest()) extends Controller {
@@ -300,8 +301,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that if path was unexpected an error 400 Bad Request was sent.
      *
      * @return void
-     * @covers ::setBaseUrl()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
     public function testErrorIfPathNotFound(): void
     {
         $controller = new class (new ServerRequest(['url' => '/api/users'])) extends Controller {
@@ -331,8 +332,8 @@ class ApiProxyTraitTest extends TestCase
      * Test that url is urlencoded the baseUrl is found.
      *
      * @return void
-     * @covers ::setBaseUrl()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
     public function testMatchUrlEncodedPath(): void
     {
         $controller = new class (new ServerRequest(['url' => '/api/space%20here'])) extends Controller {
@@ -354,9 +355,9 @@ class ApiProxyTraitTest extends TestCase
      * Test POST request
      *
      * @return void
-     * @covers ::post()
-     * @covers ::apiRequest()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'post')]
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testPost(): void
     {
         $this->post('/api/documents', [
@@ -381,9 +382,9 @@ class ApiProxyTraitTest extends TestCase
      * Test PATCH request
      *
      * @return void
-     * @covers ::patch()
-     * @covers ::apiRequest()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'patch')]
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testPatch(): void
     {
         $data = [
@@ -416,9 +417,9 @@ class ApiProxyTraitTest extends TestCase
      * Test DELETE request
      *
      * @return void
-     * @covers ::delete()
-     * @covers ::apiRequest()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'delete')]
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
     public function testDelete(): void
     {
         $data = [
@@ -444,12 +445,12 @@ class ApiProxyTraitTest extends TestCase
      * Test that create a new object, modify it and delete it.
      *
      * @return void
-     * @covers ::post()
-     * @covers ::patch()
-     * @covers ::delete()
-     * @covers ::apiRequest()
-     * @covers ::get()
      */
+    #[CoversMethod(ApiProxyTrait::class, 'post')]
+    #[CoversMethod(ApiProxyTrait::class, 'patch')]
+    #[CoversMethod(ApiProxyTrait::class, 'delete')]
+    #[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
+    #[CoversMethod(ApiProxyTrait::class, 'get')]
     public function testMulti(): void
     {
         $this->post('/api/documents', ['data' => [

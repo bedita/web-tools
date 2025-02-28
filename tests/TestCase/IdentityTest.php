@@ -19,6 +19,7 @@ use Authorization\Identity as AuthorizationIdentity;
 use BEdita\WebTools\Identity;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see BEdita\WebTools\Identity} Test Case
@@ -30,8 +31,8 @@ class IdentityTest extends TestCase
      * Test hasRole()
      *
      * @return void
-     * @covers ::hasRole()
      */
+    #[CoversMethod(Identity::class, 'hasRole')]
     public function testHasRole(): void
     {
         $data = [
@@ -52,8 +53,8 @@ class IdentityTest extends TestCase
      * Test that hasRole() returns False for identity without role set.
      *
      * @return void
-     * @covers ::hasRole()
      */
+    #[CoversMethod(Identity::class, 'hasRole')]
     public function testHasRoleWithoutRoleInEntity(): void
     {
         $identity = new Identity(['id' => 1]);

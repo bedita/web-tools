@@ -21,6 +21,7 @@ use BEdita\WebTools\Identifier\ApiIdentifier;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see \BEdita\WebTools\Identifier\ApiIdentifier} Test Case
@@ -155,8 +156,8 @@ class ApiIdentifierTest extends TestCase
      * Test missing data for identifier.
      *
      * @return void
-     * @covers ::identify()
      */
+    #[CoversMethod(ApiIdentifier::class, 'identify')]
     public function testIdentifyMissingData(): void
     {
         $this->createUserAndRole(static::USER, static::ROLE);
@@ -170,9 +171,9 @@ class ApiIdentifierTest extends TestCase
      * Test authentication failure.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::setError()
      */
+    #[CoversMethod(ApiIdentifier::class, 'identify')]
+    #[CoversMethod(ApiIdentifier::class, 'setError')]
     public function testIdentifyAuthenticationFails(): void
     {
         $this->createUserAndRole(static::USER, static::ROLE);
@@ -191,8 +192,8 @@ class ApiIdentifierTest extends TestCase
      * Test authentication ok.
      *
      * @return {void}
-     * @covers ::identify()
      */
+    #[CoversMethod(ApiIdentifier::class, 'identify')]
     public function testIdentifyCorrect(): void
     {
         $this->createUserAndRole(static::USER, static::ROLE);
@@ -214,8 +215,8 @@ class ApiIdentifierTest extends TestCase
      * Test that if missing `meta` from response then identification fails.
      *
      * @return void
-     * @covers ::identify()
      */
+    #[CoversMethod(ApiIdentifier::class, 'identify')]
     public function testMissingMetaFromResponse(): void
     {
         $apiClient = new class ('mockUrl') extends BEditaClient {

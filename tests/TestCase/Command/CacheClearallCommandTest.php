@@ -19,6 +19,7 @@ use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see BEdita\WebTools\Command\CacheClearallCommand} Test Case
@@ -50,8 +51,8 @@ class CacheClearallCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @covers ::execute()
      */
+    #[CoversMethod(CacheClearallCommand::class, 'execute')]
     public function testExecute(): void
     {
         $path = CACHE . 'twig_view';

@@ -17,6 +17,7 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -66,8 +67,8 @@ class EntrypointsStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $name The configuration used
      * @return void
-     * @covers ::get()
      */
+    #[CoversMethod(EntrypointsStrategy::class, 'get')]
     #[DataProvider('getProvider')]
     public function testGet(?array $expected, string $name, ?string $extension = null): void
     {

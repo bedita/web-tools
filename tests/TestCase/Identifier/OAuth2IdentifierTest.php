@@ -21,6 +21,7 @@ use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\Identifier\OAuth2Identifier;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see \BEdita\WebTools\Identifier\OAuth2Identifier} Test Case
@@ -41,9 +42,9 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with successful login.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::externalAuth()
      */
+    #[CoversMethod(OAuth2Identifier::class, 'identify')]
+    #[CoversMethod(OAuth2Identifier::class, 'externalAuth')]
     public function testIdentifyOk(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
@@ -80,9 +81,9 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with unsuccessful login.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::externalAuth()
      */
+    #[CoversMethod(OAuth2Identifier::class, 'identify')]
+    #[CoversMethod(OAuth2Identifier::class, 'externalAuth')]
     public function testNullIdentify(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
@@ -104,10 +105,10 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with successful signup.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::signup()
-     * @covers ::signupData()
      */
+    #[CoversMethod(OAuth2Identifier::class, 'identify')]
+    #[CoversMethod(OAuth2Identifier::class, 'signup')]
+    #[CoversMethod(OAuth2Identifier::class, 'signupData')]
     public function testOkSignup(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)
@@ -154,10 +155,10 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with unsuccessful signup.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::signup()
-     * @covers ::signupData()
      */
+    #[CoversMethod(OAuth2Identifier::class, 'identify')]
+    #[CoversMethod(OAuth2Identifier::class, 'signup')]
+    #[CoversMethod(OAuth2Identifier::class, 'signupData')]
     public function testFailSignup(): void
     {
         $apiClientMock = $this->getMockBuilder(BEditaClient::class)

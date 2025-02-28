@@ -20,6 +20,7 @@ use BEdita\WebTools\View\Helper\AssetHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\AssetHelper} Test Case
@@ -30,9 +31,9 @@ class AssetHelperTest extends TestCase
     /**
      * Test `get` method
      *
-     * @covers ::get()
      * @return void
      */
+    #[CoversMethod(AssetHelper::class, 'get')]
     public function testGet(): void
     {
         AssetsRevisions::setStrategy(new RevManifestStrategy());

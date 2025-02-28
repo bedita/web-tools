@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
 use InvalidArgumentException;
 use Laminas\Diactoros\Stream;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -36,11 +37,11 @@ class BaseClientTest extends TestCase
      * Test constructor against invalid configuration.
      *
      * @return void
-     * @covers ::__construct()
-     * @covers ::validateConf()
-     * @covers ::getValidator()
-     * @covers ::createClient()
      */
+    #[CoversMethod(BaseClient::class, '__construct')]
+    #[CoversMethod(BaseClient::class, 'validateConf')]
+    #[CoversMethod(BaseClient::class, 'getValidator')]
+    #[CoversMethod(BaseClient::class, 'createClient')]
     public function testInvalidConfig(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -63,13 +64,13 @@ class BaseClientTest extends TestCase
      * Basic test.
      *
      * @return void
-     * @covers ::__construct()
-     * @covers ::validateConf()
-     * @covers ::getValidator()
-     * @covers ::createClient()
-     * @covers ::defaultConfigName()
-     * @covers ::getHttpClient()
      */
+    #[CoversMethod(BaseClient::class, '__construct')]
+    #[CoversMethod(BaseClient::class, 'validateConf')]
+    #[CoversMethod(BaseClient::class, 'getValidator')]
+    #[CoversMethod(BaseClient::class, 'createClient')]
+    #[CoversMethod(BaseClient::class, 'defaultConfigName')]
+    #[CoversMethod(BaseClient::class, 'getHttpClient')]
     public function testBase(): void
     {
         // note: key 'BaseClientTest.php:' with ':' because the class is anonymous
@@ -95,8 +96,8 @@ class BaseClientTest extends TestCase
      * Test `getUrl` method.
      *
      * @return void
-     * @covers ::getUrl()
      */
+    #[CoversMethod(BaseClient::class, 'getUrl')]
     public function testGetUrl(): void
     {
         $config = [
@@ -122,8 +123,8 @@ class BaseClientTest extends TestCase
      * Test `logCall` method.
      *
      * @return void
-     * @covers ::logCall()
      */
+    #[CoversMethod(BaseClient::class, 'logCall')]
     public function testLogCall(): void
     {
         $config = [
@@ -210,13 +211,13 @@ class BaseClientTest extends TestCase
      * Test `get`, `post`, `patch`, `put`, `delete` methods.
      *
      * @return void
-     * @covers ::get()
-     * @covers ::post()
-     * @covers ::patch()
-     * @covers ::put()
-     * @covers ::delete()
-     * @covers ::logCall()
      */
+    #[CoversMethod(BaseClient::class, 'get')]
+    #[CoversMethod(BaseClient::class, 'post')]
+    #[CoversMethod(BaseClient::class, 'patch')]
+    #[CoversMethod(BaseClient::class, 'put')]
+    #[CoversMethod(BaseClient::class, 'delete')]
+    #[CoversMethod(BaseClient::class, 'logCall')]
     #[DataProvider('getPostPatchPutDeleteProvider')]
     public function testGetPostPatchPutDelete(string $method): void
     {

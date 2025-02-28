@@ -26,6 +26,7 @@ use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
@@ -98,9 +99,9 @@ class ExceptionRendererTest extends TestCase
      * @param \Exception $exception Expected error.
      * @param string $expected Template.
      * @return void
-     * @covers ::_template()
-     * @covers ::getHttpCode()
      */
+    #[CoversMethod(ExceptionRenderer::class, '_template')]
+    #[CoversMethod(ExceptionRenderer::class, 'getHttpCode')]
     #[DataProvider('templateProvider')]
     public function testTemplate(Exception $exception, $expected)
     {
@@ -118,8 +119,8 @@ class ExceptionRendererTest extends TestCase
      * and the `Error/error500.twig` will be used.
      *
      * @return void
-     * @covers ::_outputMessageSafe()
      */
+    #[CoversMethod(ExceptionRenderer::class, '_outputMessageSafe')]
     public function testOutputMessageSafe()
     {
         $trigger = 0;
@@ -153,8 +154,8 @@ class ExceptionRendererTest extends TestCase
      * In that case the `\Cake\View\View` class is used.
      *
      * @return void
-     * @covers ::_outputMessageSafe()
      */
+    #[CoversMethod(ExceptionRenderer::class, '_outputMessageSafe')]
     public function testOutputMessageSafeFallback()
     {
         $trigger = 0;
@@ -194,8 +195,8 @@ class ExceptionRendererTest extends TestCase
      * Test `_getController` method with `application/json` Accept header
      *
      * @return void
-     * @covers ::_getController()
      */
+    #[CoversMethod(ExceptionRenderer::class, '_getController')]
     public function testControllerJsonResponse(): void
     {
         $request = (new ServerRequest())->withHeader('Accept', 'application/json');

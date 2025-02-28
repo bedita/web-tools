@@ -22,6 +22,7 @@ use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -58,8 +59,8 @@ class OAuth2MiddlewareTest extends TestCase
      * Test `process` with no authentication result.
      *
      * @return void
-     * @covers ::process()
      */
+    #[CoversMethod(OAuth2Middleware::class, 'process')]
     public function testNoResult(): void
     {
         $request = new ServerRequest();
@@ -74,8 +75,8 @@ class OAuth2MiddlewareTest extends TestCase
      * Test `process` with authentication result but without `authUrl`.
      *
      * @return void
-     * @covers ::process()
      */
+    #[CoversMethod(OAuth2Middleware::class, 'process')]
     public function testResultNoAuth(): void
     {
         $request = new ServerRequest();
@@ -93,8 +94,8 @@ class OAuth2MiddlewareTest extends TestCase
      * Test `process` with authentication with `authUrl`.
      *
      * @return void
-     * @covers ::process()
      */
+    #[CoversMethod(OAuth2Middleware::class, 'process')]
     public function testResultAuth(): void
     {
         $request = new ServerRequest();
