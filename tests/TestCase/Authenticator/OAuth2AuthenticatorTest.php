@@ -26,13 +26,13 @@ use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Exception;
 use Firebase\JWT\JWT;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Authenticator\OAuth2Authenticator} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Authenticator\OAuth2Authenticator
  */
+#[CoversClass(OAuth2Authenticator::class)]
 class OAuth2AuthenticatorTest extends TestCase
 {
     /**

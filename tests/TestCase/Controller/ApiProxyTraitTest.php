@@ -24,14 +24,14 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * ApiProxyTraitTest class
  *
  * {@see \BEdita\WebTools\Controller\ApiProxyTrait} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Controller\ApiProxyTrait
  */
+#[CoversClass(ApiProxyTrait::class)]
 class ApiProxyTraitTest extends TestCase
 {
     use IntegrationTestTrait;

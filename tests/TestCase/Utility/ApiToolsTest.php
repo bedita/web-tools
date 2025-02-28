@@ -16,13 +16,13 @@ namespace BEdita\WebTools\Test\TestCase\Utility;
 
 use BEdita\WebTools\Utility\ApiTools;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\ApiTools} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\ApiTools
  */
+#[CoversClass(ApiTools::class)]
 class ApiToolsTest extends TestCase
 {
     /**

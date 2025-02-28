@@ -15,15 +15,16 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Test\TestCase;
 
 use BEdita\WebTools\Command\CacheClearallCommand;
+use BEdita\WebTools\Plugin;
 use Cake\Console\CommandCollection;
 use Cake\TestSuite\TestCase;
 use TestApp\Application;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see BEdita\WebTools\Plugin} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Plugin
  */
+#[CoversClass(Plugin::class)]
 class PluginTest extends TestCase
 {
     /**

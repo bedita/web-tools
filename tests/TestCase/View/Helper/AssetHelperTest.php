@@ -19,12 +19,12 @@ use BEdita\WebTools\Utility\AssetsRevisions;
 use BEdita\WebTools\View\Helper\AssetHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\AssetHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\AssetHelper
  */
+#[CoversClass(AssetHelper::class)]
 class AssetHelperTest extends TestCase
 {
     /**

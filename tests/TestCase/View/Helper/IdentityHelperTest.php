@@ -20,12 +20,12 @@ use BEdita\WebTools\View\Helper\IdentityHelper;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see BEdita\WebTools\View\Helper\IdentityHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\IdentityHelper
  */
+#[CoversClass(IdentityHelper::class)]
 class IdentityHelperTest extends TestCase
 {
     /**

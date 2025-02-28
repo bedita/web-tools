@@ -20,12 +20,12 @@ use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\Identifier\OAuth2Identifier;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see \BEdita\WebTools\Identifier\OAuth2Identifier} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Identifier\OAuth2Identifier
  */
+#[CoversClass(OAuth2Identifier::class)]
 class OAuth2IdentifierTest extends TestCase
 {
     /**

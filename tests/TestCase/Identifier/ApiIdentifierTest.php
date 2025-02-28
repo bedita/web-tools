@@ -20,12 +20,12 @@ use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\Identifier\ApiIdentifier;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see \BEdita\WebTools\Identifier\ApiIdentifier} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Identifier\ApiIdentifier
  */
+#[CoversClass(ApiIdentifier::class)]
 class ApiIdentifierTest extends TestCase
 {
     /**

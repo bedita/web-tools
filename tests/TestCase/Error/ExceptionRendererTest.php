@@ -25,14 +25,16 @@ use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
 use Throwable;
 
 /**
- * @coversDefaultClass \BEdita\WebTools\Error\ExceptionRenderer
+ * @see \BEdita\WebTools\Error\ExceptionRenderer
  */
+#[CoversClass(ExceptionRenderer::class)]
 class ExceptionRendererTest extends TestCase
 {
     /**

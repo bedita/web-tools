@@ -22,13 +22,13 @@ use BEdita\WebTools\View\Helper\HtmlHelper;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\HtmlHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\HtmlHelper
  */
+#[CoversClass(HtmlHelper::class)]
 class HtmlHelperTest extends TestCase
 {
     /**

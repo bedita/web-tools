@@ -21,15 +21,15 @@ use BEdita\WebTools\Middleware\OAuth2Middleware;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * {@see BEdita\WebTools\Middleware\OAuth2Middleware} Test Case
- *
- * @coversDefaultClass BEdita\WebTools\Middleware\OAuth2Middleware
  */
+#[CoversClass(OAuth2Middleware::class)]
 class OAuth2MiddlewareTest extends TestCase
 {
     /**

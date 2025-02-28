@@ -17,14 +17,14 @@ namespace BEdita\WebTools\Test\TestCase\View\Twig;
 use BEdita\WebTools\View\Twig\BeditaTwigExtension;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
  * {@see \BEdita\WebTools\View\Twig\BeditaTwigExtension} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Twig\BeditaTwigExtension
  */
+#[CoversClass(BeditaTwigExtension::class)]
 class BeditaTwigExtensionTest extends TestCase
 {
     /**

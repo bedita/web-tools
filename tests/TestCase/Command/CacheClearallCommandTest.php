@@ -18,12 +18,12 @@ use BEdita\WebTools\Command\CacheClearallCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see BEdita\WebTools\Command\CacheClearallCommand} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Command\CacheClearallCommand
  */
+#[CoversClass(CacheClearallCommand::class)]
 class CacheClearallCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;

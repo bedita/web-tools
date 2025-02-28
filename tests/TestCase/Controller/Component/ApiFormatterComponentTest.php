@@ -6,13 +6,13 @@ namespace BEdita\WebTools\Test\TestCase\Controller\Component;
 use BEdita\WebTools\Controller\Component\ApiFormatterComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Controller\Component\ApiFormatterComponent} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Controller\Component\ApiFormatterComponent
  */
+#[CoversClass(ApiFormatterComponent::class)]
 class ApiFormatterComponentTest extends TestCase
 {
     /**

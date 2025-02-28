@@ -16,13 +16,13 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy
  */
+#[CoversClass(EntrypointsStrategy::class)]
 class EntrypointsStrategyTest extends TestCase
 {
     /**

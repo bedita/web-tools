@@ -16,13 +16,13 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy
  */
+#[CoversClass(RevManifestStrategy::class)]
 class RevManifestStrategyTest extends TestCase
 {
     /**

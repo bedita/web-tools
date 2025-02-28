@@ -21,12 +21,12 @@ use Cake\Cache\Cache;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see \BEdita\WebTools\Controller\Component\ApiCacheComponent} Test Case
- *
- * @coversDefaultClass \Bedita\WebTools\Controller\Component\ApiCacheComponent
  */
+#[CoversClass(ApiCacheComponent::class)]
 class ApiCacheComponentTest extends TestCase
 {
     /**

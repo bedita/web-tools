@@ -23,13 +23,13 @@ use Cake\TestSuite\TestCase;
 use Cake\Validation\Validator;
 use InvalidArgumentException;
 use Laminas\Diactoros\Stream;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Http\BaseClient} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Http\BaseClient
  */
+#[CoversClass(BaseClient::class)]
 class BaseClientTest extends TestCase
 {
     /**

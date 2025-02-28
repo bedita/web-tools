@@ -19,13 +19,13 @@ use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\TestSuite\TestCase;
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\AssetsRevisions} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\AssetsRevisions
  */
+#[CoversClass(AssetsRevisions::class)]
 class AssetsRevisionsTest extends TestCase
 {
     /**

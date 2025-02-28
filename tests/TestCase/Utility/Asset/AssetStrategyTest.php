@@ -16,13 +16,13 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\AssetStrategy} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\Asset\AssetStrategy
  */
+#[CoversClass(AssetStrategy::class)]
 class AssetStrategyTest extends TestCase
 {
     /**

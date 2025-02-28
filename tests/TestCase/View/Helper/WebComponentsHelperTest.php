@@ -17,13 +17,13 @@ namespace BEdita\WebTools\Test\TestCase\View\Helper;
 use BEdita\WebTools\View\Helper\WebComponentsHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\WebComponentsHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\WebComponentsHelper
  */
+#[CoversClass(WebComponentsHelper::class)]
 class WebComponentsHelperTest extends TestCase
 {
     /**

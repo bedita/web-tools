@@ -22,13 +22,13 @@ use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\ThumbHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\ThumbHelper
  */
+#[CoversClass(ThumbHelper::class)]
 class ThumbHelperTest extends TestCase
 {
     /**

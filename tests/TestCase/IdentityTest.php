@@ -18,12 +18,12 @@ use Authorization\AuthorizationService;
 use Authorization\Identity as AuthorizationIdentity;
 use BEdita\WebTools\Identity;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see BEdita\WebTools\Identity} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Identity
  */
+#[CoversClass(Identity::class)]
 class IdentityTest extends TestCase
 {
     /**

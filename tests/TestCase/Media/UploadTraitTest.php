@@ -21,12 +21,12 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
 use Laminas\Diactoros\UploadedFile;
 use Psr\Http\Message\UploadedFileInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see \BEdita\WebTools\Media\UploadTrait} Test Case
- *
- * @coversDefaultClass \Bedita\WebTools\Media\UploadTrait
  */
+#[CoversClass(UploadTrait::class)]
 class UploadTraitTest extends TestCase
 {
     use UploadTrait;
