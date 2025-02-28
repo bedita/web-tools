@@ -57,7 +57,8 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 // before calling bootstrap, define some constants
-define('CACHE', sys_get_temp_dir() . DS . 'cache');
+define('APP', $root . DS . 'tests' . DS . 'test_app' . DS);
+define('CACHE', sys_get_temp_dir() . DS . 'cache' . DS);
 define('CONFIG', $root . DS . 'test_app' . DS . 'config' . DS);
 define('WWW_ROOT', $root . DS . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
 
