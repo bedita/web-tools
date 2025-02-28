@@ -58,9 +58,8 @@ if (!defined('DS')) {
 }
 // before calling bootstrap, define some constants
 define('CACHE', sys_get_temp_dir() . DS . 'cache');
-define('APP', $root . DS . 'test_app' . DS);
-define('CONFIG', APP . DS . 'config' . DS);
-define('WWW_ROOT', APP . DS . 'webroot' . DS);
+define('CONFIG', $root . DS . 'test_app' . DS . 'config' . DS);
+define('WWW_ROOT', $root . DS . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
 
 require $root . DS . 'config' . DS . 'bootstrap.php';
 
