@@ -185,7 +185,7 @@ class ThumbHelperTest extends TestCase
             ],
             'thumb error, return null' => [
                 [
-                    'id' => 999999999999999999999999999999999999999999999,
+                    'id' => -1,
                     'options' => null, // use default preset
                 ],
                 ThumbHelper::NOT_AVAILABLE,

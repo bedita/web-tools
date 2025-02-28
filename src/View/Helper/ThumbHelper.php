@@ -92,13 +92,16 @@ class ThumbHelper extends Helper
      *   NO_URL: url not present in api response
      *   OK: thumb available, ready and with a proper url
      *
-     * @param string|int $imageId The image ID
+     * @param string|int|null $imageId The image ID
      * @param array|null $options The thumbs options
      * @param string|null $url The thumb url to populate when static::OK
      * @return int|null
      */
-    public function status(int|string $imageId, ?array $options = ['preset' => 'default'], ?string &$url = ''): ?int
-    {
+    public function status(
+        int|string|null $imageId,
+        ?array $options = ['preset' => 'default'],
+        ?string &$url = ''
+    ): ?int {
         if (empty($imageId) && empty($options['ids'])) {
             return static::NOT_ACCEPTABLE;
         }
