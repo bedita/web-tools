@@ -140,7 +140,7 @@ class OAuth2AuthenticatorTest extends TestCase
      * Test `authenticate` method
      *
      * @param array|\Exception $expected EXpected result.
-     * @param array $config Request configuration.
+     * @param array $reqConfig Request configuration.
      * @param array $authConfig Authenticator configuration.
      * @param array $identity Identity data.
      * @return void
@@ -183,7 +183,7 @@ class OAuth2AuthenticatorTest extends TestCase
         };
         $request = new ServerRequest($reqConfig);
         $session = new Session();
-        $session->write(Hash::get($reqConfig, 'data'));
+        $session->write((array)Hash::get($reqConfig, 'data'));
         $request = $request->withAttribute('session', $session);
         $authenticator = new OAuth2Authenticator($identifier, $authConfig);
         $result = $authenticator->authenticate($request);
@@ -216,7 +216,7 @@ class OAuth2AuthenticatorTest extends TestCase
         ];
         $request = new ServerRequest($reqConfig);
         $session = new Session();
-        $session->write(Hash::get($reqConfig, 'data'));
+        $session->write(Hash::get((array)$reqConfig, 'data'));
         $request = $request->withAttribute('session', $session);
 
         $authenticator = new OAuth2Authenticator($identifier, [
