@@ -57,14 +57,13 @@ class EntrypointsStrategy extends AssetStrategy
     /**
      * @inheritDoc
      */
-    public function get(string $name, ?string $extension = null): array|string
+    public function get(string $name, ?string $extension = null): array|string|null
     {
         $path = sprintf('entrypoints.%s', $name);
         if (!empty($extension)) {
             $path .= sprintf('.%s', $extension);
         }
-        $val = Hash::get($this->assets, $path);
 
-        return is_string($val) ? $val : (array)$val;
+        return Hash::get($this->assets, $path);
     }
 }

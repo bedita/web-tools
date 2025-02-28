@@ -40,13 +40,12 @@ class RevManifestStrategy extends AssetStrategy
     /**
      * @inheritDoc
      */
-    public function get(string $name, ?string $extension = null): array|string
+    public function get(string $name, ?string $extension = null): array|string|null
     {
         if (!empty($extension)) {
             $name .= sprintf('.%s', $extension);
         }
-        $val = Hash::get($this->assets, $name);
 
-        return is_string($val) ? $val : (array)$val;
+        return Hash::get($this->assets, $name);
     }
 }
