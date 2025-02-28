@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
+use Cake\Utility\Hash;
 
 /**
  * RevManifest asset strategy.
@@ -44,11 +45,9 @@ class RevManifestStrategy extends AssetStrategy
         if (!empty($extension)) {
             $name .= sprintf('.%s', $extension);
         }
+        $val = Hash::get($this->assets, $name);
 
-        if (empty($this->assets[$name])) {
-            return null;
-        }
+        return is_string($val) ? $val : (array)$val;
 
-        return $this->assets[$name];
     }
 }
