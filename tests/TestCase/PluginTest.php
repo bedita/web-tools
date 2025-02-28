@@ -18,8 +18,8 @@ use BEdita\WebTools\Command\CacheClearallCommand;
 use BEdita\WebTools\Plugin;
 use Cake\Console\CommandCollection;
 use Cake\TestSuite\TestCase;
-use TestApp\Application;
 use PHPUnit\Framework\Attributes\CoversClass;
+use TestApp\Application;
 
 /**
  * {@see BEdita\WebTools\Plugin} Test Case

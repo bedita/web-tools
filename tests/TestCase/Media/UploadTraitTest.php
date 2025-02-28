@@ -20,8 +20,8 @@ use BEdita\WebTools\Media\UploadTrait;
 use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
 use Laminas\Diactoros\UploadedFile;
-use Psr\Http\Message\UploadedFileInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * {@see \BEdita\WebTools\Media\UploadTrait} Test Case
