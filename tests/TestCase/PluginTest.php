@@ -54,8 +54,10 @@ class PluginTest extends TestCase
     public function testBootstrap(): void
     {
         $app = new Application(CONFIG);
+        $app->bootstrap();
         $app->pluginBootstrap();
         $plugins = $app->getPlugins();
-        static::assertNotEmpty($plugins);
+        static::assertTrue($plugins->has('BEdita/WebTools'));
+        static::assertTrue($plugins->has('Cake/TwigView'));
     }
 }
