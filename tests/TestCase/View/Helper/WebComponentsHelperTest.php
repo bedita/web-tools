@@ -17,12 +17,17 @@ namespace BEdita\WebTools\Test\TestCase\View\Helper;
 use BEdita\WebTools\View\Helper\WebComponentsHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\WebComponentsHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\WebComponentsHelper
  */
+#[CoversClass(WebComponentsHelper::class)]
+#[CoversMethod(WebComponentsHelper::class, 'element')]
+#[CoversMethod(WebComponentsHelper::class, 'is')]
+#[CoversMethod(WebComponentsHelper::class, 'props')]
 class WebComponentsHelperTest extends TestCase
 {
     /**
@@ -58,7 +63,7 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return array
      */
-    public function propsProvider(): array
+    public static function propsProvider(): array
     {
         return [
             'empty' => [
@@ -99,12 +104,11 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `props` method
      *
-     * @dataProvider propsProvider()
-     * @covers ::props()
      * @param array $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[DataProvider('propsProvider')]
     public function testProps($expected, $properties): void
     {
         $result = $this->WebComponents->props($properties);
@@ -116,7 +120,7 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return array
      */
-    public function isProvider(): array
+    public static function isProvider(): array
     {
         return [
             'simple' => [
@@ -141,12 +145,11 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `is` method
      *
-     * @dataProvider isProvider()
-     * @covers ::is()
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[DataProvider('isProvider')]
     public function testIs($expected, $properties): void
     {
         $result = $this->WebComponents->is($properties[0], $properties[1]);
@@ -157,7 +160,6 @@ class WebComponentsHelperTest extends TestCase
      * Test `is` method with script path
      *
      * @return void
-     * @covers ::is()
      */
     public function testIsWithScript(): void
     {
@@ -171,7 +173,7 @@ class WebComponentsHelperTest extends TestCase
      *
      * @return array
      */
-    public function elementProvider(): array
+    public static function elementProvider(): array
     {
         return [
             'simple' => [
@@ -196,12 +198,11 @@ class WebComponentsHelperTest extends TestCase
     /**
      * Test `element` method
      *
-     * @dataProvider elementProvider()
-     * @covers ::element()
      * @param string $expected The expected result
      * @param array $properties The element properties
      * @return void
      */
+    #[DataProvider('elementProvider')]
     public function testElement($expected, $properties): void
     {
         $result = $this->WebComponents->element($properties[0], $properties[1]);
@@ -212,7 +213,6 @@ class WebComponentsHelperTest extends TestCase
      * Test `element` method with script path
      *
      * @return void
-     * @covers ::element()
      */
     public function testElementWithScript(): void
     {

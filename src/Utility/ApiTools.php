@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -37,12 +36,18 @@ class ApiTools
 
         // response.data is an array representing a single entity
         if (isset($response['data']['attributes'])) {
-            $response['data']['attributes'] = array_diff_key($response['data']['attributes'], array_flip($keysToRemove));
+            $response['data']['attributes'] = array_diff_key(
+                $response['data']['attributes'],
+                array_flip($keysToRemove)
+            );
 
             // remove attributes from included entities
             if (isset($response['included'])) {
                 foreach ($response['included'] as $key => $entity) {
-                    $response['included'][$key]['attributes'] = array_diff_key($entity['attributes'], array_flip($keysToRemove));
+                    $response['included'][$key]['attributes'] = array_diff_key(
+                        $entity['attributes'],
+                        array_flip($keysToRemove)
+                    );
                 }
             }
 
@@ -56,7 +61,10 @@ class ApiTools
         // remove attributes from included entities
         if (isset($response['included'])) {
             foreach ($response['included'] as $key => $entity) {
-                $response['included'][$key]['attributes'] = array_diff_key($entity['attributes'], array_flip($keysToRemove));
+                $response['included'][$key]['attributes'] = array_diff_key(
+                    $entity['attributes'],
+                    array_flip($keysToRemove)
+                );
             }
         }
 

@@ -16,12 +16,12 @@ namespace BEdita\WebTools\Test\TestCase\View;
 
 use BEdita\WebTools\View\TwigView;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see \BEdita\WebTools\View\TwigView} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\TwigView
  */
+#[CoversClass(TwigView::class)]
 class TwigViewTest extends TestCase
 {
     /**

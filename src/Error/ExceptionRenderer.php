@@ -20,6 +20,8 @@ use Cake\Controller\Controller;
 use Cake\Error\Renderer\WebExceptionRenderer;
 use Cake\Http\Response;
 use Cake\Log\LogTrait;
+use Exception;
+use Throwable;
 
 /**
  * Custom exception renderer class.
@@ -32,7 +34,7 @@ class ExceptionRenderer extends WebExceptionRenderer
     /**
      * @inheritDoc
      */
-    protected function _template(\Throwable $exception, string $method, int $code): string
+    protected function _template(Throwable $exception, string $method, int $code): string
     {
         $template = 'error500';
         if ($code < 500) {
@@ -60,7 +62,7 @@ class ExceptionRenderer extends WebExceptionRenderer
      *
      * Handle BEditaClientException.
      */
-    protected function getHttpCode(\Throwable $exception): int
+    protected function getHttpCode(Throwable $exception): int
     {
         if ($exception instanceof BEditaClientException) {
             return $exception->getCode();
@@ -82,7 +84,7 @@ class ExceptionRenderer extends WebExceptionRenderer
         try {
             $view = $this->controller->createView();
             $body = $view->render($template, 'error');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // first log the new exception to trace the new error too.
             $this->log($e->getMessage());
 

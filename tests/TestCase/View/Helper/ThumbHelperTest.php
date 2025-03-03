@@ -22,12 +22,21 @@ use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\View\Helper\ThumbHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\ThumbHelper
  */
+#[CoversClass(ThumbHelper::class)]
+#[CoversMethod(ThumbHelper::class, 'getUrl')]
+#[CoversMethod(ThumbHelper::class, 'hasUrl')]
+#[CoversMethod(ThumbHelper::class, 'initialize')]
+#[CoversMethod(ThumbHelper::class, 'isAcceptable')]
+#[CoversMethod(ThumbHelper::class, 'isReady')]
+#[CoversMethod(ThumbHelper::class, 'status')]
+#[CoversMethod(ThumbHelper::class, 'url')]
 class ThumbHelperTest extends TestCase
 {
     /**
@@ -135,7 +144,6 @@ class ThumbHelperTest extends TestCase
      * Initialize Thumb Helper test
      *
      * @return void
-     * @covers ::initialize()
      */
     public function testInitialize(): void
     {
@@ -149,7 +157,6 @@ class ThumbHelperTest extends TestCase
      * Initialize Thumb Helper test, custom cfg
      *
      * @return void
-     * @covers ::initialize()
      */
     public function testInitializeCustomConfig(): void
     {
@@ -172,7 +179,7 @@ class ThumbHelperTest extends TestCase
      *
      * @return array
      */
-    public function urlProvider(): array
+    public static function urlProvider(): array
     {
         return [
             'basic thumb default preset' => [
@@ -184,7 +191,7 @@ class ThumbHelperTest extends TestCase
             ],
             'thumb error, return null' => [
                 [
-                    'id' => 999999999999999999999999999999999999999999999,
+                    'id' => -1,
                     'options' => null, // use default preset
                 ],
                 ThumbHelper::NOT_AVAILABLE,
@@ -195,13 +202,11 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `url()` method.
      *
-     * @dataProvider urlProvider()
-     * @covers ::url()
-     * @covers ::status()
      * @param array $input The input array.
      * @param bool $expected The expected boolean.
      * @return void
      */
+    #[DataProvider('urlProvider')]
     public function testUrl(array $input, $expected): void
     {
         $id = empty($input['id']) ? $this->_image() : $input['id'];
@@ -218,12 +223,11 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `status()` method.
      *
-     * @dataProvider urlProvider()
-     * @covers ::status()
      * @param array $input The input array.
      * @param bool $expected The expected boolean.
      * @return void
      */
+    #[DataProvider('urlProvider')]
     public function testStatus(array $input, $expected): void
     {
         // case response with api call
@@ -254,8 +258,6 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `isAcceptable()` method.
      *
-     * @covers ::status()
-     * @covers ::isAcceptable()
      * @return void
      */
     public function testIsAcceptable(): void
@@ -310,8 +312,6 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `isReady()` method.
      *
-     * @covers ::status()
-     * @covers ::isReady()
      * @return void
      */
     public function testIsReady(): void
@@ -364,8 +364,6 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `hasUrl()` method.
      *
-     * @covers ::status()
-     * @covers ::hasUrl()
      * @return void
      */
     public function testHasUrl(): void
@@ -418,7 +416,6 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `status()` method with missing input.
      *
-     * @covers ::status()
      * @return void
      */
     public function testStatusInput(): void
@@ -430,7 +427,6 @@ class ThumbHelperTest extends TestCase
     /**
      * Test `getUrl()`
      *
-     * @covers ::getUrl()
      * @return void
      */
     public function testGetUrl(): void

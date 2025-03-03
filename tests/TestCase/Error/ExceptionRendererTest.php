@@ -24,13 +24,22 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Controller\TestController;
 use TestApp\View\AppView;
 use Throwable;
 
 /**
- * @coversDefaultClass \BEdita\WebTools\Error\ExceptionRenderer
+ * @see \BEdita\WebTools\Error\ExceptionRenderer
  */
+#[CoversClass(ExceptionRenderer::class)]
+#[CoversMethod(ExceptionRenderer::class, '_getController')]
+#[CoversMethod(ExceptionRenderer::class, '_outputMessageSafe')]
+#[CoversMethod(ExceptionRenderer::class, '_template')]
+#[CoversMethod(ExceptionRenderer::class, 'getHttpCode')]
 class ExceptionRendererTest extends TestCase
 {
     /**
@@ -66,7 +75,7 @@ class ExceptionRendererTest extends TestCase
      *
      * @return array
      */
-    public function templateProvider(): array
+    public static function templateProvider(): array
     {
         return [
             '400 exception' => [
@@ -94,14 +103,12 @@ class ExceptionRendererTest extends TestCase
      * @param \Exception $exception Expected error.
      * @param string $expected Template.
      * @return void
-     * @dataProvider templateProvider
-     * @covers ::_template()
-     * @covers ::getHttpCode()
      */
-    public function testTemplate(\Exception $exception, $expected)
+    #[DataProvider('templateProvider')]
+    public function testTemplate(Exception $exception, $expected)
     {
         $renderer = $this->extensionClass($exception);
-        $renderer->setController(new ErrorController());
+        $renderer->setController(new ErrorController(new ServerRequest([])));
         $renderer->render();
         static::assertEquals($expected, $renderer->getTemplate());
     }
@@ -114,7 +121,6 @@ class ExceptionRendererTest extends TestCase
      * and the `Error/error500.twig` will be used.
      *
      * @return void
-     * @covers ::_outputMessageSafe()
      */
     public function testOutputMessageSafe()
     {
@@ -132,7 +138,7 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $renderer = $this->extensionClass(new NotFoundException('hello'));
-        $controller = new ErrorController();
+        $controller = new ErrorController(new ServerRequest([]));
         $customErrorMessage = 'Gustavo, take care of it.';
         $controller->set(compact('customErrorMessage'));
         $renderer->setController($controller);
@@ -149,7 +155,6 @@ class ExceptionRendererTest extends TestCase
      * In that case the `\Cake\View\View` class is used.
      *
      * @return void
-     * @covers ::_outputMessageSafe()
      */
     public function testOutputMessageSafeFallback()
     {
@@ -164,7 +169,7 @@ class ExceptionRendererTest extends TestCase
             if ($trigger === 1) {
                 static::assertInstanceOf(AppView::class, $event->getSubject());
                 // throw a new exception
-                throw new \Exception('Oh my, another exception is here.');
+                throw new Exception('Oh my, another exception is here.');
             }
 
             // second time is the fallback then we can remove the listener
@@ -178,8 +183,8 @@ class ExceptionRendererTest extends TestCase
         EventManager::instance()->on('View.beforeRender', $callback);
 
         $expected = 'The original error is here';
-        $renderer = $this->extensionClass(new \Exception($expected));
-        $renderer->setController(new TestController());
+        $renderer = $this->extensionClass(new Exception($expected));
+        $renderer->setController(new TestController(new ServerRequest([])));
         $response = $renderer->render();
 
         $body = (string)$response->getBody();
@@ -190,7 +195,6 @@ class ExceptionRendererTest extends TestCase
      * Test `_getController` method with `application/json` Accept header
      *
      * @return void
-     * @covers ::_getController()
      */
     public function testControllerJsonResponse(): void
     {

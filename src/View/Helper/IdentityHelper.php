@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\View\Helper;
 
 use Authentication\View\Helper\IdentityHelper as AuthenticationIdentityHelper;
+use BadMethodCallException;
 
 /**
  * Extends IdentityHelper allowing to delegate methods to the identity.
@@ -29,7 +30,7 @@ class IdentityHelper extends AuthenticationIdentityHelper
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'identityAttribute' => 'identity',
         'delegateMethods' => [
             'hasRole',
@@ -43,14 +44,14 @@ class IdentityHelper extends AuthenticationIdentityHelper
      * @param array $args The arguments for the method.
      * @return mixed
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args): mixed
     {
         if (!in_array($method, (array)$this->getConfig('delegateMethods'))) {
-            throw new \BadMethodCallException("Cannot call `{$method}`. Make sure to add it to `delegateMethods`.");
+            throw new BadMethodCallException("Cannot call `{$method}`. Make sure to add it to `delegateMethods`.");
         }
 
         if (!is_object($this->_identity)) {
-            throw new \BadMethodCallException("Cannot call `{$method}` on stored identity since it is not an object.");
+            throw new BadMethodCallException("Cannot call `{$method}` on stored identity since it is not an object.");
         }
 
         $call = [$this->_identity, $method];

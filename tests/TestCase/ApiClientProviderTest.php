@@ -16,12 +16,12 @@ namespace BEdita\WebTools\Test\TestCase;
 
 use BEdita\WebTools\ApiClientProvider;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * {@see BEdita\WebTools\ApiClientProvider} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\ApiClientProvider
  */
+#[CoversClass(ApiClientProvider::class)]
 class ApiClientProviderTest extends TestCase
 {
     /**

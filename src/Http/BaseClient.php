@@ -22,6 +22,7 @@ use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use Cake\Log\LogTrait;
 use Cake\Validation\Validator;
+use InvalidArgumentException;
 
 /**
  * Base class for clients.
@@ -36,7 +37,7 @@ abstract class BaseClient
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'auth' => null,
         'logLevel' => 'error',
         'url' => null,
@@ -47,7 +48,7 @@ abstract class BaseClient
      *
      * @var \Cake\Http\Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * Constructor. Initialize HTTP client.
@@ -71,7 +72,7 @@ abstract class BaseClient
     protected function defaultConfigName(): string
     {
         $shortName = App::shortName(static::class, 'Http', 'Client');
-        [$plugin, $name] = pluginSplit($shortName);
+        [, $name] = pluginSplit($shortName);
 
         return $name;
     }
@@ -100,7 +101,9 @@ abstract class BaseClient
     {
         $errors = $validator->validate($this->getConfig());
         if (!empty($errors)) {
-            throw new \InvalidArgumentException(sprintf('%s client config not valid: %s', static::class, json_encode($errors)));
+            throw new InvalidArgumentException(
+                sprintf('%s client config not valid: %s', static::class, json_encode($errors))
+            );
         }
     }
 

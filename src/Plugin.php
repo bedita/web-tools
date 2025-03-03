@@ -29,7 +29,7 @@ class Plugin extends BasePlugin
      *
      * @var bool
      */
-    protected $routesEnabled = false;
+    protected bool $routesEnabled = false;
 
     /**
      * Use `cache clear_all` from BEdita\WebTools\Command\CacheClearallCommand
@@ -37,7 +37,7 @@ class Plugin extends BasePlugin
      * @param \Cake\Console\CommandCollection $commands Console commands.
      * @return \Cake\Console\CommandCollection
      */
-    public function console($commands): CommandCollection
+    public function console(CommandCollection $commands): CommandCollection
     {
         parent::console($commands);
         $commands->remove('cache clear_all');

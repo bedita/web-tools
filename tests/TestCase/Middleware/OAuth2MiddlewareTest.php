@@ -21,15 +21,17 @@ use BEdita\WebTools\Middleware\OAuth2Middleware;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * {@see BEdita\WebTools\Middleware\OAuth2Middleware} Test Case
- *
- * @coversDefaultClass BEdita\WebTools\Middleware\OAuth2Middleware
  */
+#[CoversClass(OAuth2Middleware::class)]
+#[CoversMethod(OAuth2Middleware::class, 'process')]
 class OAuth2MiddlewareTest extends TestCase
 {
     /**
@@ -58,7 +60,6 @@ class OAuth2MiddlewareTest extends TestCase
      * Test `process` with no authentication result.
      *
      * @return void
-     * @covers ::process()
      */
     public function testNoResult(): void
     {
@@ -74,7 +75,6 @@ class OAuth2MiddlewareTest extends TestCase
      * Test `process` with authentication result but without `authUrl`.
      *
      * @return void
-     * @covers ::process()
      */
     public function testResultNoAuth(): void
     {
@@ -93,7 +93,6 @@ class OAuth2MiddlewareTest extends TestCase
      * Test `process` with authentication with `authUrl`.
      *
      * @return void
-     * @covers ::process()
      */
     public function testResultAuth(): void
     {

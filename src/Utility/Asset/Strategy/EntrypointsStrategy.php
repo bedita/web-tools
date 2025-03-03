@@ -15,7 +15,6 @@ declare(strict_types=1);
  namespace BEdita\WebTools\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
-use Cake\Utility\Hash;
 
 /**
  * Entrypoints asset strategy.
@@ -50,20 +49,19 @@ class EntrypointsStrategy extends AssetStrategy
     /**
      * @inheritDoc
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'manifestPath' => WWW_ROOT . 'build' . DS . 'entrypoints.json',
     ];
 
     /**
      * @inheritDoc
      */
-    public function get(string $name, ?string $extension = null)
+    public function get(string $name, ?string $extension = null): array|string|null
     {
-        $path = sprintf('entrypoints.%s', $name);
         if (!empty($extension)) {
-            $path .= sprintf('.%s', $extension);
+            return $this->assets['entrypoints'][$name][$extension] ?? null;
         }
 
-        return Hash::get($this->assets, $path);
+        return $this->assets['entrypoints'][$name] ?? null;
     }
 }

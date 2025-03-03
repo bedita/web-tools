@@ -12,11 +12,14 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
+
+use BEdita\WebTools\Plugin as WebToolsPlugin;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Routing\Router;
+use josegonzalez\Dotenv\Loader;
 
 /**
  * Test suite bootstrap for BEdita/WebTools.
@@ -26,8 +29,10 @@ use Cake\Routing\Router;
  * installed as a dependency of an application.
  */
 
+require dirname(__DIR__) . '/vendor/autoload.php';
+
 if (!getenv('BEDITA_API') && file_exists(dirname(__DIR__) . '/tests/.env')) {
-    $dotenv = new \josegonzalez\Dotenv\Loader([dirname(__DIR__) . '/tests/.env']);
+    $dotenv = new Loader([dirname(__DIR__) . '/tests/.env']);
     $dotenv->parse()
         ->putenv()
         ->toEnv()
@@ -48,21 +53,18 @@ $findRoot = function ($root) {
 $root = $findRoot(__FILE__);
 unset($findRoot);
 
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+// before calling bootstrap, define some constants
+define('APP', $root . DS . 'tests' . DS . 'test_app' . DS);
+define('CACHE', sys_get_temp_dir() . DS . 'cache' . DS);
+define('CONFIG', $root . DS . 'test_app' . DS . 'config' . DS);
+define('WWW_ROOT', $root . DS . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
+
+require $root . DS . 'config' . DS . 'bootstrap.php';
+
 chdir($root);
-
-require_once 'vendor/cakephp/cakephp/src/basics.php';
-require_once 'vendor/autoload.php';
-
-define('ROOT', $root . DS . 'tests' . DS . 'test_app' . DS);
-define('APP', ROOT . 'TestApp' . DS);
-define('TMP', sys_get_temp_dir() . DS);
-define('LOGS', TMP . 'logs' . DS);
-define('CACHE', TMP . 'cache' . DS);
-define('CONFIG', ROOT . DS . 'config' . DS);
-define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
-
-define('CAKE_CORE_INCLUDE_PATH', ROOT);
-define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 
 Configure::write('debug', true);
 
@@ -112,5 +114,4 @@ if (!getenv('db_dsn')) {
 ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
 Router::reload();
 
-require $root . DS . 'config' . DS . 'bootstrap.php';
-Plugin::getCollection()->add(new \BEdita\WebTools\Plugin());
+Plugin::getCollection()->add(new WebToolsPlugin());

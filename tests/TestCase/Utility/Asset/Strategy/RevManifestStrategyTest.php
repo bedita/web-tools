@@ -16,12 +16,15 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy
  */
+#[CoversClass(RevManifestStrategy::class)]
+#[CoversMethod(RevManifestStrategy::class, 'get')]
 class RevManifestStrategyTest extends TestCase
 {
     /**
@@ -29,7 +32,7 @@ class RevManifestStrategyTest extends TestCase
      *
      * @return array
      */
-    public function getProvider(): array
+    public static function getProvider(): array
     {
         return [
             'name' => [
@@ -56,15 +59,15 @@ class RevManifestStrategyTest extends TestCase
      * Test that get asset name works as expected.
      *
      * @param string $expected The expected path
-     * @param array $name The configuration used
+     * @param string $name The name
+     * @param string|null $extension The extension
      * @return void
-     * @dataProvider getProvider()
-     * @covers ::get()
      */
+    #[DataProvider('getProvider')]
     public function testGet(?string $expected, string $name, ?string $extension = null): void
     {
         $strategy = new RevManifestStrategy();
-
-        static::assertEquals($expected, $strategy->get($name, $extension));
+        $actual = $strategy->get($name, $extension);
+        static::assertEquals($expected, $actual);
     }
 }

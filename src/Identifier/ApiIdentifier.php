@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\Identifier;
 
+use ArrayAccess;
 use Authentication\Identifier\AbstractIdentifier;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
@@ -36,7 +37,7 @@ class ApiIdentifier extends AbstractIdentifier
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'fields' => [
             self::CREDENTIAL_USERNAME => 'username',
             self::CREDENTIAL_PASSWORD => 'password',
@@ -46,7 +47,7 @@ class ApiIdentifier extends AbstractIdentifier
     /**
      * @inheritDoc
      */
-    public function identify(array $data)
+    public function identify(array $data): ArrayAccess|array|null
     {
         $usernameField = $this->getConfig('fields.' . self::CREDENTIAL_USERNAME);
         $passwordField = $this->getConfig('fields.' . self::CREDENTIAL_PASSWORD);
@@ -86,7 +87,7 @@ class ApiIdentifier extends AbstractIdentifier
      * @param string $message The error message
      * @return void
      */
-    protected function setError($message)
+    protected function setError(string $message): void
     {
         $this->_errors[] = $message;
     }

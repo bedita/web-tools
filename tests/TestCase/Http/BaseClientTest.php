@@ -13,7 +13,7 @@ declare(strict_types=1);
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
 
-namespace BEdita\WebTools\Test\TestCase\Identifier;
+namespace BEdita\WebTools\Test\TestCase\Http;
 
 use BEdita\WebTools\Http\BaseClient;
 use Cake\Core\Configure;
@@ -21,27 +21,39 @@ use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use Cake\TestSuite\TestCase;
 use Cake\Validation\Validator;
+use InvalidArgumentException;
 use Laminas\Diactoros\Stream;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Http\BaseClient} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Http\BaseClient
  */
+#[CoversClass(BaseClient::class)]
+#[CoversMethod(BaseClient::class, '__construct')]
+#[CoversMethod(BaseClient::class, 'createClient')]
+#[CoversMethod(BaseClient::class, 'defaultConfigName')]
+#[CoversMethod(BaseClient::class, 'delete')]
+#[CoversMethod(BaseClient::class, 'get')]
+#[CoversMethod(BaseClient::class, 'getHttpClient')]
+#[CoversMethod(BaseClient::class, 'getUrl')]
+#[CoversMethod(BaseClient::class, 'getValidator')]
+#[CoversMethod(BaseClient::class, 'logCall')]
+#[CoversMethod(BaseClient::class, 'patch')]
+#[CoversMethod(BaseClient::class, 'post')]
+#[CoversMethod(BaseClient::class, 'put')]
+#[CoversMethod(BaseClient::class, 'validateConf')]
 class BaseClientTest extends TestCase
 {
     /**
      * Test constructor against invalid configuration.
      *
      * @return void
-     * @covers ::__construct()
-     * @covers ::validateConf()
-     * @covers ::getValidator()
-     * @covers ::createClient()
      */
     public function testInvalidConfig(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('client config not valid: {"url":{"_empty":"This field cannot be left empty"}}');
         $config = [
             'auth' => [
@@ -61,16 +73,11 @@ class BaseClientTest extends TestCase
      * Basic test.
      *
      * @return void
-     * @covers ::__construct()
-     * @covers ::validateConf()
-     * @covers ::getValidator()
-     * @covers ::createClient()
-     * @covers ::defaultConfigName()
-     * @covers ::getHttpClient()
      */
     public function testBase(): void
     {
-        Configure::write('BaseClientTest.php', ['url' => 'https://example.com']);
+        // note: key 'BaseClientTest.php:' with ':' because the class is anonymous
+        Configure::write('BaseClientTest.php:', ['url' => 'https://example.com']);
         $config = [
             'auth' => [
                 'type' => 'BearerAccessToken',
@@ -92,7 +99,6 @@ class BaseClientTest extends TestCase
      * Test `getUrl` method.
      *
      * @return void
-     * @covers ::getUrl()
      */
     public function testGetUrl(): void
     {
@@ -119,7 +125,6 @@ class BaseClientTest extends TestCase
      * Test `logCall` method.
      *
      * @return void
-     * @covers ::logCall()
      */
     public function testLogCall(): void
     {
@@ -168,7 +173,7 @@ class BaseClientTest extends TestCase
         $response = $response->withStatus(200)->withBody($stream);
         $payload = '{"data": "test"}';
         $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
-        static::assertEquals('[OK] API BaseClientTest.php: | /GET https://example.com | with status 200: this is a response body - Payload: {"data": "test"}', $log);
+        static::assertEquals('[OK] API BaseClientTest.php:1 | /GET https://example.com | with status 200: this is a response body - Payload: {"data": "test"}', $log);
 
         // log level debug, response with error
         $config['logLevel'] = 'debug';
@@ -184,7 +189,7 @@ class BaseClientTest extends TestCase
         $response = $response->withStatus(400)->withBody($stream);
         $payload = '{"data": "test"}';
         $log = $client->logCall('/GET', 'https://example.com', $payload, $response);
-        static::assertEquals('[ERROR] API BaseClientTest.php: | /GET https://example.com | with status 400: this is a response body for error - Payload: {"data": "test"}', $log);
+        static::assertEquals('[ERROR] API BaseClientTest.php:1 | /GET https://example.com | with status 400: this is a response body for error - Payload: {"data": "test"}', $log);
     }
 
     /**
@@ -192,7 +197,7 @@ class BaseClientTest extends TestCase
      *
      * @return array
      */
-    public function getPostPatchPutDeleteProvider(): array
+    public static function getPostPatchPutDeleteProvider(): array
     {
         return [
             'get call' => ['get'],
@@ -207,14 +212,8 @@ class BaseClientTest extends TestCase
      * Test `get`, `post`, `patch`, `put`, `delete` methods.
      *
      * @return void
-     * @covers ::get()
-     * @covers ::post()
-     * @covers ::patch()
-     * @covers ::put()
-     * @covers ::delete()
-     * @covers ::logCall()
-     * @dataProvider getPostPatchPutDeleteProvider
      */
+    #[DataProvider('getPostPatchPutDeleteProvider')]
     public function testGetPostPatchPutDelete(string $method): void
     {
         $config = [
@@ -298,7 +297,7 @@ class BaseClientTest extends TestCase
         $response = $client->$method('/whatever', ['data' => 'test']);
         static::assertInstanceOf(Response::class, $response);
         static::assertSame(200, $response->getStatusCode());
-        $expected = sprintf('[OK] API BaseClientTest.php: | /%s api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', strtoupper($method));
+        $expected = sprintf('[OK] API BaseClientTest.php:2 | /%s api/v2/whatever | with status 200: this is a response body - Payload: {"data":"test"}', strtoupper($method));
         static::assertSame($expected, $client->lastLog);
     }
 }

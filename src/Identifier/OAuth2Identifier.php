@@ -14,6 +14,7 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Identifier;
 
+use ArrayAccess;
 use Authentication\Identifier\AbstractIdentifier;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
@@ -37,7 +38,7 @@ class OAuth2Identifier extends AbstractIdentifier
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'fields' => [
             'auth_provider' => 'auth_provider',
             'provider_username' => 'provider_username',
@@ -52,7 +53,7 @@ class OAuth2Identifier extends AbstractIdentifier
     /**
      * @inheritDoc
      */
-    public function identify(array $credentials)
+    public function identify(array $credentials): ArrayAccess|array|null
     {
         try {
             $result = $this->externalAuth($credentials);

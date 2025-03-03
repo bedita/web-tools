@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TestApp;
 
+use BEdita\WebTools\Plugin;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\RoutingMiddleware;
@@ -23,6 +24,7 @@ class Application extends BaseApplication
      */
     public function bootstrap(): void
     {
+        $this->addPlugin(new Plugin());
     }
 
     /**

@@ -15,26 +15,30 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Test\TestCase;
 
 use BEdita\WebTools\Command\CacheClearallCommand;
+use BEdita\WebTools\Plugin;
 use Cake\Console\CommandCollection;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use TestApp\Application;
 
 /**
  * {@see BEdita\WebTools\Plugin} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Plugin
  */
+#[CoversClass(Plugin::class)]
+#[CoversMethod(Plugin::class, 'bootstrap')]
+#[CoversMethod(Plugin::class, 'console')]
 class PluginTest extends TestCase
 {
     /**
      * Test `console` method
      *
      * @return void
-     * @covers ::console
      */
     public function testConsole(): void
     {
         $app = new Application(CONFIG);
+        $app->bootstrap();
         $commands = $app->console(new CommandCollection([]));
         $commands = $app->pluginConsole($commands);
         $cacheClearAll = $commands->get('cache clear_all');
@@ -46,13 +50,14 @@ class PluginTest extends TestCase
      * Test `bootstrap` method
      *
      * @return void
-     * @covers ::bootstrap
      */
     public function testBootstrap(): void
     {
         $app = new Application(CONFIG);
+        $app->bootstrap();
         $app->pluginBootstrap();
         $plugins = $app->getPlugins();
-        static::assertNotEmpty($plugins);
+        static::assertTrue($plugins->has('BEdita/WebTools'));
+        static::assertTrue($plugins->has('Cake/TwigView'));
     }
 }

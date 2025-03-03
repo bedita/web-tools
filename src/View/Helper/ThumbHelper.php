@@ -19,6 +19,7 @@ use Cake\Cache\Cache;
 use Cake\Log\LogTrait;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
+use Exception;
 
 /**
  * Helper to obtain thumbnail url
@@ -32,7 +33,7 @@ class ThumbHelper extends Helper
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'cache' => '_thumbs_',
     ];
 
@@ -91,13 +92,16 @@ class ThumbHelper extends Helper
      *   NO_URL: url not present in api response
      *   OK: thumb available, ready and with a proper url
      *
-     * @param int|string $imageId The image ID
+     * @param string|int|null $imageId The image ID
      * @param array|null $options The thumbs options
      * @param string|null $url The thumb url to populate when static::OK
      * @return int|null
      */
-    public function status($imageId, ?array $options = ['preset' => 'default'], &$url = ''): ?int
-    {
+    public function status(
+        int|string|null $imageId,
+        ?array $options = ['preset' => 'default'],
+        ?string &$url = ''
+    ): ?int {
         if (empty($imageId) && empty($options['ids'])) {
             return static::NOT_ACCEPTABLE;
         }
@@ -121,7 +125,7 @@ class ThumbHelper extends Helper
                 return static::NO_URL;
             }
             $url = $thumb['url'];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->log($e->getMessage(), 'error');
 
             return static::NOT_AVAILABLE;
@@ -137,7 +141,7 @@ class ThumbHelper extends Helper
      * @param array|null $options The thumbs options.
      * @return string|int The url if available, the status code otherwise (see Thumb constants).
      */
-    public function url($imageId, $options)
+    public function url(int $imageId, ?array $options): string|int
     {
         $url = null;
         $status = $this->status($imageId, $options, $url);
@@ -154,7 +158,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the acceptable flag
      */
-    private function isAcceptable($thumb = []): bool
+    private function isAcceptable(array $thumb = []): bool
     {
         if (isset($thumb['acceptable']) && $thumb['acceptable'] === false) {
             return false;
@@ -169,7 +173,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the ready flag
      */
-    private function isReady($thumb = []): bool
+    private function isReady(array $thumb = []): bool
     {
         if (!empty($thumb['ready']) && $thumb['ready'] === true) {
             return true;
@@ -184,7 +188,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the url availability
      */
-    private function hasUrl($thumb = []): bool
+    private function hasUrl(array $thumb = []): bool
     {
         if (!empty($thumb['url'])) {
             return true;
