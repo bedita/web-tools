@@ -57,11 +57,18 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 // before calling bootstrap, define some constants
+define('ROOT', dirname(__DIR__));
+define('TMP', ROOT . DS . 'tmp' . DS);
 define('APP', $root . DS . 'tests' . DS . 'test_app' . DS);
 define('CACHE', sys_get_temp_dir() . DS . 'cache' . DS);
 define('CONFIG', $root . DS . 'test_app' . DS . 'config' . DS);
 define('WWW_ROOT', $root . DS . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
+define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
+define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
+define('CAKE', CORE_PATH . 'src' . DS);
 
+require CORE_PATH . 'config' . DS . 'bootstrap.php';
+require CAKE . 'functions.php';
 require $root . DS . 'config' . DS . 'bootstrap.php';
 
 chdir($root);

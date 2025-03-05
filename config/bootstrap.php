@@ -12,28 +12,7 @@
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
 
-/*
- * Configure paths required to find CakePHP + general filepath constants
- */
-require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
-
-/*
- * Bootstrap CakePHP.
- *
- * Does the various bits of setup that CakePHP needs to do.
- * This includes:
- *
- * - Registering the CakePHP autoloader.
- * - Setting the default application paths.
- */
-require CORE_PATH . 'config' . DS . 'bootstrap.php';
-
 use Cake\Core\Configure;
-
-/**
- * Load global functions.
- */
-require CAKE . 'functions.php';
 
 /**
  * Setup API config if missing
