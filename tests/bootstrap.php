@@ -73,7 +73,7 @@ Configure::write('App', [
     'encoding' => 'utf-8',
     'paths' => [
         'plugins' => [ROOT . 'Plugin' . DS],
-        'templates' => [ROOT . 'templates' . DS],
+        'templates' => [APP . 'templates' . DS],
     ],
 ]);
 
