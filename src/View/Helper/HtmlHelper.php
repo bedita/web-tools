@@ -30,7 +30,7 @@ class HtmlHelper extends CakeHtmlHelper
     /**
      * Meta data for helper
      */
-    protected $metadata = [
+    protected array $metadata = [
         'description' => '',
         'author' => '',
         'docType' => '',
@@ -321,9 +321,9 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $data The data
      * @param string $field The field
      * @param array|string|null $defaultVal The default val
-     * @return array|string
+     * @return array|string|null
      */
-    public function getMeta(array $data, string $field, $defaultVal = null)
+    public function getMeta(array $data, string $field, array|string|null $defaultVal = null): array|string|null
     {
         $meta = $data + $this->metadata;
 
@@ -369,7 +369,7 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $options The options to apply
      * @return string|null
      */
-    public function assets($name, array $options = []): ?string
+    public function assets(string $name, array $options = []): ?string
     {
         return sprintf(
             '%s%s',

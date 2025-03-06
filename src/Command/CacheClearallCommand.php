@@ -17,7 +17,6 @@ namespace BEdita\WebTools\Command;
 use Cake\Command\CacheClearallCommand as BaseCommand;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\Filesystem\Folder;
 
 /**
  * Extend `CacheClearallCommand` to remove Twig compiled files.
@@ -37,8 +36,7 @@ class CacheClearallCommand extends BaseCommand
 
             return parent::execute($args, $io);
         }
-        $folder = new Folder($path); /* @phpstan-ignore-line */
-        $folder->delete();
+        unlink($path);
         $io->out('<success>Cleared twig cache</success>');
 
         return parent::execute($args, $io);

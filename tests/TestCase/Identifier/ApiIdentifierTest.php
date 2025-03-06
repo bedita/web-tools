@@ -20,12 +20,15 @@ use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\Identifier\ApiIdentifier;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see \BEdita\WebTools\Identifier\ApiIdentifier} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Identifier\ApiIdentifier
  */
+#[CoversClass(ApiIdentifier::class)]
+#[CoversMethod(ApiIdentifier::class, 'identify')]
+#[CoversMethod(ApiIdentifier::class, 'setError')]
 class ApiIdentifierTest extends TestCase
 {
     /**
@@ -41,30 +44,30 @@ class ApiIdentifierTest extends TestCase
     /**
      * The API client instance.
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    protected $apiClient = null;
+    protected ?BEditaClient $apiClient = null;
 
     /**
      * The created user data.
      *
-     * @var array
+     * @var array|null
      */
-    protected $user = null;
+    protected ?array $user = null;
 
     /**
      * The created role data.
      *
-     * @var array
+     * @var array|null
      */
-    protected $role = null;
+    protected ?array $role = null;
 
     /**
-     * Undocumented variable
+     * JWT tokens.
      *
-     * @var array
+     * @var array|null
      */
-    protected $jwtTokens = null;
+    protected ?array $jwtTokens = null;
 
     /**
      * @inheritDoc
@@ -155,7 +158,6 @@ class ApiIdentifierTest extends TestCase
      * Test missing data for identifier.
      *
      * @return void
-     * @covers ::identify()
      */
     public function testIdentifyMissingData(): void
     {
@@ -170,8 +172,6 @@ class ApiIdentifierTest extends TestCase
      * Test authentication failure.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::setError()
      */
     public function testIdentifyAuthenticationFails(): void
     {
@@ -191,7 +191,6 @@ class ApiIdentifierTest extends TestCase
      * Test authentication ok.
      *
      * @return {void}
-     * @covers ::identify()
      */
     public function testIdentifyCorrect(): void
     {
@@ -214,7 +213,6 @@ class ApiIdentifierTest extends TestCase
      * Test that if missing `meta` from response then identification fails.
      *
      * @return void
-     * @covers ::identify()
      */
     public function testMissingMetaFromResponse(): void
     {

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -19,12 +18,14 @@ use BEdita\WebTools\Command\CacheClearallCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see BEdita\WebTools\Command\CacheClearallCommand} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Command\CacheClearallCommand
  */
+#[CoversClass(CacheClearallCommand::class)]
+#[CoversMethod(CacheClearallCommand::class, 'execute')]
 class CacheClearallCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
@@ -32,9 +33,9 @@ class CacheClearallCommandTest extends TestCase
     /**
      * The command used in test
      *
-     * @var \BEdita\WebTools\Command\CacheClearallCommand
+     * @var \BEdita\WebTools\Command\CacheClearallCommand|null
      */
-    protected $command = null;
+    protected ?CacheClearallCommand $command = null;
 
     /**
      * setUp method
@@ -44,7 +45,6 @@ class CacheClearallCommandTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->useCommandRunner();
         $this->command = new CacheClearallCommand();
     }
 
@@ -52,7 +52,6 @@ class CacheClearallCommandTest extends TestCase
      * Test execute method
      *
      * @return void
-     * @covers ::execute()
      */
     public function testExecute(): void
     {

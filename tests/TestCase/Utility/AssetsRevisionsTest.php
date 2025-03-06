@@ -18,12 +18,21 @@ use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use BEdita\WebTools\Utility\Asset\Strategy\RevManifestStrategy;
 use BEdita\WebTools\Utility\AssetsRevisions;
 use Cake\TestSuite\TestCase;
+use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\AssetsRevisions} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\AssetsRevisions
  */
+#[CoversClass(AssetsRevisions::class)]
+#[CoversMethod(AssetsRevisions::class, 'clearStrategy')]
+#[CoversMethod(AssetsRevisions::class, 'get')]
+#[CoversMethod(AssetsRevisions::class, 'getMulti')]
+#[CoversMethod(AssetsRevisions::class, 'getStrategy')]
+#[CoversMethod(AssetsRevisions::class, 'loadManifest')]
+#[CoversMethod(AssetsRevisions::class, 'setStrategy')]
 class AssetsRevisionsTest extends TestCase
 {
     /**
@@ -32,6 +41,7 @@ class AssetsRevisionsTest extends TestCase
     public function setUp(): void
     {
         AssetsRevisions::setStrategy(new RevManifestStrategy());
+        parent::setUp();
     }
 
     /**
@@ -40,15 +50,13 @@ class AssetsRevisionsTest extends TestCase
     public function tearDown(): void
     {
         AssetsRevisions::clearStrategy();
+        parent::tearDown();
     }
 
     /**
      * Test set, get and reset strategy
      *
      * @return void
-     * @covers ::setStrategy()
-     * @covers ::getStrategy()
-     * @covers ::clearStrategy()
      */
     public function testStrategy(): void
     {
@@ -64,7 +72,7 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return array
      */
-    public function getProvider(): array
+    public static function getProvider(): array
     {
         return [
             'simple' => [
@@ -95,9 +103,8 @@ class AssetsRevisionsTest extends TestCase
      * @param string $name The asset name
      * @param string $extension The asset extension
      * @return void
-     * @dataProvider getProvider()
-     * @covers ::get()
      */
+    #[DataProvider('getProvider')]
     public function testGet(string $expected, string $name, ?string $extension = null): void
     {
         $result = AssetsRevisions::get($name, $extension);
@@ -108,7 +115,6 @@ class AssetsRevisionsTest extends TestCase
      * Test that `get()` method returns the passed asset name when no strategy was set.
      *
      * @return void
-     * @covers ::get()
      */
     public function testGetWithoutStrategy(): void
     {
@@ -121,7 +127,6 @@ class AssetsRevisionsTest extends TestCase
      * Test `getMulti` method
      *
      * @return void
-     * @covers ::getMulti()
      */
     public function testGetMulti(): void
     {
@@ -137,11 +142,9 @@ class AssetsRevisionsTest extends TestCase
     /**
      * Test `loadManifest`
      *
-     * @covers ::loadManifest()
      * @return void
-     * @covers ::loadManifest()
      */
-    public function testLoadManifest()
+    public function testLoadManifest(): void
     {
         // use different path
         $path = '/some/path/manifest.json';
@@ -162,11 +165,10 @@ class AssetsRevisionsTest extends TestCase
      *
      * @return void
      * @expectException \LogicException
-     * @covers ::loadManifest()
      */
     public function testLoadManifestWithoutStrategy(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
 
         AssetsRevisions::clearStrategy();
         AssetsRevisions::loadManifest();

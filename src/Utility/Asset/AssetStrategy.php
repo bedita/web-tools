@@ -31,7 +31,7 @@ abstract class AssetStrategy implements AssetStrategyInterface
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'manifestPath' => '',
     ];
 
@@ -40,7 +40,7 @@ abstract class AssetStrategy implements AssetStrategyInterface
      *
      * @var array
      */
-    protected $assets = [];
+    protected array $assets = [];
 
     /**
      * Initialize an asset strategy instance. Called after the constructor.

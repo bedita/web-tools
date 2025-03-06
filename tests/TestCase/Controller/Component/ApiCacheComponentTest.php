@@ -21,12 +21,18 @@ use Cake\Cache\Cache;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see \BEdita\WebTools\Controller\Component\ApiCacheComponent} Test Case
- *
- * @coversDefaultClass \Bedita\WebTools\Controller\Component\ApiCacheComponent
  */
+#[CoversClass(ApiCacheComponent::class)]
+#[CoversMethod(ApiCacheComponent::class, 'cacheKey')]
+#[CoversMethod(ApiCacheComponent::class, 'get')]
+#[CoversMethod(ApiCacheComponent::class, 'initialize')]
+#[CoversMethod(ApiCacheComponent::class, 'readIndex')]
+#[CoversMethod(ApiCacheComponent::class, 'updateCacheIndex')]
 class ApiCacheComponentTest extends TestCase
 {
     /**
@@ -62,7 +68,6 @@ class ApiCacheComponentTest extends TestCase
      * Initialize Api Cache component test
      *
      * @return void
-     * @covers ::initialize()
      */
     public function testInitialize(): void
     {
@@ -87,7 +92,6 @@ class ApiCacheComponentTest extends TestCase
      * Initialize Api Cache component test with custom config
      *
      * @return void
-     * @covers ::initialize()
      */
     public function testInitializeCustomConfig(): void
     {
@@ -250,10 +254,6 @@ class ApiCacheComponentTest extends TestCase
      * Cached GET API call test
      *
      * @return void
-     * @covers ::cacheKey()
-     * @covers ::readIndex()
-     * @covers ::updateCacheIndex()
-     * @covers ::get()
      */
     public function testGet(): void
     {
@@ -281,9 +281,6 @@ class ApiCacheComponentTest extends TestCase
      * Test cache API index
      *
      * @return void
-     * @covers ::updateCacheIndex()
-     * @covers ::readIndex()
-     * @covers ::get()
      */
     public function testIndex(): void
     {

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Utility;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategyInterface;
+use LogicException;
 
 /**
  * Utility class to handle asset names with revisions/signatures.
@@ -26,9 +27,9 @@ class AssetsRevisions
     /**
      * The asset strategy adopted.
      *
-     * @var \BEdita\WebTools\Utility\Asset\AssetStrategyInterface
+     * @var \BEdita\WebTools\Utility\Asset\AssetStrategyInterface|null
      */
-    protected static $strategy = null;
+    protected static ?AssetStrategyInterface $strategy = null;
 
     /**
      * Set an asset strategy to be used.
@@ -67,9 +68,9 @@ class AssetsRevisions
      *
      * @param string $name Canonical asset name
      * @param string $extension Optional extension to use to search asset, like 'js' or 'css'
-     * @return string|array
+     * @return array|string
      */
-    public static function get(string $name, ?string $extension = null)
+    public static function get(string $name, ?string $extension = null): string|array
     {
         $strategy = static::getStrategy();
         if ($strategy === null) {
@@ -112,7 +113,7 @@ class AssetsRevisions
     {
         $strategy = static::getStrategy();
         if ($strategy === null) {
-            throw new \LogicException('Missing asset strategy');
+            throw new LogicException('Missing asset strategy');
         }
 
         $strategy->loadAssets($path);

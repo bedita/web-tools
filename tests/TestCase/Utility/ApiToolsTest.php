@@ -16,25 +16,27 @@ namespace BEdita\WebTools\Test\TestCase\Utility;
 
 use BEdita\WebTools\Utility\ApiTools;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\ApiTools} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\ApiTools
  */
+#[CoversClass(ApiTools::class)]
+#[CoversMethod(ApiTools::class, 'cleanResponse')]
+#[CoversMethod(ApiTools::class, 'recursiveRemoveKey')]
+#[CoversMethod(ApiTools::class, 'removeAttributes')]
+#[CoversMethod(ApiTools::class, 'removeIncluded')]
+#[CoversMethod(ApiTools::class, 'removeLinks')]
+#[CoversMethod(ApiTools::class, 'removeRelationships')]
+#[CoversMethod(ApiTools::class, 'removeSchema')]
 class ApiToolsTest extends TestCase
 {
     /**
      * Test clean response
      *
      * @return void
-     * @covers ::cleanResponse()
-     * @covers ::recursiveRemoveKey()
-     * @covers ::removeAttributes()
-     * @covers ::removeIncluded()
-     * @covers ::removeLinks()
-     * @covers ::removeRelationships()
-     * @covers ::removeSchema()
      */
     public function testCleanResponse(): void
     {
@@ -140,7 +142,7 @@ class ApiToolsTest extends TestCase
      *
      * @return array
      */
-    public function cleanResponseAttributesProvider(): array
+    public static function cleanResponseAttributesProvider(): array
     {
         return [
             'remove extra, single entity with included' => [
@@ -422,10 +424,8 @@ class ApiToolsTest extends TestCase
      * @return array
      *
      * @return void
-     * @dataProvider cleanResponseAttributesProvider
-     * @covers ::cleanResponse()
-     * @covers ::removeAttributes()
      */
+    #[DataProvider('cleanResponseAttributesProvider')]
     public function testCleanResponseAttributes(array $response, array $options, array $expected): void
     {
         $actual = ApiTools::cleanResponse($response, $options);

@@ -24,9 +24,9 @@ interface AssetStrategyInterface
      *
      * @param string $name The name used to looking for the asset
      * @param string|null $extension Optional asset extension as 'js' or 'css'
-     * @return string|array
+     * @return array|string|null
      */
-    public function get(string $name, ?string $extension = null);
+    public function get(string $name, ?string $extension = null): string|array|null;
 
     /**
      * Load assets map optionally using a file path.

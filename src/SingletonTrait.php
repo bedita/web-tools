@@ -17,7 +17,7 @@ namespace BEdita\WebTools;
 /**
  * Singleton class.
  *
- * @see https://github.com/sebastianbergmann/phpunit/tree/5.6/tests/_files/Singleton.php
+ * @see https://github.com/sebastianbergmann/phpunit/blob/8.5/tests/_files/Singleton.php
  */
 trait SingletonTrait
 {
@@ -60,7 +60,7 @@ trait SingletonTrait
      *
      * @return static|null
      */
-    final public static function getInstance()
+    final public static function getInstance(): ?static
     {
         if (self::$uniqueInstance === null) {
             self::$uniqueInstance = new static();

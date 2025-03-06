@@ -20,12 +20,17 @@ use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
 use BEdita\WebTools\Identifier\OAuth2Identifier;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see \BEdita\WebTools\Identifier\OAuth2Identifier} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Identifier\OAuth2Identifier
  */
+#[CoversClass(OAuth2Identifier::class)]
+#[CoversMethod(OAuth2Identifier::class, 'externalAuth')]
+#[CoversMethod(OAuth2Identifier::class, 'identify')]
+#[CoversMethod(OAuth2Identifier::class, 'signup')]
+#[CoversMethod(OAuth2Identifier::class, 'signupData')]
 class OAuth2IdentifierTest extends TestCase
 {
     /**
@@ -41,8 +46,6 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with successful login.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::externalAuth()
      */
     public function testIdentifyOk(): void
     {
@@ -80,8 +83,6 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with unsuccessful login.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::externalAuth()
      */
     public function testNullIdentify(): void
     {
@@ -104,9 +105,6 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with successful signup.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::signup()
-     * @covers ::signupData()
      */
     public function testOkSignup(): void
     {
@@ -154,9 +152,6 @@ class OAuth2IdentifierTest extends TestCase
      * Test `identify` method with unsuccessful signup.
      *
      * @return void
-     * @covers ::identify()
-     * @covers ::signup()
-     * @covers ::signupData()
      */
     public function testFailSignup(): void
     {

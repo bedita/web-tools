@@ -16,12 +16,15 @@ namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
 
 use BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\Asset\Strategy\EntrypointsStrategy
  */
+#[CoversClass(EntrypointsStrategy::class)]
+#[CoversMethod(EntrypointsStrategy::class, 'get')]
 class EntrypointsStrategyTest extends TestCase
 {
     /**
@@ -29,7 +32,7 @@ class EntrypointsStrategyTest extends TestCase
      *
      * @return array
      */
-    public function getProvider(): array
+    public static function getProvider(): array
     {
         return [
             'not found' => [
@@ -62,16 +65,16 @@ class EntrypointsStrategyTest extends TestCase
     /**
      * Test that get asset name works as expected.
      *
-     * @param string $expected The expected path
-     * @param array $name The configuration used
+     * @param array|null $expected The expected path
+     * @param string $name The name
+     * @param string|null $extension The extension
      * @return void
-     * @dataProvider getProvider()
-     * @covers ::get()
      */
+    #[DataProvider('getProvider')]
     public function testGet(?array $expected, string $name, ?string $extension = null): void
     {
         $strategy = new EntrypointsStrategy(['manifestPath' => WWW_ROOT . 'entrypoints.json']);
-
-        static::assertEquals($expected, $strategy->get($name, $extension));
+        $actual = $strategy->get($name, $extension);
+        static::assertEquals($expected, $actual);
     }
 }

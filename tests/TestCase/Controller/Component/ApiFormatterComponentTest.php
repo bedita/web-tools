@@ -6,12 +6,20 @@ namespace BEdita\WebTools\Test\TestCase\Controller\Component;
 use BEdita\WebTools\Controller\Component\ApiFormatterComponent;
 use Cake\Controller\ComponentRegistry;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Controller\Component\ApiFormatterComponent} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Controller\Component\ApiFormatterComponent
  */
+#[CoversClass(ApiFormatterComponent::class)]
+#[CoversMethod(ApiFormatterComponent::class, 'addIncluded')]
+#[CoversMethod(ApiFormatterComponent::class, 'cleanResponse')]
+#[CoversMethod(ApiFormatterComponent::class, 'embedIncluded')]
+#[CoversMethod(ApiFormatterComponent::class, 'extractFromIncluded')]
+#[CoversMethod(ApiFormatterComponent::class, 'extractTranslatedFields')]
+#[CoversMethod(ApiFormatterComponent::class, 'replaceWithTranslation')]
 class ApiFormatterComponentTest extends TestCase
 {
     /**
@@ -49,7 +57,7 @@ class ApiFormatterComponentTest extends TestCase
      *
      * @return array
      */
-    public function embedIncludedProvider(): array
+    public static function embedIncludedProvider(): array
     {
         $gustavo = ['id' => 1, 'type' => 'persons', 'attributes' => ['name' => 'Gustavo'], 'relationships' => [['chief_of' => [['id' => 777, 'type' => 'universes']]]]];
         $tv = ['id' => 2, 'type' => 'things', 'attributes' => ['name' => 'Television'], 'relationships' => [['part_of' => [['id' => 888, 'type' => 'furnitures']]]]];
@@ -212,11 +220,8 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data for test
      * @param array $expected The expected resulting data
      * @return void
-     * @covers ::embedIncluded()
-     * @covers ::addIncluded()
-     * @covers ::extractFromIncluded()
-     * @dataProvider embedIncludedProvider()
      */
+    #[DataProvider('embedIncludedProvider')]
     public function testEmbedIncluded(array $response, array $expected): void
     {
         $actual = $this->ApiFormatter->embedIncluded($response);
@@ -228,7 +233,7 @@ class ApiFormatterComponentTest extends TestCase
      *
      * @return array
      */
-    public function replaceWithTranslationProvider(): array
+    public static function replaceWithTranslationProvider(): array
     {
         return [
             'empty response data' => [
@@ -732,10 +737,8 @@ class ApiFormatterComponentTest extends TestCase
      * @param array $response The response data
      * @param string $lang The lang requested
      * @return void
-     * @covers ::replaceWithTranslation()
-     * @covers ::extractTranslatedFields()
-     * @dataProvider replaceWithTranslationProvider()
      */
+    #[DataProvider('replaceWithTranslationProvider')]
     public function testReplaceWithTranslation(array $expected, array $response, string $lang): void
     {
         $actual = $this->ApiFormatter->replaceWithTranslation($response, $lang);
@@ -746,7 +749,6 @@ class ApiFormatterComponentTest extends TestCase
      * Test `cleanResponse()` method.
      *
      * @return void
-     * @covers ::cleanResponse()
      */
     public function testCleanResponse(): void
     {

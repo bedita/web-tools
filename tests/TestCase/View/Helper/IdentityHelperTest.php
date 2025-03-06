@@ -12,27 +12,30 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-namespace BEdita\WebTools\Test\TestCase;
+namespace BEdita\WebTools\Test\TestCase\View\Helper;
 
+use BadMethodCallException;
 use BEdita\WebTools\Identity;
 use BEdita\WebTools\View\Helper\IdentityHelper;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * {@see BEdita\WebTools\View\Helper\IdentityHelper} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\Helper\IdentityHelper
  */
+#[CoversClass(IdentityHelper::class)]
+#[CoversMethod(IdentityHelper::class, '__call')]
 class IdentityHelperTest extends TestCase
 {
     /**
      * Keep Identity instance.
      *
-     * @var \BEdita\WebTools\Identity
+     * @var \BEdita\WebTools\Identity|null
      */
-    protected $identity = null;
+    protected ?Identity $identity = null;
 
     /**
      * @inheritDoc
@@ -63,7 +66,6 @@ class IdentityHelperTest extends TestCase
      * Test that delegating a configured method works as expected.
      *
      * @return void
-     * @covers ::__call()
      */
     public function testDelgateOk(): void
     {
@@ -79,11 +81,10 @@ class IdentityHelperTest extends TestCase
      * Test that a `BadMethodCallException` is thrown calling method without identity.
      *
      * @return void
-     * @covers ::__call()
      */
     public function testDelegateNoIdentity(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot call `hasRole` on stored identity since it is not an object.');
 
         $request = (new ServerRequest())->withAttribute('identity', null);
@@ -96,11 +97,10 @@ class IdentityHelperTest extends TestCase
      * Test that a `BadMethodCallException` is thrown calling not delegated method.
      *
      * @return void
-     * @covers ::__call()
      */
     public function testDelegateBadDelegateMethod(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot call `fakeMethod`. Make sure to add it to `delegateMethods`.');
 
         $request = (new ServerRequest())->withAttribute('identity', $this->identity);
