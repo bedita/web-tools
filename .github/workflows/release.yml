@@ -20,5 +20,5 @@ jobs:
     uses: bedita/github-workflows/.github/workflows/release.yml@v2
     with:
       main_branch: 'master'
-      dist_branches: '["master","1.x"]'
+      dist_branches: '["master","5.x"]'
       version_bump: ${{ inputs.releaseType }}

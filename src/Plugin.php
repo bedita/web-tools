@@ -18,6 +18,7 @@ use BEdita\WebTools\Command\CacheClearallCommand;
 use Cake\Console\CommandCollection;
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
+use Cake\Http\BaseApplication;
 
 /**
  * Plugin class for BEdita\WebTools.
@@ -54,7 +55,11 @@ class Plugin extends BasePlugin
         // Call parent to load bootstrap from files.
         parent::bootstrap($app);
 
+        assert($app instanceof BaseApplication);
+
         // Load more plugins here
-        $app->addPlugin('Cake/TwigView');
+        if (!$app->getPlugins()->has('Cake/TwigView')) {
+            $app->addPlugin('Cake/TwigView');
+        }
     }
 }
