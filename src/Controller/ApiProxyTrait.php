@@ -45,6 +45,13 @@ trait ApiProxyTrait
     use ViewVarsTrait;
 
     /**
+     * Default allowed headers on proxied requests.
+     *
+     * @var array
+     */
+    protected $allowedHeaders = ['Content-Type'];
+
+    /**
      * An instance of a \Cake\Http\ServerRequest object that contains information about the current request.
      *
      * @var \Cake\Http\ServerRequest
@@ -186,6 +193,13 @@ trait ApiProxyTrait
             'body' => null,
             'headers' => null,
         ];
+        foreach ($this->allowedHeaders as $headerName) {
+            if (empty($this->request->getHeader($headerName))) {
+                continue;
+            }
+            $options['headers'] = $options['headers'] ?? [];
+            $options['headers'][$headerName] = $this->request->getHeader($headerName);
+        }
 
         if (empty($options['body'])) {
             $options['body'] = null;

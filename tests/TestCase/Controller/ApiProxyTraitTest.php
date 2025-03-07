@@ -147,6 +147,19 @@ class ApiProxyTraitTest extends TestCase
     }
 
     /**
+     * Test get() method
+     *
+     * @return void
+     * @covers ::apiRequest()
+     */
+    public function testGetWithHeaders(): void
+    {
+        $this->_request['headers'] = ['Content-type' => 'text/plain'];
+        $this->get('/api/users/1');
+        $this->assertResponseOk();
+    }
+
+    /**
      * Test non found error proxied from API.
      *
      * @return void
