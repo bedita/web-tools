@@ -103,7 +103,7 @@ class ThumbHelper extends Helper
         }
         try {
             $apiClient = ApiClientProvider::getApiClient();
-            $response = $apiClient->thumbs(intval($imageId), $options);
+            $response = $apiClient->thumbs(intval($imageId), (array)$options);
             if (empty($response['meta']['thumbnails'][0])) {
                 return static::NOT_AVAILABLE;
             }
