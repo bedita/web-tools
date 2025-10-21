@@ -45,7 +45,9 @@ class BeditaTwigExtension extends AbstractExtension
                 // avoid unwanted return value display in templates
                 Configure::write($key, $val);
 
+                // phpcs:disable
                 return;
+                // phpcs:enable
             }),
         ];
     }
