@@ -100,7 +100,9 @@ abstract class BaseClient
     {
         $errors = $validator->validate($this->getConfig());
         if (!empty($errors)) {
-            throw new \InvalidArgumentException(sprintf('%s client config not valid: %s', static::class, json_encode($errors)));
+            throw new \InvalidArgumentException(
+                sprintf('%s client config not valid: %s', static::class, json_encode($errors))
+            );
         }
     }
 
