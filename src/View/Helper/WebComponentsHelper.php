@@ -62,13 +62,13 @@ class WebComponentsHelper extends Helper
         }
 
         if (!empty($statements)) {
-            // @codingStandardsIgnoreStart
+            // @phpcs:disable
             $content = sprintf(
                 '(function(){var elem = document.querySelector(\'[data-wc="%s"]\');%s}());if(document.currentScript)document.currentScript.parentNode.removeChild(document.currentScript);',
                 $id,
-                join('', $statements)
+                join('', $statements),
             );
-            // @codingStandardsIgnoreEnd
+            // @phpcs:enable
             $this->Html->scriptBlock($content, [ 'block' => 'scriptsComponents' ]);
         }
 

@@ -120,7 +120,7 @@ class RequestPolicy implements RequestPolicyInterface
             throw new LogicException(sprintf(
                 'Invalid rule for %s::%s() in RequestPolicy',
                 $request->getParam('controller'),
-                $request->getParam('action')
+                $request->getParam('action'),
             ));
         }
 

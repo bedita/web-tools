@@ -116,7 +116,7 @@ class ApiCacheComponent extends Component
             function () use ($key, $path, $query) {
                 return (array)ApiClientProvider::getApiClient()->get($path, $query);
             },
-            $this->getConfig('cache')
+            $this->getConfig('cache'),
         );
         $this->updateCacheIndex($key, compact('path', 'query'));
 

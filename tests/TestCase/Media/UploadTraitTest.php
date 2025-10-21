@@ -70,7 +70,7 @@ class UploadTraitTest extends TestCase
             filesize($path),
             UPLOAD_ERR_OK,
             'test.png',
-            mime_content_type($resource)
+            mime_content_type($resource),
         );
 
         $expected = [

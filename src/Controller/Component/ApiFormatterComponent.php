@@ -128,7 +128,7 @@ class ApiFormatterComponent extends Component
         if (!Hash::numeric(array_keys($data))) {
             $response['data']['attributes'] = array_merge(
                 $response['data']['attributes'],
-                $this->extractTranslatedFields($data, $lang)
+                $this->extractTranslatedFields($data, $lang),
             );
 
             return $response;
@@ -169,7 +169,7 @@ class ApiFormatterComponent extends Component
      */
     public function cleanResponse(
         array $response,
-        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []]
+        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []],
     ): array {
         return ApiTools::cleanResponse($response, $options);
     }

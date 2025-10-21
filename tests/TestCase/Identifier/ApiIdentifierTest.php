@@ -148,7 +148,7 @@ class ApiIdentifierTest extends TestCase
                     'type' => 'roles',
                     'id' => Hash::get($this->role, 'data.id'),
                 ],
-            ]
+            ],
         );
 
         $this->apiClient->setupTokens($currentJwt);

@@ -100,7 +100,7 @@ class ThumbHelper extends Helper
     public function status(
         int|string|null $imageId,
         ?array $options = ['preset' => 'default'],
-        ?string &$url = ''
+        ?string &$url = '',
     ): ?int {
         if (empty($imageId) && empty($options['ids'])) {
             return static::NOT_ACCEPTABLE;
@@ -220,7 +220,7 @@ class ThumbHelper extends Helper
             function () use ($image, $options) {
                 return $this->url($image['id'], $options);
             },
-            $this->getConfig('cache')
+            $this->getConfig('cache'),
         );
     }
 }

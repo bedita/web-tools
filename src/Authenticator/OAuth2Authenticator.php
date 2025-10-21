@@ -76,7 +76,7 @@ class OAuth2Authenticator extends AbstractAuthenticator
     public function __construct(IdentifierInterface $identifier, array $config = [])
     {
         // Setup default URL resolver
-        $this->setConfig('urlResolver', fn ($route) => Router::url($route, true));
+        $this->setConfig('urlResolver', fn($route) => Router::url($route, true));
         parent::__construct($identifier, $config);
     }
 

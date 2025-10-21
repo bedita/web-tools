@@ -38,7 +38,7 @@ class ApiTools
         if (isset($response['data']['attributes'])) {
             $response['data']['attributes'] = array_diff_key(
                 $response['data']['attributes'],
-                array_flip($keysToRemove)
+                array_flip($keysToRemove),
             );
 
             // remove attributes from included entities
@@ -46,7 +46,7 @@ class ApiTools
                 foreach ($response['included'] as $key => $entity) {
                     $response['included'][$key]['attributes'] = array_diff_key(
                         $entity['attributes'],
-                        array_flip($keysToRemove)
+                        array_flip($keysToRemove),
                     );
                 }
             }
@@ -63,7 +63,7 @@ class ApiTools
             foreach ($response['included'] as $key => $entity) {
                 $response['included'][$key]['attributes'] = array_diff_key(
                     $entity['attributes'],
-                    array_flip($keysToRemove)
+                    array_flip($keysToRemove),
                 );
             }
         }
@@ -137,7 +137,7 @@ class ApiTools
             function ($k) use ($key) {
                 return $k !== $key;
             },
-            ARRAY_FILTER_USE_KEY
+            ARRAY_FILTER_USE_KEY,
         );
     }
 
@@ -150,7 +150,7 @@ class ApiTools
      */
     public static function cleanResponse(
         array $response,
-        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []]
+        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []],
     ): array {
         foreach ($options as $key => $option) {
             if (is_string($key) && is_array($option)) {
