@@ -72,7 +72,7 @@ class ApiClientProvider
             Configure::read('API.apiBaseUrl'),
             Configure::read('API.apiKey'),
             [],
-            Configure::read('API.guzzleConfig', [])
+            Configure::read('API.guzzleConfig', []),
         );
         $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
         if (!empty($logOptions)) {

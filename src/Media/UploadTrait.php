@@ -51,7 +51,7 @@ trait UploadTrait
         return $apiClient->post(
             sprintf('/%s/upload/%s%s', $type, $file->getClientFilename(), $query),
             $fileTmp,
-            $headers
+            $headers,
         );
     }
 }

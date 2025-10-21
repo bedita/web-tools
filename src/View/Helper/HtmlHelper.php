@@ -374,7 +374,7 @@ class HtmlHelper extends CakeHtmlHelper
         return sprintf(
             '%s%s',
             (string)$this->css($name, $options),
-            (string)$this->script($name, $options)
+            (string)$this->script($name, $options),
         );
     }
 }

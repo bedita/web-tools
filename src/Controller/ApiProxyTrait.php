@@ -206,7 +206,7 @@ trait ApiProxyTrait
             } else {
                 $response = call_user_func_array(
                     [$this->apiClient, $method], // call 'post', 'patch' or 'delete'
-                    [$options['path'], $options['body'], $options['headers']]
+                    [$options['path'], $options['body'], $options['headers']],
                 );
             }
 

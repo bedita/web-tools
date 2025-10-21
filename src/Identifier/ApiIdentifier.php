@@ -60,7 +60,7 @@ class ApiIdentifier extends AbstractIdentifier
         try {
             $result = $apiClient->authenticate(
                 $data[$usernameField],
-                $data[$passwordField]
+                $data[$passwordField],
             );
             if (empty($result['meta'])) {
                 $this->setError('Invalid username or password');

@@ -167,7 +167,7 @@ class ThumbHelperTest extends TestCase
                 'engine' => 'File',
                 'prefix' => sprintf('%s_', $expected),
                 'serialize' => true,
-            ]
+            ],
         );
         $this->Thumb = new ThumbHelper(new View(), ['cache' => $expected]);
         $actual = $this->Thumb->getConfig('cache');

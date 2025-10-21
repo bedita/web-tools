@@ -60,7 +60,7 @@ class BeditaTwigExtension extends AbstractExtension
                     shuffle($array);
 
                     return $array;
-                }
+                },
             ),
             new TwigFilter(
                 'ksort',
@@ -68,7 +68,7 @@ class BeditaTwigExtension extends AbstractExtension
                     ksort($array);
 
                     return $array;
-                }
+                },
             ),
             new TwigFilter(
                 'krsort',
@@ -76,7 +76,7 @@ class BeditaTwigExtension extends AbstractExtension
                     krsort($array);
 
                     return $array;
-                }
+                },
             ),
         ];
     }

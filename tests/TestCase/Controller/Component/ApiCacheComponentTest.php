@@ -79,7 +79,7 @@ class ApiCacheComponentTest extends TestCase
                 'engine' => 'File',
                 'prefix' => sprintf('%s_', $expected),
                 'serialize' => true,
-            ]
+            ],
         );
         $registry = new ComponentRegistry();
         $this->ApiCache = new ApiCacheComponent($registry);
@@ -103,7 +103,7 @@ class ApiCacheComponentTest extends TestCase
                  'engine' => 'File',
                  'prefix' => sprintf('%s_', $expected),
                  'serialize' => true,
-             ]
+             ],
          );
          $registry = new ComponentRegistry();
          $this->ApiCache = new ApiCacheComponent($registry, ['cache' => $expected]);

@@ -64,7 +64,7 @@ class OAuth2AuthenticatorTest extends TestCase
                     'url' => '/ext/login/gustavo',
                 ],
                 [
-                    'urlResolver' => fn () => '',
+                    'urlResolver' => fn() => '',
                     'providers' => [
                         'gustavo' => [
                             'class' => TestProvider::class,
@@ -81,7 +81,7 @@ class OAuth2AuthenticatorTest extends TestCase
                     'url' => '/ext/login/gustavo?code=1&state=1',
                 ],
                 [
-                    'urlResolver' => fn () => '',
+                    'urlResolver' => fn() => '',
                     'providers' => [
                         'gustavo' => [
                             'class' => TestProvider::class,
@@ -103,7 +103,7 @@ class OAuth2AuthenticatorTest extends TestCase
                     ],
                 ],
                 [
-                    'urlResolver' => fn () => '',
+                    'urlResolver' => fn() => '',
                     'providers' => [
                         'gustavo' => [
                             'class' => TestProvider::class,
@@ -156,7 +156,7 @@ class OAuth2AuthenticatorTest extends TestCase
         $expected,
         array $reqConfig,
         array $authConfig = [],
-        array $identity = ['id' => 1]
+        array $identity = ['id' => 1],
     ): void {
         if ($expected instanceof Exception) {
             $this->expectException(get_class($expected));
@@ -222,7 +222,7 @@ class OAuth2AuthenticatorTest extends TestCase
         $request = $request->withAttribute('session', $session);
 
         $authenticator = new OAuth2Authenticator($identifier, [
-            'urlResolver' => fn () => '',
+            'urlResolver' => fn() => '',
             'providers' => [
                 'gustavo' => [
                     'class' => TestProvider::class,

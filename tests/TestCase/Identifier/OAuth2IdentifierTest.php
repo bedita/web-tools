@@ -91,7 +91,7 @@ class OAuth2IdentifierTest extends TestCase
             ->onlyMethods(['post'])
             ->getMock();
         $apiClientMock->method('post')->willThrowException(
-            new BEditaClientException('', 404)
+            new BEditaClientException('', 404),
         );
 
         $identifier = new OAuth2Identifier();
@@ -121,7 +121,7 @@ class OAuth2IdentifierTest extends TestCase
                 }
 
                 return ['meta' => ['jwt' => 'gustavo']];
-            }
+            },
         );
         $apiClientMock->method('get')->willReturn([
                 'data' => ['id' => 1],
