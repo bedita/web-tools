@@ -212,13 +212,14 @@ class ThumbHelper extends Helper
 
             return '';
         }
+        $imageId = intval($image['id']);
         $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
-        $key = sprintf('%d_%s', $image['id'], $thumbHash);
+        $key = sprintf('%d_%s', $imageId, $thumbHash);
 
         return (string)Cache::remember(
             $key,
-            function () use ($image, $options) {
-                return $this->url($image['id'], $options);
+            function () use ($imageId, $options) {
+                return $this->url($imageId, $options);
             },
             $this->getConfig('cache'),
         );
