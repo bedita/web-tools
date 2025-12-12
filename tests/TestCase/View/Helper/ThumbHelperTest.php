@@ -196,6 +196,13 @@ class ThumbHelperTest extends TestCase
                 ],
                 ThumbHelper::NOT_AVAILABLE,
             ],
+            'thumb with id string' => [
+                [
+                    'id' => '-1',
+                    'options' => null, // use default preset
+                ],
+                ThumbHelper::NOT_AVAILABLE,
+            ],
         ];
     }
 

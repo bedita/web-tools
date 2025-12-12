@@ -106,8 +106,9 @@ class ThumbHelper extends Helper
             return static::NOT_ACCEPTABLE;
         }
         try {
+            $id = !empty($imageId) ? intval($imageId) : null;
             $apiClient = ApiClientProvider::getApiClient();
-            $response = $apiClient->thumbs($imageId, (array)$options);
+            $response = $apiClient->thumbs($id, (array)$options);
             if (empty($response['meta']['thumbnails'][0])) {
                 return static::NOT_AVAILABLE;
             }
@@ -137,13 +138,13 @@ class ThumbHelper extends Helper
     /**
      * Obtain thumbnail using API thumbs.
      *
-     * @param int $imageId The image ID.
+     * @param string|int $imageId The image ID.
      * @param array|null $options The thumbs options.
      * @return string|int The url if available, the status code otherwise (see Thumb constants).
      */
-    public function url(int $imageId, ?array $options): string|int
+    public function url(string|int $imageId, ?array $options): string|int
     {
-        $url = null;
+        $url = '';
         $status = $this->status($imageId, $options, $url);
         if ($status === static::OK) {
             return $url;
@@ -212,13 +213,14 @@ class ThumbHelper extends Helper
 
             return '';
         }
+        $imageId = intval($image['id']);
         $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
-        $key = sprintf('%d_%s', $image['id'], $thumbHash);
+        $key = sprintf('%d_%s', $imageId, $thumbHash);
 
         return (string)Cache::remember(
             $key,
-            function () use ($image, $options) {
-                return $this->url($image['id'], $options);
+            function () use ($imageId, $options) {
+                return $this->url($imageId, $options);
             },
             $this->getConfig('cache'),
         );
