@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace BEdita\WebTools\Test\TestCase;
 
 use BEdita\WebTools\Command\CacheClearallCommand;
-use BEdita\WebTools\Plugin;
+use BEdita\WebTools\WebToolsPlugin;
 use Cake\Console\CommandCollection;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,11 +23,11 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use TestApp\Application;
 
 /**
- * {@see BEdita\WebTools\Plugin} Test Case
+ * {@see BEdita\WebTools\WebToolsPlugin} Test Case
  */
-#[CoversClass(Plugin::class)]
-#[CoversMethod(Plugin::class, 'bootstrap')]
-#[CoversMethod(Plugin::class, 'console')]
+#[CoversClass(WebToolsPlugin::class)]
+#[CoversMethod(WebToolsPlugin::class, 'bootstrap')]
+#[CoversMethod(WebToolsPlugin::class, 'console')]
 class PluginTest extends TestCase
 {
     /**

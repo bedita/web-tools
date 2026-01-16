@@ -13,7 +13,7 @@ declare(strict_types=1);
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
 
-use BEdita\WebTools\Plugin as WebToolsPlugin;
+use BEdita\WebTools\WebToolsPlugin;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
