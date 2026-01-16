@@ -23,7 +23,7 @@ use Cake\Http\BaseApplication;
 /**
  * Plugin class for BEdita\WebTools.
  */
-class Plugin extends BasePlugin
+class WebToolsPlugin extends BasePlugin
 {
     /**
      * Load routes or not
