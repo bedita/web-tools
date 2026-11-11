@@ -458,4 +458,25 @@ class ThumbHelperTest extends TestCase
         $expected = $this->Thumb->url($image['id'], []);
         static::assertEquals($expected, $actual);
     }
+
+    /**
+     * Test `getUrl()` does not cache error codes
+     *
+     * @return void
+     */
+    public function testGetUrlErrorNotCached(): void
+    {
+        $this->Thumb = new ThumbHelper(new View());
+        $image = $this->_imageData();
+        $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode([]));
+        $key = sprintf('%d_%s', $image['id'], $thumbHash);
+        $cacheConfig = $this->Thumb->getConfig('cache');
+        Cache::delete($key, $cacheConfig);
+
+        $status = $this->Thumb->url($image['id'], []);
+        static::assertIsInt($status);
+        $actual = $this->Thumb->getUrl($image);
+        static::assertEquals((string)$status, $actual);
+        static::assertNull(Cache::read($key, $cacheConfig));
+    }
 }
