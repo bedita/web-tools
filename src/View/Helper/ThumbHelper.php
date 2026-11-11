@@ -220,7 +220,7 @@ class ThumbHelper extends Helper
         $key = sprintf('%d_%s', $imageId, $thumbHash);
         $cacheConfig = $this->getConfig('cache');
         $cached = Cache::read($key, $cacheConfig);
-        if ($cached !== null) {
+        if (is_string($cached)) {
             return (string)$cached;
         }
         $url = $this->url($imageId, $options);
