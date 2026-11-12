@@ -218,13 +218,17 @@ class ThumbHelper extends Helper
         $imageId = intval($image['id']);
         $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
         $key = sprintf('%d_%s', $imageId, $thumbHash);
+        $cacheConfig = $this->getConfig('cache');
+        $cached = Cache::read($key, $cacheConfig);
+        if (is_string($cached)) {
+            return (string)$cached;
+        }
+        $url = $this->url($imageId, $options);
+        // cache only valid urls: on error codes the api call will be retried
+        if (is_string($url)) {
+            Cache::write($key, $url, $cacheConfig);
+        }
 
-        return (string)Cache::remember(
-            $key,
-            function () use ($imageId, $options) {
-                return $this->url($imageId, $options);
-            },
-            $this->getConfig('cache'),
-        );
+        return (string)$url;
     }
 }
