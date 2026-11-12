@@ -153,15 +153,47 @@ class ApiProxyTraitTest extends TestCase
      */
     public function testGetWithHeaders(): void
     {
-        $this->configRequest([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'text/plain',
-            ],
-        ]);
-        $this->get('/api/users/1');
-        $this->assertResponseOk();
-        $this->assertContentType('application/json');
+        $request = (new ServerRequest())
+            ->withHeader('Accept', 'application/json')
+            ->withHeader('Content-Type', 'text/plain')
+            ->withQueryParams(['page' => '1']);
+
+        $controller = new class ($request) extends Controller {
+            use ApiProxyTrait;
+
+            public function setApiClient(BEditaClient $apiClient): void
+            {
+                $this->apiClient = $apiClient;
+            }
+
+            protected function setBaseUrl(string $path): void
+            {
+                $this->baseUrl = '/';
+            }
+        };
+
+        $actual = null;
+        $client = $this->getMockBuilder(BEditaClient::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['get'])
+            ->getMock();
+
+        $client->expects($this->once())
+            ->method('get')
+            ->willReturnCallback(function ($path, $query, $headers) use (&$actual): ?array {
+                $actual = [$path, $query, $headers];
+
+                return null;
+            });
+
+        $controller->setApiClient($client);
+        $controller->get('/users/1');
+
+        static::assertSame([
+            '/users/1',
+            ['page' => '1'],
+            ['Content-Type' => ['text/plain']],
+        ], $actual);
     }
 
     /**
