@@ -19,20 +19,22 @@ use Cake\View\Helper;
 
 /**
  * Helper to handle Web Components initialization with properties.
+ *
+ * @extends \Cake\View\Helper<\Cake\View\View>
  */
 class WebComponentsHelper extends Helper
 {
     /**
      * @inheritDoc
      **/
-    public $helpers = ['Html'];
+    public array $helpers = ['Html'];
 
     /**
      * A list of used identifiers.
      *
      * @var array
      **/
-    private $ids = [];
+    private array $ids = [];
 
     /**
      * Pass properties to an HTMLElement using attributes for plain values and inline scripts for array.
@@ -62,13 +64,13 @@ class WebComponentsHelper extends Helper
         }
 
         if (!empty($statements)) {
-            // @codingStandardsIgnoreStart
+            // @phpcs:disable
             $content = sprintf(
                 '(function(){var elem = document.querySelector(\'[data-wc="%s"]\');%s}());if(document.currentScript)document.currentScript.parentNode.removeChild(document.currentScript);',
                 $id,
-                join('', $statements)
+                join('', $statements),
             );
-            // @codingStandardsIgnoreEnd
+            // @phpcs:enable
             $this->Html->scriptBlock($content, [ 'block' => 'scriptsComponents' ]);
         }
 
@@ -102,7 +104,7 @@ class WebComponentsHelper extends Helper
      * @param string $scriptPath The path of the definition script to import.
      * @return string An HTML node string like `<my-element data-wc="0"></my-element>`.
      */
-    public function element(string $tagName, array $properties = [], $scriptPath = ''): string
+    public function element(string $tagName, array $properties = [], string $scriptPath = ''): string
     {
         if (!empty($scriptPath)) {
             $this->Html->script($scriptPath, [ 'block' => 'scriptsComponents' ]);

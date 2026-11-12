@@ -14,13 +14,17 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Controller;
 
+use BEdita\SDK\BEditaClient;
 use BEdita\SDK\BEditaClientException;
 use BEdita\WebTools\ApiClientProvider;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Cake\View\ViewVarsTrait;
+use Throwable;
 
 /**
  * Use this Trait in a controller to directly proxy requests to BE4 API.
@@ -52,28 +56,28 @@ trait ApiProxyTrait
      *
      * @var \Cake\Http\ServerRequest
      */
-    protected $request;
+    protected ServerRequest $request;
 
     /**
      * An instance of a Response object that contains information about the impending response.
      *
      * @var \Cake\Http\Response
      */
-    protected $response;
+    protected Response $response;
 
     /**
-     * BEdita4 API client
+     * BEdita API client
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    protected $apiClient = null;
+    protected ?BEditaClient $apiClient = null;
 
     /**
      * Base URL used for mask links.
      *
      * @var string
      */
-    protected $baseUrl = '';
+    protected string $baseUrl = '';
 
     /**
      * @inheritDoc
@@ -95,7 +99,7 @@ trait ApiProxyTrait
      * @param string $path The path on which build base URL
      * @return void
      */
-    protected function setBaseUrl($path): void
+    protected function setBaseUrl(string $path): void
     {
         $requestPath = $this->request->getPath();
         $pos = strpos(rawurldecode($requestPath), $path);
@@ -108,12 +112,12 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for GET requests to BEdita4 API
+     * Proxy for GET requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
      */
-    public function get($path = ''): void
+    public function get(string $path = ''): void
     {
         $this->apiRequest([
             'method' => 'get',
@@ -123,12 +127,12 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for POST requests to BEdita4 API
+     * Proxy for POST requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
      */
-    public function post($path = ''): void
+    public function post(string $path = ''): void
     {
         $this->apiRequest([
             'method' => 'post',
@@ -138,12 +142,12 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for PATCH requests to BEdita4 API
+     * Proxy for PATCH requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
      */
-    public function patch($path = ''): void
+    public function patch(string $path = ''): void
     {
         $this->apiRequest([
             'method' => 'patch',
@@ -153,12 +157,12 @@ trait ApiProxyTrait
     }
 
     /**
-     * Proxy for DELETE requests to BEdita4 API
+     * Proxy for DELETE requests to BEdita API
      *
      * @param string $path The path for API request
      * @return void
      */
-    public function delete($path = ''): void
+    public function delete(string $path = ''): void
     {
         $this->apiRequest([
             'method' => 'delete',
@@ -216,7 +220,7 @@ trait ApiProxyTrait
             } else {
                 $response = call_user_func_array(
                     [$this->apiClient, $method], // call 'post', 'patch' or 'delete'
-                    [$options['path'], $options['body'], $options['headers']]
+                    [$options['path'], $options['body'], $options['headers']],
                 );
             }
 
@@ -230,7 +234,7 @@ trait ApiProxyTrait
             $response = $this->maskResponseLinks($response);
             $this->set($response);
             $this->viewBuilder()->setOption('serialize', array_keys($response));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->handleError($e);
         }
     }
@@ -242,7 +246,7 @@ trait ApiProxyTrait
      * @param \Throwable $error The error thrown.
      * @return void
      */
-    protected function handleError(\Throwable $error): void
+    protected function handleError(Throwable $error): void
     {
         $status = $error->getCode();
         if ($status < 100 || $status > 599) {

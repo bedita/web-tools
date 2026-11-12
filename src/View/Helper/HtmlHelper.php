@@ -20,6 +20,7 @@ use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\View\Helper\HtmlHelper as CakeHtmlHelper;
+use function Cake\Core\h;
 
 /**
  * Html helper.
@@ -30,7 +31,7 @@ class HtmlHelper extends CakeHtmlHelper
     /**
      * Meta data for helper
      */
-    protected $metadata = [
+    protected array $metadata = [
         'description' => '',
         'author' => '',
         'docType' => '',
@@ -157,15 +158,11 @@ class HtmlHelper extends CakeHtmlHelper
                 return '';
             }
         }
-        $html = $this->meta([
+
+        return (string)$this->meta([
             'name' => 'author',
             'content' => h($creator),
         ]);
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
     }
 
     /**
@@ -182,15 +179,11 @@ class HtmlHelper extends CakeHtmlHelper
                 return '';
             }
         }
-        $html = $this->meta([
+
+        return (string)$this->meta([
             'http-equiv' => 'Content-Style-Type',
             'content' => 'text/css',
         ]);
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
     }
 
     /**
@@ -211,15 +204,11 @@ class HtmlHelper extends CakeHtmlHelper
         if (!empty($project['version'])) {
             $version = $project['version'];
         }
-        $html = $this->meta([
+
+        return (string)$this->meta([
             'name' => 'generator',
             'content' => trim(sprintf('%s %s', $project['name'], $version)),
         ]);
-        if ($html === null) {
-            $html = '';
-        }
-
-        return $html;
     }
 
     /**
@@ -333,9 +322,9 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $data The data
      * @param string $field The field
      * @param array|string|null $defaultVal The default val
-     * @return array|string
+     * @return array|string|null
      */
-    public function getMeta(array $data, string $field, $defaultVal = null)
+    public function getMeta(array $data, string $field, array|string|null $defaultVal = null): array|string|null
     {
         $meta = $data + $this->metadata;
 
@@ -381,14 +370,12 @@ class HtmlHelper extends CakeHtmlHelper
      * @param array $options The options to apply
      * @return string|null
      */
-    public function assets($name, array $options = []): ?string
+    public function assets(string $name, array $options = []): ?string
     {
-        $cssOutput = $this->css($name, $options);
-        $jsOutput = $this->script($name, $options);
-        if (empty($cssOutput)) {
-            return $jsOutput;
-        }
-
-        return $cssOutput . (string)$jsOutput;
+        return sprintf(
+            '%s%s',
+            (string)$this->css($name, $options),
+            (string)$this->script($name, $options),
+        );
     }
 }

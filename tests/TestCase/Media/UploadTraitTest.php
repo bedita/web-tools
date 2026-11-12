@@ -20,13 +20,15 @@ use BEdita\WebTools\Media\UploadTrait;
 use Cake\Http\Exception\BadRequestException;
 use Cake\TestSuite\TestCase;
 use Laminas\Diactoros\UploadedFile;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * {@see \BEdita\WebTools\Media\UploadTrait} Test Case
- *
- * @coversDefaultClass \Bedita\WebTools\Media\UploadTrait
  */
+#[CoversClass(UploadTrait::class)]
+#[CoversMethod(UploadTrait::class, 'uploadMedia')]
 class UploadTraitTest extends TestCase
 {
     use UploadTrait;
@@ -57,7 +59,6 @@ class UploadTraitTest extends TestCase
      * Test `uploadMedia()` method
      *
      * @return void
-     * @covers ::uploadMedia()
      */
     public function testUpload(): void
     {
@@ -69,7 +70,7 @@ class UploadTraitTest extends TestCase
             filesize($path),
             UPLOAD_ERR_OK,
             'test.png',
-            mime_content_type($resource)
+            mime_content_type($resource),
         );
 
         $expected = [
@@ -93,7 +94,6 @@ class UploadTraitTest extends TestCase
      * Test `uploadMedia()` failure
      *
      * @return void
-     * @covers ::uploadMedia()
      */
     public function testFailUpload(): void
     {

@@ -17,7 +17,6 @@ namespace BEdita\WebTools\Command;
 use Cake\Command\CacheClearallCommand as BaseCommand;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\Filesystem\Folder;
 
 /**
  * Extend `CacheClearallCommand` to remove Twig compiled files.
@@ -31,11 +30,18 @@ class CacheClearallCommand extends BaseCommand
      */
     public function execute(Arguments $args, ConsoleIo $io): ?int
     {
-        $twigCachePath = CACHE . 'twig_view';
-        $folder = new Folder($twigCachePath); /* @phpstan-ignore-line */
-        if (file_exists($twigCachePath) && !$folder->delete()) {
-            $io->error("Error removing Twig cache files in {$twigCachePath}");
-            $this->abort();
+        $path = CACHE . 'twig_view';
+        if (!file_exists($path)) {
+            $io->out("<warning>Twig cache path not found: {$path}</warning>");
+
+            return parent::execute($args, $io);
+        }
+        foreach (array_diff(scandir($path), ['.', '..']) as $dir) {
+            $subDir = $path . DIRECTORY_SEPARATOR . $dir;
+            foreach (array_diff(scandir($subDir), ['.', '..']) as $file) {
+                unlink($subDir . DIRECTORY_SEPARATOR . $file);
+            }
+            rmdir($subDir);
         }
         $io->out('<success>Cleared twig cache</success>');
 

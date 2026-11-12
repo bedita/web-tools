@@ -19,9 +19,12 @@ use Cake\Cache\Cache;
 use Cake\Log\LogTrait;
 use Cake\Utility\Hash;
 use Cake\View\Helper;
+use Exception;
 
 /**
  * Helper to obtain thumbnail url
+ *
+ * @extends \Cake\View\Helper<\Cake\View\View>
  */
 class ThumbHelper extends Helper
 {
@@ -32,7 +35,7 @@ class ThumbHelper extends Helper
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'cache' => '_thumbs_',
     ];
 
@@ -91,19 +94,23 @@ class ThumbHelper extends Helper
      *   NO_URL: url not present in api response
      *   OK: thumb available, ready and with a proper url
      *
-     * @param int|string $imageId The image ID
+     * @param string|int|null $imageId The image ID
      * @param array|null $options The thumbs options
      * @param string|null $url The thumb url to populate when static::OK
      * @return int|null
      */
-    public function status($imageId, ?array $options = ['preset' => 'default'], &$url = ''): ?int
-    {
+    public function status(
+        int|string|null $imageId,
+        ?array $options = ['preset' => 'default'],
+        ?string &$url = '',
+    ): ?int {
         if (empty($imageId) && empty($options['ids'])) {
             return static::NOT_ACCEPTABLE;
         }
         try {
+            $id = !empty($imageId) ? intval($imageId) : null;
             $apiClient = ApiClientProvider::getApiClient();
-            $response = $apiClient->thumbs($imageId, $options);
+            $response = $apiClient->thumbs($id, (array)$options);
             if (empty($response['meta']['thumbnails'][0])) {
                 return static::NOT_AVAILABLE;
             }
@@ -121,7 +128,7 @@ class ThumbHelper extends Helper
                 return static::NO_URL;
             }
             $url = $thumb['url'];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->log($e->getMessage(), 'error');
 
             return static::NOT_AVAILABLE;
@@ -133,13 +140,13 @@ class ThumbHelper extends Helper
     /**
      * Obtain thumbnail using API thumbs.
      *
-     * @param int $imageId The image ID.
+     * @param string|int $imageId The image ID.
      * @param array|null $options The thumbs options.
      * @return string|int The url if available, the status code otherwise (see Thumb constants).
      */
-    public function url($imageId, $options)
+    public function url(string|int $imageId, ?array $options): string|int
     {
-        $url = null;
+        $url = '';
         $status = $this->status($imageId, $options, $url);
         if ($status === static::OK) {
             return $url;
@@ -154,7 +161,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the acceptable flag
      */
-    private function isAcceptable($thumb = []): bool
+    private function isAcceptable(array $thumb = []): bool
     {
         if (isset($thumb['acceptable']) && $thumb['acceptable'] === false) {
             return false;
@@ -169,7 +176,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the ready flag
      */
-    private function isReady($thumb = []): bool
+    private function isReady(array $thumb = []): bool
     {
         if (!empty($thumb['ready']) && $thumb['ready'] === true) {
             return true;
@@ -184,7 +191,7 @@ class ThumbHelper extends Helper
      * @param array $thumb The thumbnail data
      * @return bool the url availability
      */
-    private function hasUrl($thumb = []): bool
+    private function hasUrl(array $thumb = []): bool
     {
         if (!empty($thumb['url'])) {
             return true;
@@ -208,15 +215,20 @@ class ThumbHelper extends Helper
 
             return '';
         }
+        $imageId = intval($image['id']);
         $thumbHash = md5((string)Hash::get($image, 'meta.media_url') . json_encode($options));
-        $key = sprintf('%d_%s', $image['id'], $thumbHash);
+        $key = sprintf('%d_%s', $imageId, $thumbHash);
+        $cacheConfig = $this->getConfig('cache');
+        $cached = Cache::read($key, $cacheConfig);
+        if (is_string($cached)) {
+            return (string)$cached;
+        }
+        $url = $this->url($imageId, $options);
+        // cache only valid urls: on error codes the api call will be retried
+        if (is_string($url)) {
+            Cache::write($key, $url, $cacheConfig);
+        }
 
-        return (string)Cache::remember(
-            $key,
-            function () use ($image, $options) {
-                return $this->url($image['id'], $options);
-            },
-            $this->getConfig('cache')
-        );
+        return (string)$url;
     }
 }

@@ -15,9 +15,11 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\Controller\Component;
 
+use BEdita\WebTools\Utility\ApiTools;
 use Cake\Collection\Collection;
 use Cake\Controller\Component;
 use Cake\Utility\Hash;
+use function Cake\Collection\collection;
 
 /**
  * Component class to format API response data.
@@ -127,7 +129,7 @@ class ApiFormatterComponent extends Component
         if (!Hash::numeric(array_keys($data))) {
             $response['data']['attributes'] = array_merge(
                 $response['data']['attributes'],
-                $this->extractTranslatedFields($data, $lang)
+                $this->extractTranslatedFields($data, $lang),
             );
 
             return $response;
@@ -157,5 +159,19 @@ class ApiFormatterComponent extends Component
         $translatedFields = (array)Hash::extract($data, $path);
 
         return array_filter((array)array_shift($translatedFields));
+    }
+
+    /**
+     * Clean response from unwanted keys (recursively).
+     *
+     * @param array $response The response from API
+     * @param array $options The options to clean response
+     * @return array
+     */
+    public function cleanResponse(
+        array $response,
+        array $options = ['included', 'links', 'schema', 'relationships', 'attributes' => []],
+    ): array {
+        return ApiTools::cleanResponse($response, $options);
     }
 }

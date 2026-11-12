@@ -12,16 +12,20 @@ declare(strict_types=1);
  *
  * See LICENSE.LGPL or <http://gnu.org/licenses/lgpl-3.0.html> for more details.
  */
-namespace BEdita\WebTools\Test\TestCase\Utility\Asset\Strategy;
+namespace BEdita\WebTools\Test\TestCase\Utility\Asset;
 
 use BEdita\WebTools\Utility\Asset\AssetStrategy;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Utility\Asset\AssetStrategy} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Utility\Asset\AssetStrategy
  */
+#[CoversClass(AssetStrategy::class)]
+#[CoversMethod(AssetStrategy::class, '__construct')]
+#[CoversMethod(AssetStrategy::class, 'loadAssets')]
 class AssetStrategyTest extends TestCase
 {
     /**
@@ -33,7 +37,7 @@ class AssetStrategyTest extends TestCase
     protected function getInstance(array $config = []): AssetStrategy
     {
         return new class ($config) extends AssetStrategy {
-            public function get(string $name, ?string $extension = null)
+            public function get(string $name, ?string $extension = null): string|array|null
             {
                 return $this->assets;
             }
@@ -45,7 +49,7 @@ class AssetStrategyTest extends TestCase
      *
      * @return array
      */
-    public function manifestPathProvider(): array
+    public static function manifestPathProvider(): array
     {
         return [
             'default' => [
@@ -67,9 +71,8 @@ class AssetStrategyTest extends TestCase
      * @param string $expected The expected path
      * @param array $config The configuration used
      * @return void
-     * @dataProvider manifestPathProvider()
-     * @covers ::__construct()
      */
+    #[DataProvider('manifestPathProvider')]
     public function testManifestPath(string $expected, array $config): void
     {
         $strategy = $this->getInstance($config);
@@ -81,7 +84,6 @@ class AssetStrategyTest extends TestCase
      * Test `loadASsets()`
      *
      * @return void
-     * @covers ::loadAssets()
      */
     public function testLoadAssets(): void
     {

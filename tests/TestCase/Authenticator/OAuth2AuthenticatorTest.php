@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace BEdita\WebTools\Test\TestCase\Authenticator;
 
+use ArrayAccess;
 use Authentication\Authenticator\Result;
 use Authentication\Identifier\IdentifierInterface;
 use BEdita\WebTools\Authenticator\OAuth2Authenticator;
@@ -23,12 +24,21 @@ use Cake\Http\ServerRequest;
 use Cake\Http\Session;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use Exception;
+use Firebase\JWT\JWT;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * {@see \BEdita\WebTools\Authenticator\OAuth2Authenticator} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Authenticator\OAuth2Authenticator
  */
+#[CoversClass(OAuth2Authenticator::class)]
+#[CoversMethod(OAuth2Authenticator::class, '__construct')]
+#[CoversMethod(OAuth2Authenticator::class, 'authenticate')]
+#[CoversMethod(OAuth2Authenticator::class, 'initProvider')]
+#[CoversMethod(OAuth2Authenticator::class, 'providerConnect')]
+#[CoversMethod(OAuth2Authenticator::class, 'redirectUri')]
 class OAuth2AuthenticatorTest extends TestCase
 {
     /**
@@ -36,7 +46,7 @@ class OAuth2AuthenticatorTest extends TestCase
      *
      * @return array
      */
-    public function authenticateProvider(): array
+    public static function authenticateProvider(): array
     {
         return [
             'bad provider' => [
@@ -50,10 +60,11 @@ class OAuth2AuthenticatorTest extends TestCase
                     'status' => Result::SUCCESS,
                 ],
                 [
+                    'environment' => ['REQUEST_METHOD' => 'POST'],
                     'url' => '/ext/login/gustavo',
                 ],
                 [
-                    'urlResolver' => fn () => '',
+                    'urlResolver' => fn() => '',
                     'providers' => [
                         'gustavo' => [
                             'class' => TestProvider::class,
@@ -70,7 +81,7 @@ class OAuth2AuthenticatorTest extends TestCase
                     'url' => '/ext/login/gustavo?code=1&state=1',
                 ],
                 [
-                    'urlResolver' => fn () => '',
+                    'urlResolver' => fn() => '',
                     'providers' => [
                         'gustavo' => [
                             'class' => TestProvider::class,
@@ -92,7 +103,7 @@ class OAuth2AuthenticatorTest extends TestCase
                     ],
                 ],
                 [
-                    'urlResolver' => fn () => '',
+                    'urlResolver' => fn() => '',
                     'providers' => [
                         'gustavo' => [
                             'class' => TestProvider::class,
@@ -135,24 +146,19 @@ class OAuth2AuthenticatorTest extends TestCase
      * Test `authenticate` method
      *
      * @param array|\Exception $expected EXpected result.
-     * @param array $config Request configuration.
+     * @param array $reqConfig Request configuration.
      * @param array $authConfig Authenticator configuration.
      * @param array $identity Identity data.
      * @return void
-     * @dataProvider authenticateProvider
-     * @covers ::authenticate()
-     * @covers ::providerConnect()
-     * @covers ::initProvider()
-     * @covers ::redirectUri()
-     * @covers ::__construct()
      */
+    #[DataProvider('authenticateProvider')]
     public function testAuthenticate(
         $expected,
         array $reqConfig,
         array $authConfig = [],
-        array $identity = ['id' => 1]
+        array $identity = ['id' => 1],
     ): void {
-        if ($expected instanceof \Exception) {
+        if ($expected instanceof Exception) {
             $this->expectException(get_class($expected));
             $this->expectExceptionCode($expected->getCode());
             $this->expectExceptionMessage($expected->getMessage());
@@ -166,7 +172,7 @@ class OAuth2AuthenticatorTest extends TestCase
                 $this->identity = $identity;
             }
 
-            public function identify(array $credentials)
+            public function identify(array $credentials): ArrayAccess|array|null
             {
                 return $this->identity;
             }
@@ -178,12 +184,61 @@ class OAuth2AuthenticatorTest extends TestCase
         };
         $request = new ServerRequest($reqConfig);
         $session = new Session();
-        $session->write(Hash::get($reqConfig, 'data'));
+        $session->write((array)Hash::get($reqConfig, 'data'));
         $request = $request->withAttribute('session', $session);
         $authenticator = new OAuth2Authenticator($identifier, $authConfig);
         $result = $authenticator->authenticate($request);
 
         static::assertNotNull($result);
         static::assertEquals($expected['status'], $result->getStatus());
+    }
+
+    /**
+     * Test JWT leeway config in `authenticate` method
+     *
+     * @return void
+     */
+    public function testAuthenticateLeeway(): void
+    {
+        $identifier = new class () implements IdentifierInterface {
+            public function identify(array $credentials): ArrayAccess|array|null
+            {
+                return $credentials;
+            }
+
+            public function getErrors(): array
+            {
+                return [];
+            }
+        };
+        $reqConfig = [
+            'url' => '/ext/login/gustavo',
+        ];
+        $request = new ServerRequest($reqConfig);
+        $session = new Session();
+        $val = Hash::get((array)$reqConfig, 'data');
+        $val = is_string($val) ? $val : (array)$val;
+        $session->write($val);
+        $request = $request->withAttribute('session', $session);
+
+        $authenticator = new OAuth2Authenticator($identifier, [
+            'urlResolver' => fn() => '',
+            'providers' => [
+                'gustavo' => [
+                    'class' => TestProvider::class,
+                    'setup' => [
+                        'clientId' => '',
+                    ],
+                    'clientOptions' => [
+                        'jwtLeeway' => 10,
+                    ],
+                ],
+            ],
+        ]);
+        $result = $authenticator->authenticate($request);
+
+        static::assertNotNull($result);
+        static::assertEquals(Result::SUCCESS, $result->getStatus());
+        static::assertEquals(JWT::$leeway, 10);
     }
 }

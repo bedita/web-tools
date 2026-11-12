@@ -18,18 +18,18 @@ use BEdita\SDK\BEditaClient;
 use Cake\Core\Configure;
 
 /**
- * BEdita4 API client provider singleton class.
+ * BEdita API client provider singleton class.
  */
 class ApiClientProvider
 {
     use SingletonTrait;
 
     /**
-     * BEdita4 API client
+     * BEdita API client
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    private $apiClient = null;
+    private ?BEditaClient $apiClient = null;
 
     /**
      * Read singleton API client data.
@@ -72,7 +72,7 @@ class ApiClientProvider
             Configure::read('API.apiBaseUrl'),
             Configure::read('API.apiKey'),
             [],
-            Configure::read('API.guzzleConfig', [])
+            Configure::read('API.guzzleConfig', []),
         );
         $logOptions = !empty($options['Log']) ? $options['Log'] : Configure::read('API.log');
         if (!empty($logOptions)) {

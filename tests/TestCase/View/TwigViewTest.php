@@ -16,26 +16,25 @@ namespace BEdita\WebTools\Test\TestCase\View;
 
 use BEdita\WebTools\View\TwigView;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * {@see \BEdita\WebTools\View\AppView} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\View\TwigView
+ * {@see \BEdita\WebTools\View\TwigView} Test Case
  */
+#[CoversClass(TwigView::class)]
 class TwigViewTest extends TestCase
 {
     /**
      * Test `initialize` method
      *
      * @return void
-     * @covers ::initialize()
      */
     public function testInitialize(): void
     {
-        $View = new TwigView();
-        $extensions = $View->getTwig()->getExtensions();
+        $view = new TwigView();
+        $extensions = $view->getTwig()->getExtensions();
         static::assertNotEmpty($extensions);
         static::assertArrayHasKey('BEdita\WebTools\View\Twig\BeditaTwigExtension', $extensions);
-        static::assertFalse($View->getConfig('environment.strict_variables'));
+        static::assertFalse($view->getConfig('environment.strict_variables'));
     }
 }

@@ -21,6 +21,7 @@ use Cake\View\Helper;
 /**
  * Asset Helper to handle asset names with signatures.
  *
+ * @extends \Cake\View\Helper<\Cake\View\View>
  * @see AssetsRevisions for details
  */
 class AssetHelper extends Helper

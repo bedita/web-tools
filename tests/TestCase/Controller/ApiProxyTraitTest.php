@@ -23,14 +23,27 @@ use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
+use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
 /**
  * ApiProxyTraitTest class
  *
  * {@see \BEdita\WebTools\Controller\ApiProxyTrait} Test Case
- *
- * @coversDefaultClass \BEdita\WebTools\Controller\ApiProxyTrait
  */
+#[CoversClass(ApiProxyTrait::class)]
+#[CoversMethod(ApiProxyTrait::class, 'apiRequest')]
+#[CoversMethod(ApiProxyTrait::class, 'delete')]
+#[CoversMethod(ApiProxyTrait::class, 'get')]
+#[CoversMethod(ApiProxyTrait::class, 'handleError')]
+#[CoversMethod(ApiProxyTrait::class, 'initialize')]
+#[CoversMethod(ApiProxyTrait::class, 'maskLinks')]
+#[CoversMethod(ApiProxyTrait::class, 'maskMultiLinks')]
+#[CoversMethod(ApiProxyTrait::class, 'maskResponseLinks')]
+#[CoversMethod(ApiProxyTrait::class, 'patch')]
+#[CoversMethod(ApiProxyTrait::class, 'post')]
+#[CoversMethod(ApiProxyTrait::class, 'setBaseUrl')]
 class ApiProxyTraitTest extends TestCase
 {
     use IntegrationTestTrait;
@@ -38,9 +51,9 @@ class ApiProxyTraitTest extends TestCase
     /**
      * Instance of BEditaClient
      *
-     * @var \BEdita\SDK\BEditaClient
+     * @var \BEdita\SDK\BEditaClient|null
      */
-    protected $apiClient = null;
+    protected ?BEditaClient $apiClient = null;
 
     /**
      * @inheritDoc
@@ -76,16 +89,27 @@ class ApiProxyTraitTest extends TestCase
     }
 
     /**
+     * Test that a request with a wrong method raises MethodNotAllowedException.
+     *
+     * @return void
+     */
+    public function testMethodNotAllowedException(): void
+    {
+        $t = new class (new ServerRequest()) extends Controller {
+            use ApiProxyTrait {
+                apiRequest as public;
+            }
+        };
+        $t->apiRequest(['method' => 'PPOOSSTT', 'path' => '/']);
+        $error = $t->viewBuilder()->getVar('error');
+        static::assertTrue(in_array($error['status'], ['405', '500']));
+        static::assertEquals('Method Not Allowed', $error['title']);
+    }
+
+    /**
      * Test get() method
      *
      * @return void
-     * @covers ::initialize()
-     * @covers ::get()
-     * @covers ::setBaseUrl()
-     * @covers ::apiRequest()
-     * @covers ::maskResponseLinks()
-     * @covers ::maskMultiLinks()
-     * @covers ::maskLinks()
      */
     public function testGet(): void
     {
@@ -139,9 +163,6 @@ class ApiProxyTraitTest extends TestCase
      * Test non found error proxied from API.
      *
      * @return void
-     * @covers ::get()
-     * @covers ::apiRequest()
-     * @covers ::handleError()
      */
     public function testNotFoundError(): void
     {
@@ -162,7 +183,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that masking links with value searched equal to string works.
      *
      * @return void
-     * @covers ::maskLinks()
      */
     public function testMaskLinksString(): void
     {
@@ -177,7 +197,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that getting a list of objects the relationships links are masked.
      *
      * @return void
-     * @covers ::maskResponseLinks()
      */
     public function testMaskRelationshipsLinksGettingList(): void
     {
@@ -198,7 +217,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that getting /home the resources links are masked.
      *
      * @return void
-     * @covers ::maskResponseLinks()
      */
     public function testMaskResourcesGettingHome(): void
     {
@@ -217,7 +235,6 @@ class ApiProxyTraitTest extends TestCase
      * is correctly handled
      *
      * @return void
-     * @covers ::handleError()
      */
     public function testNotBEditaClientException(): void
     {
@@ -240,7 +257,7 @@ class ApiProxyTraitTest extends TestCase
             ->onlyMethods(['get'])
             ->getMock();
 
-        $apiClientMock->method('get')->willThrowException(new \LogicException('Broken'));
+        $apiClientMock->method('get')->willThrowException(new LogicException('Broken'));
 
         $controller->setApiClient($apiClientMock);
         $controller->get('/gustavo');
@@ -257,7 +274,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that if BEditaClient return null the response has empty body.
      *
      * @return void
-     * @covers ::apiRequest()
      */
     public function testNullResponseFromBEditaClient(): void
     {
@@ -293,7 +309,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that if path was unexpected an error 400 Bad Request was sent.
      *
      * @return void
-     * @covers ::setBaseUrl()
      */
     public function testErrorIfPathNotFound(): void
     {
@@ -324,7 +339,6 @@ class ApiProxyTraitTest extends TestCase
      * Test that url is urlencoded the baseUrl is found.
      *
      * @return void
-     * @covers ::setBaseUrl()
      */
     public function testMatchUrlEncodedPath(): void
     {
@@ -347,8 +361,6 @@ class ApiProxyTraitTest extends TestCase
      * Test POST request
      *
      * @return void
-     * @covers ::post()
-     * @covers ::apiRequest()
      */
     public function testPost(): void
     {
@@ -374,8 +386,6 @@ class ApiProxyTraitTest extends TestCase
      * Test PATCH request
      *
      * @return void
-     * @covers ::patch()
-     * @covers ::apiRequest()
      */
     public function testPatch(): void
     {
@@ -409,8 +419,6 @@ class ApiProxyTraitTest extends TestCase
      * Test DELETE request
      *
      * @return void
-     * @covers ::delete()
-     * @covers ::apiRequest()
      */
     public function testDelete(): void
     {
@@ -431,5 +439,53 @@ class ApiProxyTraitTest extends TestCase
         $this->assertResponseOk();
         $response = json_decode((string)$this->_response, true);
         static::assertEmpty($response);
+    }
+
+    /**
+     * Test that create a new object, modify it and delete it.
+     *
+     * @return void
+     */
+    public function testMulti(): void
+    {
+        $this->post('/api/documents', ['data' => [
+            'type' => 'documents',
+            'attributes' => [
+                'title' => 'new doc',
+            ],
+        ]]);
+        $this->assertResponseOk();
+
+        Router::resetRoutes();
+
+        $response = json_decode((string)$this->_response, true);
+        $id = Hash::get($response, 'data.id');
+        $this->patch('/api/documents/' . $id, ['data' => [
+            'type' => 'documents',
+            'id' => $id,
+            'attributes' => [
+                'title' => 'new doc title',
+            ],
+        ]]);
+        $this->assertResponseOk();
+
+        Router::resetRoutes();
+
+        $this->get('/api/documents/' . $id);
+        $response = json_decode((string)$this->_response, true);
+        $this->assertEquals('new doc title', (string)Hash::get($response, 'data.attributes.title'));
+        $this->assertResponseOk();
+
+        Router::resetRoutes();
+
+        $this->delete('/api/documents/' . $id);
+        $this->assertResponseOk();
+        $response = json_decode((string)$this->_response, true);
+        $this->assertEmpty($response);
+
+        Router::resetRoutes();
+
+        $this->get('/api/documents/' . $id);
+        $this->assertResponseError();
     }
 }
