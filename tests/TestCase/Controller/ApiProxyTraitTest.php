@@ -154,9 +154,15 @@ class ApiProxyTraitTest extends TestCase
      */
     public function testGetWithHeaders(): void
     {
-        $this->_request['headers'] = ['Content-type' => 'text/plain'];
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'text/plain',
+            ],
+        ]);
         $this->get('/api/users/1');
         $this->assertResponseOk();
+        $this->assertContentType('application/json');
     }
 
     /**

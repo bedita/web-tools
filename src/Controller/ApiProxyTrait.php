@@ -47,9 +47,9 @@ trait ApiProxyTrait
     /**
      * Default allowed headers on proxied requests.
      *
-     * @var array
+     * @var array<string>
      */
-    protected $allowedHeaders = ['Content-Type'];
+    protected array $allowedHeaders = ['Content-Type'];
 
     /**
      * An instance of a \Cake\Http\ServerRequest object that contains information about the current request.
