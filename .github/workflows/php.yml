@@ -5,12 +5,22 @@ on:
     paths:
       - '**/*.php'
       - '.github/workflows/php.yml'
+      - '.scrutinizer.yml'
       - 'composer.json'
+      - 'phpcs.xml.dist'
+      - 'phpstan.neon.dist'
+      - 'phpunit.neon.dist'
+      - 'psalm.xml'
   push:
     paths:
       - '**/*.php'
       - '.github/workflows/php.yml'
+      - '.scrutinizer.yml'
       - 'composer.json'
+      - 'phpcs.xml.dist'
+      - 'phpstan.neon.dist'
+      - 'phpunit.neon.dist'
+      - 'psalm.xml'
 
 jobs:
   cs:
