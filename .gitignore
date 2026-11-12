@@ -1,6 +1,7 @@
 # Project files #
 #################
 /composer.lock
+/phpcs.xml
 /phpstan.neon
 /phpunit.xml
 /coverage
@@ -30,3 +31,9 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# ai tools
+.github/hooks
+.graphifyignore
+/graphify-out/
+.github/copilot-instructions.md
