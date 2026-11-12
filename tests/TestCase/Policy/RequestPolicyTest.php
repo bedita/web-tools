@@ -25,15 +25,15 @@ use Cake\TestSuite\TestCase;
 use Exception;
 use Laminas\Diactoros\Uri;
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use TestApp\Policy\CustomPolicy;
 use TestApp\Policy\InvokeCustomPolicy;
 
 /**
  * {@see BEdita\WebTools\Policy\RequestPolicy} Test Case
- *
- * @covers \BEdita\WebTools\Policy\RequestPolicy
  */
+#[CoversClass(RequestPolicy::class)]
 class RequestPolicyTest extends TestCase
 {
     /**

@@ -14,14 +14,15 @@ declare(strict_types=1);
  */
 namespace BEdita\WebTools\Test\TestCase;
 
+use BEdita\WebTools\SingletonTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use ReflectionClass;
 
 /**
  * {@see BEdita\WebTools\SingletonTrait} Test Case
- *
- * @covers \BEdita\WebTools\SingletonTrait
  */
+#[CoversTrait(SingletonTrait::class)]
 class SingletonTraitTest extends TestCase
 {
     /**
