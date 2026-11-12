@@ -205,7 +205,7 @@ class ThumbHelper extends Helper
      * Silently fail with log if no image 'id' is found in array.
      *
      * @param array|null $image Image object array containing at least `id`
-     * @param string $options Thumb options
+     * @param array<string, mixed> $options Thumb options
      * @return string
      */
     public function getUrl(?array $image, array $options = []): string
